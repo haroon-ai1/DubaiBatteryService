@@ -1,0 +1,123 @@
+---
+/*
+  Kept intentionally small for v1 — only links to sections that exist.
+  Add Areas / Guides / About / Privacy / Terms / Contact columns once those
+  routes are actually built; linking to them now would be a dead link.
+*/
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="brand" aria-label="Dubai Battery Service — home">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+          <rect x="1" y="1" width="30" height="30" rx="9" fill="var(--text-primary)" />
+          <path d="M16 7 L10 17 H15 L14 25 L22 14 H17 Z" fill="var(--red-bright)" />
+        </svg>
+        <span class="brand-name">Dubai Battery Service</span>
+      </a>
+      <p class="footer-desc">
+        Independent information on car battery replacement, mobile service, jump-starts and
+        battery testing for drivers across Dubai.
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <span class="footer-nav-heading">On this page</span>
+      <ul>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#how-it-works">How it works</a></li>
+        <li><a href="#pricing">Pricing factors</a></li>
+        <li><a href="#battery-types">Battery types</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>&copy; {year} Dubai Battery Service. Informational resource — not a dispatched service provider.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border-light);
+    padding-top: clamp(3rem, 2.5rem + 2vw, 4.5rem);
+    background: var(--bg-soft);
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  @media (min-width: 48rem) {
+    .footer-inner {
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 700;
+  }
+
+  .brand-mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .footer-desc {
+    margin-top: 1rem;
+    max-width: 32rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+  }
+
+  .footer-nav-heading {
+    display: block;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .footer-nav ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .footer-nav a:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border-light);
+    padding-block: 1.5rem;
+  }
+
+  .footer-bottom p {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+</style>

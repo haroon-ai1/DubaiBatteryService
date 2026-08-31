@@ -1,0 +1,58 @@
+---
+import { siteConfig } from "@/config/site";
+---
+
+<section class="area-info" id="areas">
+  <div class="container area-inner">
+    <div class="area-copy">
+      <h2>Built around how Dubai actually drives.</h2>
+      <p>
+        Parking setup, access and typical routes vary a lot across the city — basement parking in a
+        Downtown tower is a different problem to a villa driveway. The information on this site is
+        written with that in mind, and applies broadly across areas including:
+      </p>
+    </div>
+
+    <ul class="area-chips">
+      {siteConfig.serviceAreas.map((area) => <li>{area}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .area-info {
+    padding-block: var(--section-space);
+  }
+
+  .area-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .area-copy {
+    max-width: 38rem;
+  }
+
+  .area-copy p {
+    margin-top: 1rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-body);
+  }
+
+  .area-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem;
+  }
+
+  .area-chips li {
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-pill);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+</style>

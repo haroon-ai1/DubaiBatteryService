@@ -1,0 +1,32 @@
+---
+interface Props {
+  href: string;
+  size?: "md" | "sm";
+  class?: string;
+}
+
+const { href, size = "md", class: className = "" } = Astro.props;
+---
+
+<a href={href} class:list={["btn", "btn-secondary", size === "sm" && "btn-sm", className]}>
+  <slot />
+</a>
+
+<style>
+  .btn-secondary {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    border-color: var(--border-medium);
+  }
+
+  .btn-secondary:active {
+    background: var(--bg-soft);
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) {
+    .btn-secondary:hover {
+      border-color: var(--text-primary);
+    }
+  }
+</style>

@@ -1,0 +1,126 @@
+---
+const faqs = [
+  {
+    q: "How do I know if I need a jump-start or a replacement?",
+    a: "If the car starts after a jump but the battery seems weak again within a day or two, or it's more than three to four years old, that usually points to replacement rather than repeated jump-starts.",
+  },
+  {
+    q: "Can a car battery be replaced at my location?",
+    a: "In most cases, yes — mobile battery replacement is common and doesn't usually require a workshop visit. Some vehicles need the replacement battery registered to the car's electrical system, which can affect how it's done.",
+  },
+  {
+    q: "How long do car batteries typically last in Dubai conditions?",
+    a: "Sustained high heat is hard on lead-acid batteries and tends to shorten their working life. Many batteries in the UAE need replacing sooner than their manufacturer-rated lifespan would suggest elsewhere.",
+  },
+  {
+    q: "What is an AGM battery?",
+    a: "Absorbent Glass Mat — a sealed, vibration-resistant battery design that handles deep cycling and higher electrical loads well. Manufacturers typically specify AGM for more demanding stop-start and energy-recuperation systems, or where electrical loads are higher.",
+  },
+  {
+    q: "What is an EFB battery?",
+    a: "Enhanced Flooded Battery — a step up from a conventional flooded battery in cycling durability, commonly fitted as standard in entry-level stop-start vehicles.",
+  },
+  {
+    q: "Why does my car battery keep dying?",
+    a: "Common causes include a parasitic drain (something drawing power while the car is off), a failing alternator not fully recharging the battery, frequent short trips, or a battery that's simply reached end of life.",
+  },
+  {
+    q: "Can a weak alternator look like a battery problem?",
+    a: "Yes — the symptoms overlap a lot. A battery that tests fine but keeps going flat is a common sign the alternator, not the battery, is the actual issue.",
+  },
+  {
+    q: "Do some modern cars require battery registration?",
+    a: "Yes. A number of newer vehicles — commonly German makes with battery management systems — need the replacement battery registered or coded to the car's electronics after installation.",
+  },
+  {
+    q: "How do I identify the correct battery for my car?",
+    a: "The existing battery's label is usually the best starting point — it typically shows group size, capacity (Ah) and cold-cranking amps, along with the correct chemistry. Not every owner's manual lists the same detail, so fitment should ultimately be confirmed against a reliable vehicle- or manufacturer-specific fitment guide rather than assumed from the manual alone.",
+  },
+];
+---
+
+<section class="faq" id="faq">
+  <div class="container faq-inner">
+    <div class="section-heading">
+      <h2>Battery questions, answered clearly.</h2>
+    </div>
+
+    <div class="faq-list">
+      {
+        faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>
+              <span>{faq.q}</span>
+              <svg class="faq-chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M4 6.5L8 10.5L12 6.5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </summary>
+            <p>{faq.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq {
+    padding-block: var(--section-space);
+    background: var(--bg-soft);
+  }
+
+  .faq-inner .section-heading {
+    max-width: 34rem;
+    margin-bottom: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  }
+
+  .faq-list {
+    max-width: 44rem;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--border-medium);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1.25rem;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-chevron {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--text-muted);
+    transition: transform var(--dur-standard) var(--ease-standard);
+  }
+
+  .faq-item[open] .faq-chevron {
+    transform: rotate(180deg);
+  }
+
+  .faq-item p {
+    padding-bottom: 1.25rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    max-width: 40rem;
+  }
+
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+</style>

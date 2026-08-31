@@ -1,0 +1,87 @@
+/*
+  Design tokens.
+  Single source of truth for color, type, spacing, radius, shadow, motion.
+  Nothing outside this file should hard-code a hex value, a spacing number,
+  or a transition curve — components reference these variables.
+*/
+
+:root {
+  /* ---------- Color ---------- */
+  --bg-main: #ffffff;
+  --bg-soft: #f8f9fb;
+  --bg-warm: #fff7f8;
+
+  --text-primary: #111215;
+  --text-secondary: #62666e;
+  --text-muted: #92969d;
+
+  --red-primary: #e21c35;
+  --red-bright: #f5324c;
+  --red-dark: #b61229;
+  --red-soft: #ffe8ec;
+
+  --border-light: rgba(18, 20, 24, 0.08);
+  --border-medium: rgba(18, 20, 24, 0.12);
+
+  --glass-white: rgba(255, 255, 255, 0.72);
+  --whatsapp-green: #25d366;
+
+  --focus-ring: #1450e0; /* distinct from brand red so focus is never mistaken for a red/error state */
+
+  /* ---------- Type ---------- */
+  --font-body: "Manrope Variable", "Manrope", "Inter", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --fs-h1: clamp(2.375rem, 1.85rem + 2.4vw, 4.75rem); /* 38px -> 76px */
+  --fs-h2: clamp(1.75rem, 1.5rem + 1.1vw, 2.75rem); /* 28px -> 44px */
+  --fs-h3: clamp(1.375rem, 1.25rem + 0.5vw, 1.75rem); /* 22px -> 28px */
+  --fs-lead: clamp(1.0625rem, 1rem + 0.28vw, 1.25rem); /* 17px -> 20px */
+  --fs-body: clamp(1rem, 0.95rem + 0.14vw, 1.1875rem); /* 16px -> 19px */
+  --fs-small: clamp(0.875rem, 0.85rem + 0.08vw, 0.9375rem); /* 14px -> 15px */
+  --fs-eyebrow: clamp(0.8125rem, 0.8rem + 0.05vw, 0.875rem);
+
+  --lh-tight: 1.12;
+  --lh-heading: 1.22;
+  --lh-body: 1.6;
+
+  /* ---------- Layout ---------- */
+  --container-max: 76.5rem; /* 1224px */
+  --pad-inline: clamp(1rem, 0.6rem + 2vw, 4rem); /* 16px -> 64px */
+
+  --section-space: clamp(4.5rem, 3.6rem + 4.2vw, 10rem); /* 72px -> 160px */
+  --section-space-tight: clamp(3rem, 2.5rem + 2.4vw, 5.5rem);
+
+  /* ---------- Radius (deliberate hierarchy, not one value everywhere) ---------- */
+  --radius-pill: 999px; /* buttons, chips */
+  --radius-lg: 1.5rem; /* feature cards, imagery */
+  --radius-md: 0.875rem; /* inputs, selector cards */
+  --radius-sm: 0.5rem; /* tags, small controls */
+
+  /* ---------- Shadow (used sparingly, not on every element) ---------- */
+  --shadow-float: 0 8px 30px rgba(18, 20, 24, 0.08), 0 2px 8px rgba(18, 20, 24, 0.04);
+  --shadow-card: 0 1px 2px rgba(18, 20, 24, 0.04), 0 1px 1px rgba(18, 20, 24, 0.03);
+
+  /* ---------- Motion ---------- */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 200ms;
+  --dur-standard: 300ms;
+  --dur-slow: 600ms;
+
+  /* ---------- Z-index scale ---------- */
+  --z-header: 40;
+  --z-mobile-nav: 50;
+  --z-sticky-cta: 30;
+
+  /* Clearance for anchor-jumped sections so the sticky header capsule never
+     overlaps a heading right after the jump. */
+  --header-offset: 5.5rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  /* The brief specifies a deliberately white, light-dominant identity.
+     We do not ship an inverted dark theme for v1 — this hook exists so a
+     future dark mode can be layered in without restructuring tokens. */
+  :root {
+    color-scheme: light;
+  }
+}

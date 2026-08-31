@@ -1,1 +1,90 @@
-# DubaiBatteryService
+# Dubai Battery Service — v1 (homepage)
+
+Static Astro site for dubaibatteryservice.com. This is the first implementation
+milestone: design tokens, layout system, SEO plumbing, header/footer/nav, and
+the homepage only — per the agreed v1 scope. No service/area/guide page
+routes exist yet by design.
+
+## Stack
+
+Astro (static output, no framework runtime), hand-written CSS with a
+token system (`src/styles/tokens.css`), self-hosted Manrope, zero client-side
+JS frameworks — only small vanilla-JS progressive enhancements (scroll-driven
+nav capsule, mobile menu via native `<dialog>`, sticky mobile CTA visibility).
+
+## Run locally
+
+```bash
+npm install
+npm run dev
+```
+
+## Build
+
+```bash
+npm run build
+```
+Outputs static HTML/CSS/JS to `./dist`. `npm run check` runs Astro's
+TypeScript checker (currently 0 errors / 0 warnings / 0 hints).
+
+## Deploy to Cloudflare
+
+```bash
+npm run deploy   # runs `npm run build` then `wrangler deploy`
+```
+
+**Before your first real deploy**, `wrangler.jsonc` now has `name:
+"dubaibatteryservice"` and `compatibility_date: "2026-08-31"` as provided —
+these are no longer my placeholders, but I still haven't seen your actual
+Cloudflare dashboard/existing repo, so if either value doesn't match what's
+currently live, that's on your end to confirm, not something I can verify
+from here.
+
+## Configuration — what's still needed
+
+Everything below lives in `src/config/site.ts` and is `null`/empty by
+default. The site is fully functional with all of it empty (that's the
+point of asset mode), but here's what unlocks what once you have it:
+
+| Field | Unlocks |
+|---|---|
+| `business.phone` / `whatsapp` | Call/WhatsApp buttons in the sticky mobile CTA bar |
+| `entityVerified` (set to `true`) **+** `business.businessName` (+ `address` for LocalBusiness) | `Organization` / `LocalBusiness` JSON-LD. This is a deliberately separate, explicit flag — moving `operationalMode` out of `"asset"` does NOT flip this on by itself; see the comment on `entityVerified` in `site.ts` |
+| `claims.*` (hours, response time, warranty, reviews) | Corresponding trust copy — none of it is written yet; add display components when you have real values, don't reverse-engineer copy to fit a null |
+| `analytics.gaMeasurementId` | GA4 — not loaded at all right now, not even a stub |
+| `analytics.googleSiteVerification` | Adds the verification meta tag automatically |
+| `leadEndpoint` | Needed before any lead-capture form gets built — none exists yet (see below) |
+
+## What's deliberately hidden or simplified in v1
+
+- **No lead-capture form.** Per your correction #6, a non-functional form is
+  worse than no form. `FinalCTA` and the sticky bar both route to the
+  in-page service selector instead of collecting contact details.
+- **No phone/WhatsApp CTAs anywhere** — `business.phone`/`whatsapp` are null,
+  so those buttons simply don't render (see `StickyMobileCTA.astro`).
+- **Nav and footer only link to in-page anchors** (`#services`,
+  `#how-it-works`, etc.), not to `/car-battery-replacement-dubai/`,
+  `/areas/`, `/guides/`, `/about/` — those routes don't exist yet. Update
+  the `navItems` array in `Header.astro` and the footer links once they do.
+- **The homepage's original 4-item quick-service selector (Replacement /
+  Jump Start / Delivery / Testing) is 3 items here** (Replacement / Jump
+  Start / Mobile Service). Delivery and Testing got folded into "Mobile
+  Service" because there was no dedicated homepage section for them to
+  link to — flag if you'd rather restore 4 distinct cards once those
+  become real pages.
+- **Hero and section artwork is original hand-drawn SVG**, not photography
+  — there's no licensed photo library to pull from, and I won't scrape web
+  images into something you intend to sell. Swap `Hero.astro`'s inline SVG
+  for real photography via `astro:assets` (put source files in
+  `src/assets/images/`) whenever you have it.
+- **No `Organization`/`LocalBusiness` schema** — components exist
+  (`src/components/seo/JsonLdOrganization.astro`,
+  `JsonLdLocalBusiness.astro`) but self-null until `entityVerified: true`
+  is explicitly set AND the required business fields are present. This is
+  a deliberately separate switch from `operationalMode` — see `site.ts`.
+
+## Regenerating icons / OG image
+
+`scripts/gen-icon.mjs` and `scripts/gen-og.mjs` are one-off Node scripts
+(run with `node scripts/gen-icon.mjs`) that rasterize the brand mark and OG
+image via `sharp`. Re-run them if you change the brand mark or OG copy.

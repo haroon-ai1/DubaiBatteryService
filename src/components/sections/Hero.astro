@@ -1,0 +1,160 @@
+---
+import ButtonPrimary from "@/components/buttons/ButtonPrimary.astro";
+import ButtonSecondary from "@/components/buttons/ButtonSecondary.astro";
+---
+
+<section class="hero" id="hero">
+  <div class="container hero-inner">
+    <div class="hero-content">
+      <p class="eyebrow">Mobile car battery help in Dubai</p>
+      <h1>Car battery service<br />in Dubai.</h1>
+      <p class="hero-lead">
+        Battery replacement, jump-start assistance, delivery and testing information —
+        built around how drivers actually deal with a failing battery in this city.
+      </p>
+      <div class="hero-actions">
+        <ButtonPrimary href="#services">Explore battery services</ButtonPrimary>
+        <ButtonSecondary href="#how-it-works">How it works</ButtonSecondary>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-glow"></div>
+      <svg
+        class="hero-art"
+        viewBox="40 150 560 200"
+        preserveAspectRatio="xMidYMid meet"
+        role="img"
+        aria-label=""
+      >
+        <ellipse cx="320" cy="345" rx="205" ry="16" fill="var(--red-soft)" opacity="0.7" />
+
+        <path
+          d="M90,300 C90,260 120,213 172,203 C232,190 300,188 346,193 C402,200 432,224 462,254 C502,264 540,270 560,294 C566,300 566,311 560,315 L100,315 C94,315 90,309 90,300 Z"
+          fill="var(--bg-main)"
+          stroke="var(--text-primary)"
+          stroke-width="2.5"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M178,207 C226,196 292,193 335,197 C384,203 410,222 433,247 L245,247 C220,247 200,238 178,222 Z"
+          fill="var(--bg-soft)"
+          stroke="var(--text-primary)"
+          stroke-width="2"
+          stroke-linejoin="round"
+        />
+
+        <path
+          d="M100,283 C220,290 420,290 555,283"
+          fill="none"
+          stroke="var(--red-primary)"
+          stroke-width="2.5"
+          stroke-linecap="round"
+        />
+
+        <circle cx="176" cy="317" r="38" fill="var(--text-primary)" />
+        <circle cx="176" cy="317" r="16" fill="var(--bg-soft)" />
+        <circle cx="466" cy="317" r="38" fill="var(--text-primary)" />
+        <circle cx="466" cy="317" r="16" fill="var(--bg-soft)" />
+
+        <g transform="translate(478,222)">
+          <circle cx="0" cy="0" r="28" fill="var(--bg-main)" stroke="var(--red-primary)" stroke-width="2" />
+          <path
+            d="M2,-13 L-9,3 L-1,3 L-3,13 L10,-4 L1,-4 Z"
+            fill="var(--red-bright)"
+          />
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+    padding-bottom: var(--section-space-tight);
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    align-items: center;
+    gap: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  @media (min-width: 64rem) {
+    .hero-inner {
+      grid-template-columns: minmax(0, 0.94fr) minmax(0, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .hero-content h1 {
+    margin-top: 1rem;
+  }
+
+  .hero-lead {
+    margin-top: 1.25rem;
+    max-width: 34rem;
+    font-size: var(--fs-lead);
+    color: var(--text-secondary);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 2rem;
+  }
+
+  .hero-visual {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 4 / 3;
+    max-height: 26rem;
+  }
+
+  @media (max-width: 63.9375rem) {
+    .hero-visual {
+      aspect-ratio: 16 / 9;
+      max-height: 16rem;
+    }
+  }
+
+  .hero-glow {
+    position: absolute;
+    inset: -10%;
+    background: radial-gradient(
+      closest-side,
+      rgba(226, 28, 53, 0.14) 0%,
+      rgba(226, 28, 53, 0.07) 40%,
+      rgba(226, 28, 53, 0) 72%
+    );
+    z-index: 0;
+  }
+
+  @media (max-width: 47.9375rem) {
+    .hero-glow {
+      /* Smaller, lighter glow on small phones: less paint area, fewer stops
+         effectively active, no filter/blur pass at all either way. */
+      inset: 4%;
+      background: radial-gradient(
+        closest-side,
+        rgba(226, 28, 53, 0.12) 0%,
+        rgba(226, 28, 53, 0) 70%
+      );
+    }
+  }
+
+  .hero-art {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+</style>

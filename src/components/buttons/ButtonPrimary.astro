@@ -1,0 +1,51 @@
+---
+interface Props {
+  href: string;
+  size?: "md" | "sm";
+  showArrow?: boolean;
+  class?: string;
+}
+
+const { href, size = "md", showArrow = true, class: className = "" } = Astro.props;
+---
+
+<a href={href} class:list={["btn", "btn-primary", size === "sm" && "btn-sm", className]}>
+  <span><slot /></span>
+  {
+    showArrow && (
+      <svg class="btn-arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+        <path
+          d="M9 4L13 8L9 12"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    )
+  }
+</a>
+
+<style>
+  .btn-primary {
+    background: var(--red-primary);
+    color: #fff;
+  }
+
+  .btn-primary:active {
+    background: var(--red-dark);
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) {
+    .btn-primary:hover {
+      background: var(--red-bright);
+      box-shadow: var(--shadow-float);
+      transform: translateY(-1px);
+    }
+    .btn-primary:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+  }
+</style>

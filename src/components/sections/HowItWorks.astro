@@ -1,0 +1,92 @@
+---
+const steps = [
+  {
+    title: "Share the vehicle and location",
+    body: "Mobile battery services generally start with the make, model, year and where the car is parked — a driveway, a tower's basement parking, or the roadside.",
+  },
+  {
+    title: "Confirm what's actually wrong",
+    body: "A slow crank, a dead start and a battery warning light don't always mean the same thing — a jump-start, a health test and a full replacement solve different problems.",
+  },
+  {
+    title: "Battery is tested, replaced, or jump-started on-site",
+    body: "Most modern batteries can be tested or swapped at the vehicle without a tow, though some newer cars require the replacement battery to be registered to the vehicle's system.",
+  },
+];
+---
+
+<section class="how-it-works" id="how-it-works">
+  <div class="container how-inner">
+    <div class="section-heading">
+      <h2>How mobile battery service works.</h2>
+      <p>A general overview of the process — useful before you search for a specific provider.</p>
+    </div>
+
+    <ol class="steps">
+      {
+        steps.map((step, index) => (
+          <li class="step">
+            <span class="step-number" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how-it-works {
+    padding-block: var(--section-space);
+    background: var(--bg-soft);
+  }
+
+  .how-inner .section-heading {
+    max-width: 38rem;
+    margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+
+  .section-heading p {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-lead);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (min-width: 56rem) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .step {
+    border-top: 1px solid var(--border-medium);
+    padding-top: 1.25rem;
+  }
+
+  .step-number {
+    display: block;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--red-primary);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
+  .step h3 {
+    margin-bottom: 0.625rem;
+  }
+
+  .step p {
+    color: var(--text-secondary);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+</style>

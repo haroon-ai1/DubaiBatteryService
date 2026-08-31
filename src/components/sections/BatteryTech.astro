@@ -1,0 +1,150 @@
+---
+const types = [
+  {
+    label: "Conventional",
+    name: "Flooded (SLI) battery",
+    detail:
+      "The traditional lead-acid design. Lowest cost, works well in vehicles without stop-start, but wears quickly under frequent deep cycling.",
+    specs: [
+      { k: "Best suited to", v: "Older vehicles, no stop-start" },
+      { k: "Cycling durability", v: "Lower" },
+      { k: "Typical cost position", v: "Lowest" },
+    ],
+  },
+  {
+    label: "Mid-tier",
+    name: "EFB battery",
+    detail:
+      "Enhanced Flooded Battery — a step up in cycling durability over conventional, common as factory-fit in entry-level stop-start vehicles.",
+    specs: [
+      { k: "Best suited to", v: "Entry-level stop-start cars" },
+      { k: "Cycling durability", v: "Moderate" },
+      { k: "Typical cost position", v: "Mid-range" },
+    ],
+  },
+  {
+    label: "High-demand",
+    name: "AGM battery",
+    detail:
+      "Absorbent Glass Mat — sealed and vibration-resistant, built for deep cycling and higher electrical loads. Manufacturers commonly specify AGM for more demanding stop-start and energy-recuperation systems.",
+    specs: [
+      { k: "Best suited to", v: "Demanding stop-start & recuperation systems" },
+      { k: "Cycling durability", v: "Highest" },
+      { k: "Typical cost position", v: "Highest" },
+    ],
+  },
+];
+---
+
+<section class="battery-tech" id="battery-types">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Not every battery does the same job.</h2>
+      <p>Modern vehicles increasingly dictate which of these three a car actually needs.</p>
+    </div>
+
+    <div class="tech-grid">
+      {
+        types.map((type) => (
+          <article class="tech-card">
+            <span class="tech-label">{type.label}</span>
+            <h3>{type.name}</h3>
+            <p class="tech-detail">{type.detail}</p>
+            <dl class="tech-specs">
+              {type.specs.map((spec) => (
+                <div class="tech-spec-row">
+                  <dt>{spec.k}</dt>
+                  <dd>{spec.v}</dd>
+                </div>
+              ))}
+            </dl>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .battery-tech {
+    padding-block: var(--section-space);
+    background: var(--bg-soft);
+  }
+
+  .section-heading {
+    max-width: 38rem;
+    margin-bottom: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+
+  .section-heading p {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-lead);
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 56rem) {
+    .tech-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .tech-card {
+    background: var(--bg-main);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+  }
+
+  .tech-label {
+    display: inline-block;
+    font-size: var(--fs-small);
+    font-weight: 700;
+    color: var(--red-primary);
+    background: var(--red-soft);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .tech-card h3 {
+    margin-top: 0.875rem;
+  }
+
+  .tech-detail {
+    margin-top: 0.75rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+  }
+
+  .tech-specs {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .tech-spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    font-size: var(--fs-small);
+  }
+
+  .tech-spec-row dt {
+    color: var(--text-muted);
+  }
+
+  .tech-spec-row dd {
+    margin: 0;
+    font-weight: 600;
+    text-align: right;
+  }
+</style>
