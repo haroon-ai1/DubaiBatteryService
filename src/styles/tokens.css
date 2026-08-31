@@ -1,0 +1,89 @@
+/*
+  Design tokens.
+  Single source of truth for color, type, spacing, radius, shadow, motion.
+  Nothing outside this file should hard-code a hex value, a spacing number,
+  or a transition curve — components reference these variables.
+*/
+
+:root {
+  /* ---------- Color ---------- */
+  --bg-main: #ffffff;
+  --bg-soft: #fafbfc;
+  --bg-warm: #fffafb;
+
+  --text-primary: #0e0f12;
+  --text-secondary: #5c606a;
+  --text-muted: #8e929b;
+
+  --red-primary: #d81733;
+  --red-bright: #ef2942;
+  --red-dark: #a80f26;
+  --red-soft: #fdeef1;
+
+  /* A single hairline weight does almost all structural work now — content
+     is separated by rules and whitespace, not by bordered containers. */
+  --hairline: rgba(14, 15, 18, 0.09);
+  --hairline-strong: rgba(14, 15, 18, 0.16);
+
+  --glass-white: rgba(255, 255, 255, 0.7);
+  --whatsapp-green: #25d366;
+
+  --focus-ring: #1450e0; /* distinct from brand red so focus is never read as an error state */
+
+  /* ---------- Type ---------- */
+  --font-body: "Manrope Variable", "Manrope", "Inter", system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Display sizes carry the page. The jump from --fs-display to --fs-body is
+     deliberately large: hierarchy comes from scale contrast, not from boxes. */
+  --fs-display: clamp(2.5rem, 1.55rem + 4.3vw, 5.5rem); /* 40px -> 88px */
+  --fs-h2: clamp(2rem, 1.45rem + 2.4vw, 3.5rem); /* 32px -> 56px */
+  --fs-h3: clamp(1.25rem, 1.15rem + 0.45vw, 1.625rem); /* 20px -> 26px */
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.3125rem); /* 17px -> 21px */
+  --fs-body: clamp(1rem, 0.96rem + 0.14vw, 1.125rem); /* 16px -> 18px */
+  --fs-small: clamp(0.875rem, 0.85rem + 0.08vw, 0.9375rem);
+  --fs-label: 0.75rem; /* section labels, index numerals */
+
+  --lh-display: 1.02;
+  --lh-heading: 1.14;
+  --lh-body: 1.65;
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.02em;
+  --tracking-label: 0.14em;
+
+  /* ---------- Layout ---------- */
+  --container-max: 78rem; /* 1248px */
+  --measure: 34rem; /* comfortable reading width, < 80 chars */
+  --pad-inline: clamp(1.375rem, 0.7rem + 3vw, 4.5rem);
+
+  /* Generous, consistent vertical rhythm — one value, used everywhere. */
+  --section-space: clamp(4.75rem, 3.2rem + 6vw, 9.5rem); /* 76px -> 152px */
+
+  /* ---------- Radius ---------- */
+  --radius-pill: 999px;
+  --radius-img: 0.25rem; /* imagery stays near-square: editorial, not app-like */
+  --radius-sm: 0.375rem;
+
+  /* ---------- Shadow (one, used only on the floating header) ---------- */
+  --shadow-float: 0 6px 28px rgba(14, 15, 18, 0.07), 0 1px 3px rgba(14, 15, 18, 0.04);
+
+  /* ---------- Motion ---------- */
+  --ease-standard: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 200ms;
+  --dur-standard: 340ms;
+  --dur-slow: 700ms;
+
+  /* ---------- Z-index ---------- */
+  --z-header: 40;
+  --z-mobile-nav: 50;
+  --z-sticky-cta: 30;
+
+  --header-offset: 6rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light;
+  }
+}

@@ -1,0 +1,128 @@
+---
+/*
+  Deliberately small. Only links to sections that exist — no keyword-stuffed
+  link farm. Update when real service/area/guide routes ship.
+*/
+const year = new Date().getFullYear();
+
+const links = [
+  { label: "Services", href: "#services" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Replacement", href: "#replacement" },
+  { label: "Areas", href: "#areas" },
+  { label: "FAQ", href: "#faq" },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="brand" aria-label="Dubai Battery Service — home">
+        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M13 2.5 L5.5 13.5 H11 L10 21.5 L18.5 10 H12.5 Z" fill="var(--red-primary)" />
+        </svg>
+        <span>Dubai Battery Service</span>
+      </a>
+      <p class="footer-desc">
+        Independent information on car battery replacement, mobile service, jump-starts and
+        testing for drivers across Dubai.
+      </p>
+    </div>
+
+    <nav class="footer-nav" aria-label="Footer">
+      <ul>
+        {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>&copy; {year} Dubai Battery Service.</p>
+    <p>Informational resource — not a dispatched service provider.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--hairline);
+    padding-top: clamp(3.5rem, 2.5rem + 3vw, 5.5rem);
+  }
+
+  .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding-bottom: clamp(3rem, 2rem + 2vw, 4.5rem);
+  }
+
+  @media (min-width: 48rem) {
+    .footer-inner {
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+  }
+
+  .brand-mark {
+    width: 20px;
+    height: 20px;
+  }
+
+  .footer-desc {
+    margin-top: 1rem;
+    max-width: 34ch;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+  }
+
+  .footer-nav ul {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 2rem;
+    row-gap: 0;
+  }
+
+  .footer-nav a {
+    /* 44px minimum tap target */
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .footer-nav a:hover {
+      color: var(--red-primary);
+    }
+  }
+
+  .footer-bottom {
+    border-top: 1px solid var(--hairline);
+    padding-block: 1.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.5rem 2rem;
+  }
+
+  .footer-bottom p {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+</style>

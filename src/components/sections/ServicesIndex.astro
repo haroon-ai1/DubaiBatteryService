@@ -1,0 +1,172 @@
+---
+/*
+  Replaces the old bordered-card selector. This is an editorial index:
+  hairline-separated rows, large type, no containers. Hierarchy comes from
+  scale and rule weight, not from boxes.
+*/
+const services = [
+  {
+    name: "Battery Replacement",
+    summary:
+      "Matching capacity, chemistry and physical fitment to the vehicle — the part that decides how long the new battery actually lasts.",
+    href: "#replacement",
+  },
+  {
+    name: "Jump Start",
+    summary:
+      "Enough charge to start the engine. Useful, but it doesn't resolve whatever drained the battery in the first place.",
+    href: "#jump-start",
+  },
+  {
+    name: "Battery Delivery",
+    summary:
+      "The correct battery brought to the vehicle and fitted on site, with the old unit taken away for recycling.",
+    href: "#services",
+  },
+  {
+    name: "Battery Testing",
+    summary:
+      "Separating a battery that has genuinely failed from one that is simply flat, and checking whether the alternator is keeping up.",
+    href: "#services",
+  },
+];
+---
+
+<section class="section services" id="services">
+  <div class="container">
+    <div class="services-head">
+      <h2>Four situations,<br />four different answers.</h2>
+      <p class="lead">
+        A flat battery, a failing battery and a charging fault look almost identical from the
+        driver's seat. They are not the same problem.
+      </p>
+    </div>
+
+    <ul class="services-list">
+      {
+        services.map((service, i) => (
+          <li class="service-row">
+            <a href={service.href} class="service-link" data-event="service_select">
+              <span class="service-index" aria-hidden="true">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span class="service-name">{service.name}</span>
+              <span class="service-summary">{service.summary}</span>
+              <span class="service-arrow" aria-hidden="true">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M4 10H16M11 5L16 10L11 15"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .services-head {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  @media (min-width: 56rem) {
+    .services-head {
+      grid-template-columns: 1fr minmax(0, 26rem);
+      gap: 4rem;
+      align-items: end;
+    }
+  }
+
+  .services-list {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .service-row {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .service-link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "index name arrow"
+      ". summary .";
+    align-items: baseline;
+    gap: 0.5rem 1.25rem;
+    padding-block: clamp(1.75rem, 1.25rem + 1.5vw, 2.75rem);
+    text-decoration: none;
+    color: inherit;
+    transition: opacity var(--dur-standard) var(--ease-standard);
+  }
+
+  @media (min-width: 56rem) {
+    .service-link {
+      grid-template-columns: 4rem minmax(0, 20rem) minmax(0, 1fr) auto;
+      grid-template-areas: "index name summary arrow";
+      align-items: center;
+      gap: 2.5rem;
+    }
+  }
+
+  .service-index {
+    grid-area: index;
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    color: var(--text-muted);
+    transition: color var(--dur-standard) var(--ease-standard);
+  }
+
+  .service-name {
+    grid-area: name;
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-heading);
+  }
+
+  .service-summary {
+    grid-area: summary;
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    color: var(--text-secondary);
+    max-width: 40ch;
+  }
+
+  .service-arrow {
+    grid-area: arrow;
+    color: var(--text-muted);
+    transition:
+      transform var(--dur-standard) var(--ease-standard),
+      color var(--dur-standard) var(--ease-standard);
+  }
+
+  .service-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .service-link:active .service-arrow {
+    color: var(--red-primary);
+    transform: translateX(4px);
+  }
+
+  @media (hover: hover) {
+    .service-link:hover .service-arrow {
+      color: var(--red-primary);
+      transform: translateX(6px);
+    }
+    .service-link:hover .service-index {
+      color: var(--red-primary);
+    }
+  }
+</style>

@@ -1,0 +1,188 @@
+---
+import { Picture } from "astro:assets";
+import replacementDesktop from "@/assets/images/replacement-desktop.jpg";
+import replacementMobile from "@/assets/images/replacement-mobile.jpg";
+
+/*
+  The page's single heaviest editorial moment. Absorbs the technical content
+  that previously lived in two separate card sections (battery chemistry and
+  price factors) so the page carries one strong statement instead of three
+  repetitive feature blocks.
+*/
+const specs = [
+  {
+    term: "Conventional flooded",
+    detail: "Vehicles without stop-start. Lowest cost, least tolerant of repeated deep cycling.",
+  },
+  {
+    term: "EFB",
+    detail:
+      "Enhanced flooded. Higher cycling durability, specified by manufacturers for many stop-start vehicles.",
+  },
+  {
+    term: "AGM",
+    detail:
+      "Sealed and vibration-resistant. Commonly specified for more demanding stop-start and recuperation systems, and higher electrical loads.",
+  },
+];
+---
+
+<section class="section feature" id="replacement">
+  <div class="container">
+    <div class="feature-grid">
+      <figure class="feature-figure">
+        <div class="feature-bloom" aria-hidden="true"></div>
+        <Picture
+          src={replacementDesktop}
+          formats={["avif", "webp"]}
+          fallbackFormat="jpg"
+          widths={[560, 900, 1400]}
+          sizes="(min-width: 64rem) 48vw, 100vw"
+          alt="Close view of car battery replacement work in a vehicle's engine bay."
+          loading="lazy"
+          decoding="async"
+          class="feature-img feature-img-desktop"
+        />
+        <Picture
+          src={replacementMobile}
+          formats={["avif", "webp"]}
+          fallbackFormat="jpg"
+          widths={[420, 700, 1000]}
+          sizes="100vw"
+          alt="Close view of car battery replacement work in a vehicle's engine bay."
+          loading="lazy"
+          decoding="async"
+          class="feature-img feature-img-mobile"
+        />
+      </figure>
+
+      <div class="feature-copy">
+        <span class="label">Battery replacement</span>
+        <h2>The right battery matters more than the brand on it.</h2>
+        <p class="feature-p">
+          Capacity, cold-cranking amps and physical fitment are set by the vehicle, not by
+          preference. Fitting a conventional starter battery where the manufacturer specifies
+          EFB or AGM is the most common reason a new battery fails early — sometimes within
+          months rather than years.
+        </p>
+        <p class="feature-p">
+          Sustained heat is the other factor. High ambient temperatures accelerate the chemical
+          wear inside a lead-acid battery, which is why replacement intervals in the UAE often
+          run shorter than a manufacturer's rated life suggests elsewhere.
+        </p>
+
+        <dl class="specs">
+          {
+            specs.map((spec) => (
+              <div class="spec-row">
+                <dt>{spec.term}</dt>
+                <dd>{spec.detail}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature {
+    overflow-x: clip;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    align-items: center;
+  }
+
+  @media (min-width: 64rem) {
+    .feature-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: clamp(3rem, 1rem + 6vw, 7rem);
+    }
+  }
+
+  .feature-figure {
+    position: relative;
+    margin: 0;
+  }
+
+  .feature-bloom {
+    position: absolute;
+    inset: -10% -8% -12% -10%;
+    background: radial-gradient(
+      closest-side,
+      rgba(216, 23, 51, 0.11) 0%,
+      rgba(216, 23, 51, 0) 74%
+    );
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .feature-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-img);
+  }
+
+  .feature-img-desktop {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .feature-img-desktop {
+      display: block;
+    }
+    .feature-img-mobile {
+      display: none;
+    }
+  }
+
+  .feature-copy .label {
+    margin-bottom: 1.25rem;
+  }
+
+  .feature-p {
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    max-width: var(--measure);
+  }
+
+  .specs {
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+    border-top: 1px solid var(--hairline);
+  }
+
+  .spec-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.375rem;
+    padding-block: 1.125rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  @media (min-width: 30rem) {
+    .spec-row {
+      grid-template-columns: 10rem minmax(0, 1fr);
+      gap: 1.5rem;
+      align-items: baseline;
+    }
+  }
+
+  .spec-row dt {
+    font-weight: 600;
+    font-size: var(--fs-small);
+  }
+
+  .spec-row dd {
+    margin: 0;
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    color: var(--text-secondary);
+  }
+</style>

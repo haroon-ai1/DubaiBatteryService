@@ -1,0 +1,162 @@
+---
+import { Picture } from "astro:assets";
+import heroDesktop from "@/assets/images/hero-desktop.jpg";
+import heroMobile from "@/assets/images/hero-mobile.jpg";
+
+/*
+  Art direction: the mobile crop is a genuinely different frame (3:2 landscape)
+  rather than a squeezed version of the desktop 4:5 portrait. Swap both files
+  in src/assets/images/ with real photography at the same aspect ratios and
+  nothing here needs to change.
+*/
+const alt =
+  "Mobile car battery service being carried out on a vehicle in Dubai, lit by warm late-afternoon daylight.";
+---
+
+<section class="hero" id="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="label">Mobile car battery help in Dubai</span>
+      <h1>Car battery service,<br />handled properly.</h1>
+      <p class="lead">
+        Replacement, jump-starts, delivery and testing — with the technical detail that
+        actually decides which one your car needs.
+      </p>
+      <div class="hero-actions">
+        <a href="#services" class="btn btn-primary" data-event="service_select">
+          Explore battery services
+        </a>
+        <a href="#how-it-works" class="action">How it works</a>
+      </div>
+    </div>
+
+    <figure class="hero-figure">
+      <div class="hero-bloom" aria-hidden="true"></div>
+      <Picture
+        src={heroDesktop}
+        formats={["avif", "webp"]}
+        fallbackFormat="jpg"
+        widths={[640, 900, 1280]}
+        sizes="(min-width: 64rem) 52vw, 100vw"
+        alt={alt}
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+        class="hero-img hero-img-desktop"
+      />
+      <Picture
+        src={heroMobile}
+        formats={["avif", "webp"]}
+        fallbackFormat="jpg"
+        widths={[480, 780, 1200]}
+        sizes="100vw"
+        alt={alt}
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+        class="hero-img hero-img-mobile"
+      />
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    /* `clip` rather than `hidden`: contains the decorative bloom bleed
+       without creating a scroll container (which would break the sticky
+       header) . */
+    overflow-x: clip;
+    padding-top: clamp(2rem, 1rem + 3vw, 4.5rem);
+    padding-bottom: clamp(4rem, 2.5rem + 6vw, 9rem);
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+    align-items: center;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-grid {
+      /* Asymmetric: copy gets less width than the visual, which keeps the
+         headline measure tight and lets the image carry the composition. */
+      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
+      gap: clamp(3rem, 1rem + 5vw, 6rem);
+    }
+  }
+
+  .hero-copy .label {
+    margin-bottom: clamp(1.25rem, 1rem + 1vw, 2rem);
+  }
+
+  .hero-copy h1 {
+    max-width: 16ch;
+  }
+
+  .hero-copy .lead {
+    margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 2rem;
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+  }
+
+  .hero-figure {
+    position: relative;
+    margin: 0;
+  }
+
+  /* Soft crimson atmosphere behind the image edge — one of only four glow
+     uses on the page. Sits under the image, bleeds past its corner. */
+  .hero-bloom {
+    position: absolute;
+    inset: 8% -12% -14% 6%;
+    background: radial-gradient(
+      closest-side,
+      rgba(216, 23, 51, 0.14) 0%,
+      rgba(216, 23, 51, 0.06) 45%,
+      rgba(216, 23, 51, 0) 78%
+    );
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  @media (max-width: 47.9375rem) {
+    .hero-bloom {
+      inset: 12% 0 -8% 0;
+      background: radial-gradient(
+        closest-side,
+        rgba(216, 23, 51, 0.1) 0%,
+        rgba(216, 23, 51, 0) 72%
+      );
+    }
+  }
+
+  .hero-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-img);
+  }
+
+  /* Art-directed crops: portrait on desktop, landscape on mobile. */
+  .hero-img-desktop {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .hero-img-desktop {
+      display: block;
+    }
+    .hero-img-mobile {
+      display: none;
+    }
+  }
+</style>

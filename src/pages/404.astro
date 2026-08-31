@@ -1,0 +1,50 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found | Dubai Battery Service"
+  description="This page doesn't exist or may have moved."
+  path="/404/"
+  robots="noindex, nofollow"
+>
+  <section class="not-found">
+    <div class="container not-found-inner">
+      <span class="label">Error 404</span>
+      <h1>That page doesn't exist.</h1>
+      <p class="lead">
+        It may have moved, or the link might be out of date.
+      </p>
+      <div class="not-found-actions">
+        <a href="/" class="btn btn-primary">Go home</a>
+        <a href="/#services" class="action">Explore services</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding-block: clamp(5rem, 3.5rem + 6vw, 10rem);
+  }
+
+  .not-found-inner {
+    max-width: 34rem;
+  }
+
+  .not-found-inner .label {
+    margin-bottom: 1.25rem;
+  }
+
+  .not-found-inner .lead {
+    margin-top: 1.25rem;
+  }
+
+  .not-found-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 2rem;
+    margin-top: 2.5rem;
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import { siteConfig } from "@/config/site";
+
+/*
+  Deliberately not a chip grid or a directory widget. Area names are set as
+  a large wrapped inline list — typographic, not modular. They are plain text
+  (not links) because no /areas/ pages exist yet.
+*/
+---
+
+<section class="section coverage" id="areas">
+  <div class="container coverage-grid">
+    <div class="coverage-copy">
+      <span class="label">Across Dubai</span>
+      <h2>Written for how the city actually parks.</h2>
+      <p class="lead">
+        Tower basement parking, a villa driveway and a hard shoulder are three different jobs.
+        Access is worth describing before anyone is sent out.
+      </p>
+    </div>
+
+    <ul class="area-list">
+      {siteConfig.serviceAreas.map((area) => <li>{area}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .coverage {
+    overflow-x: clip;
+  }
+
+  .coverage-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+
+  @media (min-width: 56rem) {
+    .coverage-grid {
+      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+      gap: clamp(3rem, 1rem + 6vw, 7rem);
+      align-items: start;
+    }
+  }
+
+  .coverage-copy .label {
+    margin-bottom: 1.25rem;
+  }
+
+  .coverage-copy .lead {
+    margin-top: 1.25rem;
+  }
+
+  .area-list {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
+    row-gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+    font-size: clamp(1.375rem, 1.1rem + 1.4vw, 2.125rem);
+    font-weight: 600;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.25;
+  }
+
+  /* No separators: wrapping a flex list leaves stranded dots at line ends,
+     so spacing alone does the separating. */
+  .area-list li {
+    color: var(--text-primary);
+  }
+</style>

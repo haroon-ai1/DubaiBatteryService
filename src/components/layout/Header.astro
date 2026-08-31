@@ -1,0 +1,374 @@
+---
+/*
+  v1 nav only links to sections that exist on the homepage. Once
+  /car-battery-prices-dubai/, /areas/, /guides/ and /about/ ship as real
+  pages, swap these anchor hrefs for real routes and extend the list —
+  do not point at routes that don't exist yet.
+*/
+const navItems = [
+  { label: "Services", href: "#services" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Replacement", href: "#replacement" },
+  { label: "Areas", href: "#areas" },
+  { label: "FAQ", href: "#faq" },
+];
+---
+
+<div id="header-sentinel" aria-hidden="true"></div>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="/" class="brand" aria-label={`${"Dubai Battery Service"} — home`}>
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M13 2.5 L5.5 13.5 H11 L10 21.5 L18.5 10 H12.5 Z"
+          fill="var(--red-primary)"
+        />
+      </svg>
+      <span class="brand-name">Dubai Battery Service</span>
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary">
+      <ul>
+        {
+          navItems.map((item) => (
+            <li>
+              <a href={item.href}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a href="#final-cta" class="btn btn-primary btn-sm header-cta">
+        Get battery help
+      </a>
+      <button
+        type="button"
+        id="menu-toggle"
+        class="menu-toggle"
+        aria-haspopup="dialog"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+      >
+        <span class="visually-hidden">Open menu</span>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7H20" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+          <path d="M4 12H20" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+          <path d="M4 17H20" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation">
+  <div class="mobile-nav-top">
+    <span class="brand-name">Dubai Battery Service</span>
+    <button type="button" id="menu-close" class="menu-close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 6L18 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+        <path d="M18 6L6 18" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+  <nav aria-label="Mobile primary">
+    <ul>
+      {
+        navItems.map((item) => (
+          <li>
+            <a href={item.href} class="mobile-nav-link">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+  <a href="#final-cta" class="btn btn-primary mobile-nav-cta">Get battery help</a>
+</dialog>
+
+<style>
+  #header-sentinel {
+    position: absolute;
+    top: 0;
+    height: 1px;
+    width: 1px;
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    padding-block: 0.5rem;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 0.875rem;
+    border-radius: var(--radius-pill);
+    transition:
+      background-color var(--dur-standard) var(--ease-standard),
+      box-shadow var(--dur-standard) var(--ease-standard),
+      border-color var(--dur-standard) var(--ease-standard),
+      backdrop-filter var(--dur-standard) var(--ease-standard);
+    border: 1px solid transparent;
+  }
+
+  /* Floating glass capsule once the page has scrolled past the sentinel */
+  .site-header.is-scrolled .header-inner {
+    background: var(--glass-white);
+    border-color: var(--hairline);
+    box-shadow: var(--shadow-float);
+  }
+
+  @supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+    .site-header.is-scrolled .header-inner {
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+    }
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+  }
+
+  .brand-mark {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .brand-name {
+    white-space: nowrap;
+  }
+
+  .desktop-nav ul {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 0.5rem + 1.6vw, 2.5rem);
+  }
+
+  .desktop-nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    font-weight: 600;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .desktop-nav a:hover {
+      color: var(--text-primary);
+    }
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--hairline);
+    background: var(--bg-main);
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+
+  .menu-toggle svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .desktop-nav,
+  .header-cta {
+    display: flex;
+  }
+
+  @media (max-width: 63.9375rem) {
+    /* < 1024px: collapse to compact mobile header */
+    .desktop-nav,
+    .header-cta {
+      display: none;
+    }
+    .menu-toggle {
+      display: inline-flex;
+    }
+    .header-inner {
+      padding-block: 0.625rem;
+    }
+  }
+
+  /* ---------- Mobile nav dialog ---------- */
+  .mobile-nav {
+    position: fixed;
+    inset: 0;
+    margin: 0;
+    max-width: none;
+    max-height: none;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    border: none;
+    padding: 0;
+    background: var(--bg-main);
+    color: var(--text-primary);
+    transform: translateX(100%);
+    opacity: 0;
+    transition:
+      transform var(--dur-standard) var(--ease-standard),
+      opacity var(--dur-standard) var(--ease-standard);
+    z-index: var(--z-mobile-nav);
+  }
+
+  .mobile-nav.is-open {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  .mobile-nav::backdrop {
+    background: rgba(17, 18, 21, 0.001); /* dialog requires a backdrop to exist for showModal(); the panel itself is opaque */
+  }
+
+  .mobile-nav-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.25rem clamp(1rem, 5vw, 2rem);
+    padding-top: max(1.25rem, env(safe-area-inset-top));
+  }
+
+  .menu-close {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--hairline);
+    background: transparent;
+    cursor: pointer;
+  }
+
+  .menu-close svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .mobile-nav nav {
+    padding: 1rem clamp(1rem, 5vw, 2rem);
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .mobile-nav-cta {
+    display: flex;
+    margin: 1.5rem clamp(1rem, 5vw, 2rem);
+    justify-content: center;
+  }
+
+  /* Fallback for browsers without <dialog> showModal support: treat it as a
+     plain hidden panel toggled by class, no JS branch needed in CSS beyond
+     the default `display: none` a non-open, non-modal <dialog> already has. */
+</style>
+
+<script>
+  const header = document.getElementById("site-header");
+  const sentinel = document.getElementById("header-sentinel");
+
+  if (header && sentinel && "IntersectionObserver" in window) {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        header.classList.toggle("is-scrolled", !entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(sentinel);
+  }
+
+  const dialog = document.getElementById("mobile-nav") as HTMLDialogElement | null;
+  const openBtn = document.getElementById("menu-toggle");
+  const closeBtn = document.getElementById("menu-close");
+  const supportsDialog = typeof (dialog as any)?.showModal === "function";
+
+  function openMenu() {
+    if (!dialog) return;
+    document.documentElement.style.overflow = "hidden";
+    if (supportsDialog) {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute("open", "");
+    }
+    requestAnimationFrame(() => dialog.classList.add("is-open"));
+    openBtn?.setAttribute("aria-expanded", "true");
+    (dialog.querySelector(".mobile-nav-link") as HTMLElement | null)?.focus();
+  }
+
+  function closeMenu() {
+    if (!dialog) return;
+    dialog.classList.remove("is-open");
+    document.documentElement.style.overflow = "";
+    openBtn?.setAttribute("aria-expanded", "false");
+    const finish = () => {
+      if (supportsDialog) dialog.close();
+      else dialog.removeAttribute("open");
+    };
+    if (typeof dialog.addEventListener === "function") {
+      dialog.addEventListener("transitionend", finish, { once: true });
+      // Safety net in case the transition event never fires (reduced motion, etc.)
+      setTimeout(finish, 320);
+    } else {
+      finish();
+    }
+    openBtn?.focus();
+  }
+
+  openBtn?.addEventListener("click", openMenu);
+  closeBtn?.addEventListener("click", closeMenu);
+
+  dialog?.addEventListener("cancel", (e) => {
+    // Native Escape handling fires 'cancel' before 'close' — intercept so
+    // we can play the close transition instead of snapping shut.
+    e.preventDefault();
+    closeMenu();
+  });
+
+  dialog?.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  // Fallback Escape handling for browsers without native <dialog> support
+  if (!supportsDialog) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && dialog?.hasAttribute("open")) closeMenu();
+    });
+  }
+</script>

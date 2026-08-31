@@ -1,0 +1,85 @@
+---
+/*
+  One integrated closing statement. No bordered panel, no sidebar block —
+  the section sits on white with a soft crimson bloom behind the type.
+  Copy stays honest for asset mode: it invites exploration of the material,
+  it does not promise dispatch.
+*/
+---
+
+<section class="final" id="final-cta">
+  <div class="final-bloom" aria-hidden="true"></div>
+  <div class="container final-inner">
+    <h2>Work out what your car actually needs.</h2>
+    <p class="lead final-lead">
+      Start from the symptom rather than the fix — the difference between a flat battery, a
+      failed one and a charging fault decides everything that follows.
+    </p>
+    <div class="final-actions">
+      <a href="#services" class="btn btn-primary" data-event="service_select">
+        Compare your options
+      </a>
+      <a href="#faq" class="action">Read the FAQ</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .final {
+    position: relative;
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--hairline);
+    overflow-x: clip;
+  }
+
+  /* The page's closing glow — wide, low-opacity, centred behind the type. */
+  .final-bloom {
+    position: absolute;
+    /* Track the container's left content edge, then sit behind the headline,
+       rather than keying off a raw vw value (which pushed the bloom half
+       off-screen at wide viewports). */
+    left: calc(max(var(--pad-inline), (100% - var(--container-max)) / 2) + 15rem);
+    top: 50%;
+    width: min(52rem, 120%);
+    aspect-ratio: 16 / 10;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      closest-side,
+      rgba(216, 23, 51, 0.13) 0%,
+      rgba(216, 23, 51, 0.05) 42%,
+      rgba(216, 23, 51, 0) 76%
+    );
+    pointer-events: none;
+  }
+
+  .final-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Left-aligned to the same grid edge as every other section — a centred
+     block with left-aligned text read as a mistake rather than a choice. */
+  .final-inner h2,
+  .final-lead,
+  .final-actions {
+    max-width: 44rem;
+    margin-inline: 0;
+  }
+
+  .final-inner h2 {
+    max-width: 16ch;
+  }
+
+  .final-lead {
+    margin-top: 1.5rem;
+    max-width: 42ch;
+  }
+
+  .final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 2rem;
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+  }
+</style>

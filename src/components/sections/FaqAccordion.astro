@@ -1,0 +1,153 @@
+---
+/*
+  Native <details>/<summary> — works with zero JS, fully keyboard accessible.
+  Boxes removed: thin rules and whitespace only. A small red plus/minus mark
+  is the sole accent.
+*/
+const faqs = [
+  {
+    q: "How do I know if I need a jump-start or a replacement?",
+    a: "If the car starts after a jump but goes flat again within a day or two, or the battery is already three to four years old, that generally points to replacement rather than repeated jump-starts.",
+  },
+  {
+    q: "Can a car battery be replaced at my location?",
+    a: "In most cases, yes — mobile replacement is common and rarely needs a workshop visit. Some vehicles require the new battery to be registered to the car's electrical system, which affects how the job is done rather than where.",
+  },
+  {
+    q: "How long do car batteries last in Dubai conditions?",
+    a: "Sustained high heat accelerates the internal wear of a lead-acid battery, so replacement intervals in the UAE often run shorter than the manufacturer's rated life would suggest in a temperate climate.",
+  },
+  {
+    q: "What determines the price of a replacement battery?",
+    a: "Capacity and cold-cranking amps, chemistry (conventional, EFB or AGM), physical fitment for the specific vehicle, whether battery registration is required, and the warranty terms offered by the seller. Published figures vary widely between suppliers.",
+  },
+  {
+    q: "Why does my battery keep going flat?",
+    a: "Common causes are a parasitic drain pulling current while the car is off, an alternator not fully recharging the battery, frequent short trips, or a battery that has simply reached the end of its life.",
+  },
+  {
+    q: "Can a weak alternator look like a battery problem?",
+    a: "Yes, and the symptoms overlap heavily. A battery that tests healthy but keeps going flat is a strong indication the charging system, not the battery, is at fault.",
+  },
+  {
+    q: "Do some cars need the new battery registered?",
+    a: "Yes. A number of modern vehicles with battery management systems — commonly German makes — require the replacement to be registered or coded so the charging strategy matches the new battery.",
+  },
+  {
+    q: "How do I identify the correct battery for my car?",
+    a: "The existing battery's label is the best starting point: it usually lists group size, capacity and cold-cranking amps along with the chemistry. Owner's manuals vary in how much they specify, so fitment should ultimately be confirmed against reliable vehicle- or manufacturer-specific fitment information.",
+  },
+];
+---
+
+<section class="section faq" id="faq">
+  <div class="container faq-grid">
+    <h2 class="faq-title">Battery questions,<br />answered plainly.</h2>
+
+    <div class="faq-list">
+      {
+        faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>
+              <span class="faq-q">{faq.q}</span>
+              <span class="faq-mark" aria-hidden="true">
+                <svg viewBox="0 0 16 16" fill="none">
+                  <path class="faq-mark-h" d="M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  <path class="faq-mark-v" d="M8 3V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                </svg>
+              </span>
+            </summary>
+            <p class="faq-a">{faq.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+  }
+
+  @media (min-width: 56rem) {
+    .faq-grid {
+      grid-template-columns: minmax(0, 22rem) minmax(0, 1fr);
+      gap: clamp(3rem, 1rem + 6vw, 7rem);
+      align-items: start;
+    }
+  }
+
+  .faq-list {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .faq-item summary {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: clamp(1.25rem, 1rem + 0.6vw, 1.75rem);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-q {
+    font-size: var(--fs-h3);
+    font-weight: 600;
+    letter-spacing: var(--tracking-heading);
+    line-height: 1.3;
+    max-width: 34ch;
+    transition: color var(--dur-standard) var(--ease-standard);
+  }
+
+  .faq-mark {
+    flex-shrink: 0;
+    color: var(--red-primary);
+    margin-top: 0.35rem;
+  }
+
+  .faq-mark svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Plus collapses to minus: the vertical stroke rotates away. */
+  .faq-mark-v {
+    transform-origin: center;
+    transition: transform var(--dur-standard) var(--ease-standard);
+  }
+
+  .faq-item[open] .faq-mark-v {
+    transform: rotate(90deg);
+  }
+
+  .faq-a {
+    padding-bottom: clamp(1.25rem, 1rem + 0.6vw, 1.75rem);
+    color: var(--text-secondary);
+    font-size: var(--fs-body);
+    max-width: 56ch;
+  }
+
+  .faq-item summary:focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: 3px;
+  }
+
+  @media (hover: hover) {
+    .faq-item summary:hover .faq-q {
+      color: var(--red-primary);
+    }
+  }
+</style>

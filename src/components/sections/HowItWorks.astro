@@ -1,0 +1,107 @@
+---
+/*
+  No boxes. Three steps on a single hairline rail — horizontal on desktop,
+  vertical spine on mobile. Copy stays in asset-mode register: it describes
+  how mobile battery service generally works, and does not claim that this
+  site currently dispatches anyone.
+*/
+const steps = [
+  {
+    title: "Describe the vehicle and the symptom",
+    body: "Make, model, year and where the car is parked. Whether it cranks slowly, clicks, or does nothing at all narrows the cause considerably.",
+  },
+  {
+    title: "The battery is tested before anything is replaced",
+    body: "A proper test separates a flat battery from a failed one, and flags a charging-system fault that a new battery would not fix.",
+  },
+  {
+    title: "Replacement or jump-start, at the vehicle",
+    body: "Most work is done where the car sits. Some vehicles additionally need the new battery registered to the car's electronics.",
+  },
+];
+---
+
+<section class="section how" id="how-it-works">
+  <div class="container">
+    <h2 class="how-title">How mobile battery service works.</h2>
+
+    <ol class="steps">
+      {
+        steps.map((step, i) => (
+          <li class="step">
+            <span class="step-index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <h3 class="step-title">{step.title}</h3>
+            <p class="step-body">{step.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .how-title {
+    max-width: 18ch;
+    margin-bottom: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  @media (min-width: 56rem) {
+    .steps {
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(2rem, 1rem + 3vw, 4rem);
+      border-top: 1px solid var(--hairline);
+    }
+  }
+
+  .step {
+    position: relative;
+    padding-block: 2rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  @media (min-width: 56rem) {
+    .step {
+      border-top: none;
+      padding-top: 2.25rem;
+    }
+    /* The rail: a short red tick at the top of each column, which is the
+       only decoration in this section. */
+    .step::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 2.5rem;
+      height: 1px;
+      background: var(--red-primary);
+    }
+  }
+
+  .step-index {
+    display: block;
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    color: var(--red-primary);
+    margin-bottom: 1.25rem;
+  }
+
+  .step-title {
+    font-size: var(--fs-h3);
+    max-width: 22ch;
+  }
+
+  .step-body {
+    margin-top: 0.875rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    max-width: 40ch;
+  }
+</style>
