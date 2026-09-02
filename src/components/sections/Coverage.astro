@@ -1,21 +1,24 @@
 ---
-import { siteConfig } from "@/config/site";
-
 /*
-  Deliberately not a chip grid or a directory widget. Area names are set as
-  a large wrapped inline list — typographic, not modular. They are plain text
-  (not links) because no /areas/ pages exist yet.
+  Dubai coverage — inline, restrained, editorial. Area names are set as a
+  large wrapped list, typographic rather than modular. They are plain text
+  (not links) because no /areas/ pages exist yet; the internal-link tree
+  can be introduced as those pages ship, without touching this layout.
+
+  Copy is careful to describe informational coverage — not dispatched
+  operations — while entityVerified is false.
 */
+import { siteConfig } from "@/config/site";
 ---
 
 <section class="section coverage" id="areas">
   <div class="container coverage-grid">
     <div class="coverage-copy">
       <span class="label">Across Dubai</span>
-      <h2>Written for how the city actually parks.</h2>
+      <h2>Written for how<br />the city actually parks.</h2>
       <p class="lead">
-        Tower basement parking, a villa driveway and a hard shoulder are three different jobs.
-        Access is worth describing before anyone is sent out.
+        Tower basement parking, a villa driveway and a hard shoulder are three different
+        access problems. Describing them up front decides the equipment brought.
       </p>
     </div>
 
@@ -28,6 +31,7 @@ import { siteConfig } from "@/config/site";
 <style>
   .coverage {
     overflow-x: clip;
+    border-top: 1px solid var(--hairline);
   }
 
   .coverage-grid {
@@ -38,7 +42,7 @@ import { siteConfig } from "@/config/site";
 
   @media (min-width: 56rem) {
     .coverage-grid {
-      grid-template-columns: minmax(0, 26rem) minmax(0, 1fr);
+      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
       gap: clamp(3rem, 1rem + 6vw, 7rem);
       align-items: start;
     }
@@ -57,14 +61,12 @@ import { siteConfig } from "@/config/site";
     flex-wrap: wrap;
     column-gap: clamp(1.5rem, 1rem + 1.5vw, 2.5rem);
     row-gap: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
-    font-size: clamp(1.375rem, 1.1rem + 1.4vw, 2.125rem);
+    font-size: clamp(1.25rem, 1rem + 1.4vw, 2rem);
     font-weight: 600;
-    letter-spacing: var(--tracking-heading);
+    letter-spacing: -0.02em;
     line-height: 1.25;
   }
 
-  /* No separators: wrapping a flex list leaves stranded dots at line ends,
-     so spacing alone does the separating. */
   .area-list li {
     color: var(--text-primary);
   }

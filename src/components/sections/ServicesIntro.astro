@@ -1,0 +1,150 @@
+---
+/*
+  Editorial services introduction — replaces the previous four-row equal
+  list. Sets up the two heavyweight editorial features that follow
+  (Battery Replacement, Jump-start & Mobile Assistance) and lists the
+  secondary services as a small restrained taxonomy row, not as cards.
+*/
+import { SERVICES } from "@/lib/services";
+
+const secondary = [
+  SERVICES.mobile_battery_service,
+  SERVICES.battery_delivery,
+  SERVICES.battery_testing,
+  SERVICES.emergency_battery_service,
+];
+---
+
+<section class="services-intro section" id="services">
+  <div class="container intro-grid">
+    <div class="intro-copy">
+      <span class="label">Services</span>
+      <h2>Different symptoms,<br />different answers.</h2>
+    </div>
+    <p class="lead intro-lead">
+      A flat battery, a failing battery and a charging fault look almost identical from the
+      driver's seat. What follows separates them — starting with the two situations that
+      most often bring drivers here.
+    </p>
+  </div>
+
+  <div class="container secondary-strip" aria-label="Additional services">
+    {
+      secondary.map((s) => (
+        <a
+          href={`#${s.anchor ?? "get-help"}`}
+          class="secondary-link"
+        >
+          <span class="secondary-index">{`0${(Object.values(SERVICES).indexOf(s) + 1)}`.slice(-2)}</span>
+          <span class="secondary-label">{s.label}</span>
+          <span class="secondary-summary">{s.short}</span>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .services-intro {
+    padding-block: clamp(4rem, 3rem + 4vw, 7rem);
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    margin-bottom: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+
+  @media (min-width: 56rem) {
+    .intro-grid {
+      grid-template-columns: 1fr minmax(0, 26rem);
+      gap: 4rem;
+      align-items: end;
+    }
+  }
+
+  .intro-copy .label {
+    margin-bottom: 1.25rem;
+  }
+
+  .intro-copy h2 {
+    max-width: 16ch;
+  }
+
+  .intro-lead {
+    margin-top: 0;
+  }
+
+  .secondary-strip {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  @media (min-width: 40rem) {
+    .secondary-strip {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2.5rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .secondary-strip {
+      grid-template-columns: repeat(4, 1fr);
+      column-gap: clamp(2rem, 1rem + 2vw, 3rem);
+    }
+  }
+
+  .secondary-link {
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    row-gap: 0.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--dur-standard) var(--ease-standard);
+  }
+
+  @media (min-width: 64rem) {
+    .secondary-link {
+      padding-right: 1rem;
+      border-bottom: none;
+    }
+  }
+
+  .secondary-index {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+
+  .secondary-label {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    transition: color var(--dur-standard) var(--ease-standard);
+  }
+
+  .secondary-summary {
+    font-size: var(--fs-small);
+    line-height: var(--lh-body);
+    color: var(--text-secondary);
+    max-width: 32ch;
+  }
+
+  @media (hover: hover) {
+    .secondary-link:hover .secondary-label {
+      color: var(--red-primary);
+    }
+    .secondary-link:hover .secondary-index {
+      color: var(--red-primary);
+    }
+  }
+</style>

@@ -1,35 +1,39 @@
 ---
 /*
-  No boxes. Three steps on a single hairline rail — horizontal on desktop,
-  vertical spine on mobile. Copy stays in asset-mode register: it describes
-  how mobile battery service generally works, and does not claim that this
-  site currently dispatches anyone.
+  Emergency-first process. Three steps on a single hairline rail —
+  horizontal on wide viewports, vertical spine on mobile. Deliberately no
+  operational promises: the copy describes what the driver does, not what
+  a technician does. Turning this into "arrives in 30 minutes" requires a
+  verified operator, which does not exist in this config.
 */
 const steps = [
   {
-    title: "Describe the vehicle and the symptom",
-    body: "Make, model, year and where the car is parked. Whether it cranks slowly, clicks, or does nothing at all narrows the cause considerably.",
+    title: "Describe the issue",
+    body: "Make, model and year — plus the symptom. Whether it cranks slowly, clicks or does nothing at all narrows the cause considerably.",
   },
   {
-    title: "The battery is tested before anything is replaced",
-    body: "A proper test separates a flat battery from a failed one, and flags a charging-system fault that a new battery would not fix.",
+    title: "Share your location",
+    body: "Tower basement, villa driveway or hard shoulder. Access decides the equipment and the approach, so it is worth saying up front.",
   },
   {
-    title: "Replacement or jump-start, at the vehicle",
-    body: "Most work is done where the car sits. Some vehicles additionally need the new battery registered to the car's electronics.",
+    title: "Connect with the service provider",
+    body: "Enquiries are forwarded to the service provider handling battery requests, who then coordinates directly with you.",
   },
 ];
 ---
 
 <section class="section how" id="how-it-works">
   <div class="container">
-    <h2 class="how-title">How mobile battery service works.</h2>
+    <div class="how-head">
+      <span class="label">How it works</span>
+      <h2>Three steps,<br />before anyone drives out.</h2>
+    </div>
 
     <ol class="steps">
       {
         steps.map((step, i) => (
           <li class="step">
-            <span class="step-index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+            <span class="step-index" aria-hidden="true">{`0${i + 1}`.slice(-2)}</span>
             <h3 class="step-title">{step.title}</h3>
             <p class="step-body">{step.body}</p>
           </li>
@@ -40,9 +44,16 @@ const steps = [
 </section>
 
 <style>
-  .how-title {
-    max-width: 18ch;
+  .how-head {
     margin-bottom: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  .how-head .label {
+    margin-bottom: 1.25rem;
+  }
+
+  .how-head h2 {
+    max-width: 20ch;
   }
 
   .steps {
@@ -70,8 +81,6 @@ const steps = [
       border-top: none;
       padding-top: 2.25rem;
     }
-    /* The rail: a short red tick at the top of each column, which is the
-       only decoration in this section. */
     .step::before {
       content: "";
       position: absolute;
@@ -85,9 +94,10 @@ const steps = [
 
   .step-index {
     display: block;
-    font-size: var(--fs-label);
-    font-weight: 700;
-    letter-spacing: var(--tracking-label);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     color: var(--red-primary);
     margin-bottom: 1.25rem;
   }

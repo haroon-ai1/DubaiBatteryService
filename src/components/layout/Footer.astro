@@ -1,17 +1,26 @@
 ---
 /*
-  Deliberately small. Only links to sections that exist — no keyword-stuffed
-  link farm. Update when real service/area/guide routes ship.
+  Deliberately small footer. Links point only to on-page anchors while
+  dedicated service/area routes don't exist yet. Includes the partner
+  disclosure and, in asset/lead-partner mode, an explicit line clarifying
+  that this domain is informational — not a dispatched operator.
 */
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import { siteConfig } from "@/config/site";
+
 const year = new Date().getFullYear();
 
 const links = [
   { label: "Services", href: "#services" },
-  { label: "How it works", href: "#how-it-works" },
   { label: "Replacement", href: "#replacement" },
+  { label: "Jump-start", href: "#jump-start" },
+  { label: "Battery chemistry", href: "#battery-technology" },
   { label: "Areas", href: "#areas" },
   { label: "FAQ", href: "#faq" },
+  { label: "Get Battery Help", href: "#get-help" },
 ];
+
+const isOperator = siteConfig.operationalMode === "operator";
 ---
 
 <footer class="site-footer">
@@ -27,6 +36,7 @@ const links = [
         Independent information on car battery replacement, mobile service, jump-starts and
         testing for drivers across Dubai.
       </p>
+      <PartnerDisclosure />
     </div>
 
     <nav class="footer-nav" aria-label="Footer">
@@ -38,7 +48,11 @@ const links = [
 
   <div class="container footer-bottom">
     <p>&copy; {year} Dubai Battery Service.</p>
-    <p>Informational resource — not a dispatched service provider.</p>
+    {
+      !isOperator && (
+        <p>Informational resource — not a dispatched service provider.</p>
+      )
+    }
   </div>
 </footer>
 
@@ -82,7 +96,8 @@ const links = [
 
   .footer-desc {
     margin-top: 1rem;
-    max-width: 34ch;
+    margin-bottom: 0.75rem;
+    max-width: 36ch;
     color: var(--text-secondary);
     font-size: var(--fs-small);
   }
@@ -95,7 +110,6 @@ const links = [
   }
 
   .footer-nav a {
-    /* 44px minimum tap target */
     display: inline-flex;
     align-items: center;
     min-height: 44px;

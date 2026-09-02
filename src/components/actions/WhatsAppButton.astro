@@ -1,0 +1,131 @@
+---
+/*
+  Renders a WhatsApp CTA — or nothing at all, if no partner WhatsApp
+  number is configured. Never construct wa.me URLs elsewhere; always
+  route through `getWhatsAppUrl()`.
+*/
+import { getWhatsAppUrl } from "@/lib/leads";
+import type { AreaId, CtaLocation, ServiceId } from "@/lib/services";
+
+interface Props {
+  service: ServiceId;
+  ctaLocation: CtaLocation;
+  area?: AreaId | null;
+  /** Presentation. `primary` = WhatsApp-green filled. `quiet` = outline. */
+  variant?: "primary" | "quiet" | "compact";
+  /** Optional label override. Default: "WhatsApp". */
+  label?: string;
+  class?: string;
+}
+
+const {
+  service,
+  ctaLocation,
+  area = null,
+  variant = "primary",
+  label = "WhatsApp",
+  class: className = "",
+} = Astro.props;
+
+const href = getWhatsAppUrl({ service, area, ctaLocation });
+---
+
+{
+  href && (
+    <a
+      href={href}
+      class:list={["wa-btn", `wa-btn--${variant}`, className]}
+      target="_blank"
+      rel="noopener"
+      data-lead-event="click_whatsapp"
+      data-lead-service={service}
+      data-lead-cta={ctaLocation}
+      data-lead-area={area ?? ""}
+    >
+      <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path
+          fill="currentColor"
+          d="M17.5 14.4c-.3-.15-1.75-.86-2-.96-.28-.1-.48-.15-.68.15-.2.3-.78.96-.96 1.16-.18.2-.36.22-.66.08-.3-.15-1.26-.46-2.4-1.48-.9-.8-1.5-1.78-1.68-2.08-.18-.3-.02-.46.13-.6.13-.13.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.38-.02-.53-.08-.15-.68-1.63-.93-2.23-.24-.58-.5-.5-.68-.5H8c-.2 0-.53.07-.8.38-.28.3-1.06 1.03-1.06 2.52 0 1.48 1.08 2.92 1.23 3.12.15.2 2.12 3.24 5.14 4.54.72.31 1.28.5 1.72.63.72.23 1.38.2 1.9.12.58-.09 1.75-.72 2-1.4.25-.7.25-1.28.18-1.4-.08-.14-.28-.22-.58-.36zM12.05 21.4h-.03a9.36 9.36 0 0 1-4.77-1.3l-.34-.2-3.55.92.95-3.46-.22-.36a9.34 9.34 0 0 1-1.44-4.98A9.4 9.4 0 0 1 12.06 2.6a9.36 9.36 0 0 1 6.65 2.75 9.35 9.35 0 0 1 2.75 6.66c0 5.18-4.22 9.4-9.4 9.4zm7.99-17.39A11.36 11.36 0 0 0 12.05.6C5.78.6.68 5.7.68 11.98a11.35 11.35 0 0 0 1.53 5.72L.58 23.4l5.83-1.53a11.4 11.4 0 0 0 5.63 1.44h.01c6.27 0 11.37-5.1 11.37-11.37 0-3.04-1.18-5.9-3.34-8.05z"
+        />
+      </svg>
+      <span>{label}</span>
+    </a>
+  )
+}
+
+<style>
+  .wa-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 52px;
+    padding: 0.9375rem 1.5rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard),
+      color var(--dur-fast) var(--ease-standard),
+      box-shadow var(--dur-fast) var(--ease-standard),
+      border-color var(--dur-fast) var(--ease-standard);
+  }
+
+  .wa-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  /* Filled WhatsApp-green. Use only where WhatsApp is the intended action —
+     the primary red button carries the branded call to action. */
+  .wa-btn--primary {
+    background: var(--whatsapp-green);
+    color: #ffffff;
+  }
+
+  .wa-btn--primary:active {
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) {
+    .wa-btn--primary:hover {
+      background: #1fbe5c;
+      box-shadow: 0 10px 28px rgba(37, 211, 102, 0.22);
+      transform: translateY(-1px);
+    }
+  }
+
+  /* Outline treatment — for cases where a quieter WhatsApp affordance
+     sits beside the primary red button. */
+  .wa-btn--quiet {
+    background: transparent;
+    color: var(--text-primary);
+    border-color: var(--hairline-strong);
+  }
+
+  .wa-btn--quiet .wa-icon {
+    color: var(--whatsapp-green);
+  }
+
+  @media (hover: hover) {
+    .wa-btn--quiet:hover {
+      border-color: var(--whatsapp-green);
+      color: var(--whatsapp-green);
+    }
+  }
+
+  /* Compact form used inside dense rows (sticky bar, service links). */
+  .wa-btn--compact {
+    min-height: 48px;
+    padding: 0.625rem 1rem;
+    background: var(--whatsapp-green);
+    color: #ffffff;
+    font-size: var(--fs-small);
+  }
+</style>

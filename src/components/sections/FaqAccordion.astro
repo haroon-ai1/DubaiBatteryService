@@ -1,48 +1,48 @@
 ---
 /*
-  Native <details>/<summary> — works with zero JS, fully keyboard accessible.
-  Boxes removed: thin rules and whitespace only. A small red plus/minus mark
-  is the sole accent.
+  Native <details>/<summary> — zero JS, fully keyboard accessible.
+  Questions are aligned with the technical topics covered above: chemistry,
+  jump-start diagnostics, registration, fitment. Copy stays accurate — no
+  operational promises, no fabricated response times.
 */
 const faqs = [
   {
-    q: "How do I know if I need a jump-start or a replacement?",
-    a: "If the car starts after a jump but goes flat again within a day or two, or the battery is already three to four years old, that generally points to replacement rather than repeated jump-starts.",
+    q: "How do I know whether I need a jump start or battery replacement?",
+    a: "If the car starts after a jump but goes flat again within a day or two, or the battery is three to four years old, that generally points to replacement rather than repeated jump-starts. A battery that tests healthy but keeps going flat can also indicate a charging-system fault rather than the battery itself.",
   },
   {
-    q: "Can a car battery be replaced at my location?",
+    q: "Can a battery be replaced at the vehicle's location?",
     a: "In most cases, yes — mobile replacement is common and rarely needs a workshop visit. Some vehicles require the new battery to be registered to the car's electrical system, which affects how the job is done rather than where.",
   },
   {
-    q: "How long do car batteries last in Dubai conditions?",
-    a: "Sustained high heat accelerates the internal wear of a lead-acid battery, so replacement intervals in the UAE often run shorter than the manufacturer's rated life would suggest in a temperate climate.",
+    q: "What is an AGM battery?",
+    a: "Absorbent Glass Mat — a sealed lead-acid design that tolerates higher electrical loads and repeated cycling. Commonly specified by manufacturers for more demanding stop-start systems and vehicles with heavier onboard electronics.",
   },
   {
-    q: "What determines the price of a replacement battery?",
-    a: "Capacity and cold-cranking amps, chemistry (conventional, EFB or AGM), physical fitment for the specific vehicle, whether battery registration is required, and the warranty terms offered by the seller. Published figures vary widely between suppliers.",
+    q: "What is an EFB battery?",
+    a: "Enhanced Flooded Battery — a flooded lead-acid design engineered for higher cycling durability than a conventional starter battery. Specified by manufacturers for many stop-start vehicles, though not all: some require AGM instead.",
   },
   {
     q: "Why does my battery keep going flat?",
-    a: "Common causes are a parasitic drain pulling current while the car is off, an alternator not fully recharging the battery, frequent short trips, or a battery that has simply reached the end of its life.",
+    a: "Common causes include a parasitic drain pulling current while the car is off, an alternator not fully recharging the battery, frequent short trips that never let it recover, or a battery that has simply reached the end of its service life.",
   },
   {
-    q: "Can a weak alternator look like a battery problem?",
-    a: "Yes, and the symptoms overlap heavily. A battery that tests healthy but keeps going flat is a strong indication the charging system, not the battery, is at fault.",
-  },
-  {
-    q: "Do some cars need the new battery registered?",
-    a: "Yes. A number of modern vehicles with battery management systems — commonly German makes — require the replacement to be registered or coded so the charging strategy matches the new battery.",
+    q: "Does my car require battery registration?",
+    a: "A number of modern vehicles with battery management systems — commonly German makes — require the replacement to be registered or coded so the charging strategy matches the new battery. Whether registration is needed depends on the specific vehicle.",
   },
   {
     q: "How do I identify the correct battery for my car?",
-    a: "The existing battery's label is the best starting point: it usually lists group size, capacity and cold-cranking amps along with the chemistry. Owner's manuals vary in how much they specify, so fitment should ultimately be confirmed against reliable vehicle- or manufacturer-specific fitment information.",
+    a: "The existing battery's label is the best starting point: it usually lists group size, capacity and cold-cranking amps, along with the chemistry. Owner's manuals vary in how much they specify, so fitment should be confirmed against reliable vehicle- or manufacturer-specific information.",
   },
 ];
 ---
 
 <section class="section faq" id="faq">
   <div class="container faq-grid">
-    <h2 class="faq-title">Battery questions,<br />answered plainly.</h2>
+    <div class="faq-head">
+      <span class="label">FAQ</span>
+      <h2>Battery questions,<br />answered plainly.</h2>
+    </div>
 
     <div class="faq-list">
       {
@@ -52,8 +52,19 @@ const faqs = [
               <span class="faq-q">{faq.q}</span>
               <span class="faq-mark" aria-hidden="true">
                 <svg viewBox="0 0 16 16" fill="none">
-                  <path class="faq-mark-h" d="M3 8H13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-                  <path class="faq-mark-v" d="M8 3V13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                  <path
+                    d="M3 8H13"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                  <path
+                    class="faq-mark-v"
+                    d="M8 3V13"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </span>
             </summary>
@@ -66,6 +77,10 @@ const faqs = [
 </section>
 
 <style>
+  .faq {
+    border-top: 1px solid var(--hairline);
+  }
+
   .faq-grid {
     display: grid;
     grid-template-columns: 1fr;
@@ -78,6 +93,10 @@ const faqs = [
       gap: clamp(3rem, 1rem + 6vw, 7rem);
       align-items: start;
     }
+  }
+
+  .faq-head .label {
+    margin-bottom: 1.25rem;
   }
 
   .faq-list {
@@ -122,7 +141,6 @@ const faqs = [
     height: 16px;
   }
 
-  /* Plus collapses to minus: the vertical stroke rotates away. */
   .faq-mark-v {
     transform-origin: center;
     transition: transform var(--dur-standard) var(--ease-standard);

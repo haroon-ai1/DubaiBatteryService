@@ -1,35 +1,49 @@
 ---
 /*
-  Mobile-only floating action bar. In asset mode there's no phone/WhatsApp
-  to call, so this stays a single honest action: jump to the service
-  selector. Swap in real call/WhatsApp buttons (see site.ts business.*)
-  once operationalMode moves past "asset" — see buildTelHref/buildWhatsAppHref.
-*/
-import { siteConfig, buildTelHref, buildWhatsAppHref } from "@/config/site";
+  Mobile sticky bottom bar. Premium dual-action surface.
 
-const telHref = buildTelHref(siteConfig.business.phone);
-const waHref = buildWhatsAppHref(siteConfig.business.whatsapp);
+  Prefers [WhatsApp][Call] when both are configured. Falls back to a
+  single "Get Battery Help →" when neither is, so the bar is never
+  useless. Hidden while the hero or final CTA is in view (both already
+  present prominent actions), and marked `inert` while hidden so the
+  focus order doesn't leak into invisible controls.
+*/
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import { hasCallChannel, hasWhatsAppChannel } from "@/lib/leads";
+
+const hasWhatsApp = hasWhatsAppChannel();
+const hasCall = hasCallChannel();
+const anyChannel = hasWhatsApp || hasCall;
 ---
 
 <div class="sticky-cta safe-bottom" id="sticky-mobile-cta" aria-hidden="true" inert>
   <div class="sticky-cta-inner">
     {
-      telHref && (
-        <a href={telHref} class="btn btn-quiet sticky-btn" data-event="click_call">
-          Call
-        </a>
+      hasWhatsApp && (
+        <WhatsAppButton
+          service="battery_service"
+          ctaLocation="sticky_mobile_whatsapp"
+          variant="compact"
+          class="sticky-btn"
+        />
       )
     }
     {
-      waHref && (
-        <a href={waHref} class="btn btn-quiet sticky-btn" data-event="click_whatsapp">
-          WhatsApp
-        </a>
+      hasCall && (
+        <CallButton
+          ctaLocation="sticky_mobile_call"
+          variant="compact"
+          class="sticky-btn sticky-btn--dark"
+        />
       )
     }
-    <a href="#final-cta" class="btn btn-primary sticky-btn" data-event="service_select">
-      Get battery help
-    </a>
+    {
+      !anyChannel && (
+        <PrimaryHelpButton class="sticky-btn sticky-btn--primary" label="Get Battery Help" />
+      )
+    }
   </div>
 </div>
 
@@ -71,18 +85,28 @@ const waHref = buildWhatsAppHref(siteConfig.business.whatsapp);
     gap: 0.5rem;
   }
 
-  .sticky-btn {
+  /* Force every sticky child into flex:1 sizing regardless of the
+     button primitive's default padding — we want equal-width dual
+     actions in this row. */
+  :global(.sticky-btn) {
     flex: 1;
-    padding-inline: 0.75rem;
-    min-height: 48px;
-    font-size: var(--fs-small);
+    min-height: 48px !important;
+    padding-inline: 0.75rem !important;
+    font-size: var(--fs-small) !important;
   }
 
-  /* Only used when a real phone/WhatsApp number is configured. */
-  .btn-quiet {
-    background: var(--bg-main);
-    color: var(--text-primary);
-    border-color: var(--hairline-strong);
+  :global(.sticky-btn--dark) {
+    background: var(--text-primary) !important;
+    color: #ffffff !important;
+    border-color: var(--text-primary) !important;
+  }
+
+  :global(.sticky-btn--dark .call-icon) {
+    color: #ffffff !important;
+  }
+
+  :global(.sticky-btn--primary) {
+    /* fallback single-button treatment */
   }
 
   @media (min-width: 64rem) {
@@ -95,7 +119,7 @@ const waHref = buildWhatsAppHref(siteConfig.business.whatsapp);
 <script>
   const bar = document.getElementById("sticky-mobile-cta");
   const hero = document.getElementById("hero");
-  const finalCta = document.getElementById("final-cta");
+  const finalCta = document.getElementById("get-help");
   const supportsInert = "inert" in HTMLElement.prototype;
   const focusables = bar ? Array.from(bar.querySelectorAll("a, button")) : [];
 
@@ -105,10 +129,8 @@ const waHref = buildWhatsAppHref(siteConfig.business.whatsapp);
     bar.setAttribute("aria-hidden", hidden ? "true" : "false");
 
     if (supportsInert) {
-      bar.inert = hidden;
+      (bar as HTMLElement & { inert: boolean }).inert = hidden;
     } else {
-      // Fallback: manually pull focusable children out of / back into the
-      // tab order for browsers without `inert` support.
       focusables.forEach((el) => {
         if (hidden) el.setAttribute("tabindex", "-1");
         else el.removeAttribute("tabindex");

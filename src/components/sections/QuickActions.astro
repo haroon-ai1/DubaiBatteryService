@@ -1,0 +1,128 @@
+---
+/*
+  Compact emergency actions band. Sits between the hero and the editorial
+  services introduction.
+
+  Purpose: give a stranded driver a second, immediately-visible affordance
+  strip — a taxonomy of what they can ask for, plus (if configured)
+  WhatsApp and Call as inline compact channels. Deliberately quiet: one
+  row, hairline-bounded, no decorative shapes. Does not repeat the hero's
+  primary red CTA.
+*/
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import { hasCallChannel, hasWhatsAppChannel } from "@/lib/leads";
+
+const services = [
+  "Replacement",
+  "Jump-start",
+  "Mobile service",
+  "Delivery",
+  "Testing",
+  "Emergency",
+];
+
+const showWhatsApp = hasWhatsAppChannel();
+const showCall = hasCallChannel();
+---
+
+<aside class="quick" aria-label="Emergency actions">
+  <div class="container quick-inner">
+    <div class="quick-lead">
+      <span class="quick-tag">Emergency-first</span>
+      <ul class="quick-services">
+        {services.map((s, i) => (
+          <li>
+            <span>{s}</span>
+            {i < services.length - 1 && <span aria-hidden="true" class="sep">·</span>}
+          </li>
+        ))}
+      </ul>
+    </div>
+    {
+      (showWhatsApp || showCall) && (
+        <div class="quick-actions">
+          {showWhatsApp && (
+            <WhatsAppButton
+              service="battery_service"
+              ctaLocation="hero_whatsapp"
+              variant="compact"
+            />
+          )}
+          {showCall && (
+            <CallButton ctaLocation="hero_call" variant="compact" />
+          )}
+        </div>
+      )
+    }
+  </div>
+</aside>
+
+<style>
+  .quick {
+    border-block: 1px solid var(--hairline);
+    background: var(--bg-soft);
+  }
+
+  .quick-inner {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem 2rem;
+    padding-block: clamp(0.875rem, 0.75rem + 0.4vw, 1.125rem);
+    align-items: center;
+  }
+
+  @media (min-width: 56rem) {
+    .quick-inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .quick-lead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.375rem 1rem;
+  }
+
+  .quick-tag {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--red-primary);
+  }
+
+  .quick-services {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+  }
+
+  .quick-services li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .quick-services .sep {
+    color: var(--text-muted);
+  }
+
+  .quick-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    justify-self: start;
+  }
+
+  @media (min-width: 56rem) {
+    .quick-actions {
+      justify-self: end;
+    }
+  }
+</style>

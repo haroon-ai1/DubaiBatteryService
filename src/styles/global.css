@@ -38,7 +38,10 @@ body {
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  /* `clip` contains horizontal bleed from decorative blooms without turning
+     <body> into a scroll container — which would break `position: sticky`
+     on the header on some engines. */
+  overflow-x: clip;
 }
 
 img,

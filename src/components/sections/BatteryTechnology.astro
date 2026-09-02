@@ -1,0 +1,151 @@
+---
+/*
+  Battery chemistry — Conventional / EFB / AGM.
+
+  Elegant three-column comparison on wide viewports; stacked cards
+  connected by a shared hairline rail on mobile. Copy is deliberately
+  accurate: EFB or AGM depending on manufacturer requirements — never a
+  blanket "AGM is required for start-stop" claim.
+*/
+const rows = [
+  {
+    code: "Conventional",
+    context: "Vehicles without stop-start.",
+    body: "Standard flooded starter batteries. Lowest cost, least tolerant of repeated deep cycling.",
+  },
+  {
+    code: "EFB",
+    context: "Enhanced flooded.",
+    body: "Higher cycling durability. Specified by manufacturers for many — but not all — stop-start vehicles.",
+  },
+  {
+    code: "AGM",
+    context: "Absorbent glass mat, sealed.",
+    body: "Vibration-resistant, higher electrical tolerance. Specified for more demanding stop-start and energy-management systems.",
+  },
+];
+---
+
+<section class="section chemistry" id="battery-technology">
+  <div class="container chem-grid">
+    <div class="chem-copy">
+      <span class="label">Battery chemistry</span>
+      <h2>Three families —<br />vehicle-specified,<br />not interchangeable.</h2>
+      <p class="lead chem-lead">
+        The correct chemistry for a replacement is set by the vehicle manufacturer.
+        Fitting the wrong one is the most common cause of a new battery failing early.
+      </p>
+    </div>
+
+    <ol class="chem-list">
+      {
+        rows.map((row) => (
+          <li class="chem-row">
+            <span class="chem-code">{row.code}</span>
+            <span class="chem-context">{row.context}</span>
+            <p class="chem-body">{row.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <p class="container chem-note">
+    Exact chemistry, capacity and cold-cranking amps must be confirmed against
+    vehicle-specific fitment information — make, model and year alone are not enough.
+  </p>
+</section>
+
+<style>
+  .chemistry {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .chem-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 2rem + 2vw, 4rem);
+    margin-bottom: clamp(3rem, 2rem + 3vw, 5rem);
+  }
+
+  @media (min-width: 56rem) {
+    .chem-grid {
+      grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+      gap: clamp(3rem, 1rem + 5vw, 6rem);
+      align-items: start;
+    }
+  }
+
+  .chem-copy .label {
+    margin-bottom: 1.25rem;
+  }
+
+  .chem-copy h2 {
+    max-width: 18ch;
+  }
+
+  .chem-lead {
+    margin-top: 1.5rem;
+  }
+
+  .chem-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  @media (min-width: 40rem) {
+    .chem-list {
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 2rem;
+    }
+  }
+
+  .chem-row {
+    padding-block: 1.75rem;
+    border-bottom: 1px solid var(--hairline);
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    row-gap: 0.5rem;
+  }
+
+  @media (min-width: 40rem) {
+    .chem-row {
+      border-bottom: none;
+      padding-right: 1rem;
+    }
+  }
+
+  .chem-code {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-primary);
+  }
+
+  .chem-context {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.005em;
+  }
+
+  .chem-body {
+    margin: 0.375rem 0 0;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    line-height: 1.6;
+    max-width: 34ch;
+  }
+
+  .chem-note {
+    margin-top: 2rem;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 60ch;
+  }
+</style>

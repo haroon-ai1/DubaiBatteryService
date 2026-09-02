@@ -1,0 +1,29 @@
+---
+/*
+  Small, understated line placed near lead CTAs when partner routing is
+  enabled. Deliberately not visually dominant — a quiet compliance signal,
+  not a legal document.
+*/
+import { siteConfig } from "@/config/site";
+
+const show = siteConfig.partner.enabled && siteConfig.leadAttribution.enabled;
+---
+
+{
+  show && (
+    <p class="partner-disclosure">
+      Service enquiries may be connected with the service provider handling your request.
+    </p>
+  )
+}
+
+<style>
+  .partner-disclosure {
+    margin: 0;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+    letter-spacing: 0.01em;
+    max-width: 42ch;
+  }
+</style>

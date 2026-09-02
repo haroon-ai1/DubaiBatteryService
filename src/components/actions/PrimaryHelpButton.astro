@@ -1,0 +1,89 @@
+---
+/*
+  The branded red "Get Battery Help →" primary CTA. Present on every major
+  surface (hero, editorial features, final CTA). Always renders — even if
+  no partner number is configured — because it scrolls to the final CTA
+  section (`#get-help`), which is the page's canonical action zone.
+*/
+
+interface Props {
+  label?: string;
+  href?: string;
+  class?: string;
+  size?: "regular" | "large";
+}
+
+const {
+  label = "Get Battery Help",
+  href = "#get-help",
+  class: className = "",
+  size = "regular",
+} = Astro.props;
+---
+
+<a href={href} class:list={["help-btn", `help-btn--${size}`, className]}>
+  <span>{label}</span>
+  <svg class="help-arrow" viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+    <path
+      d="M4 10H16M11 5L16 10L11 15"
+      stroke="currentColor"
+      stroke-width="1.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      fill="none"
+    />
+  </svg>
+</a>
+
+<style>
+  .help-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.625rem;
+    min-height: 52px;
+    padding: 0.9375rem 1.75rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    background: var(--red-primary);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: -0.005em;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard),
+      box-shadow var(--dur-fast) var(--ease-standard);
+  }
+
+  .help-arrow {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: transform var(--dur-standard) var(--ease-standard);
+  }
+
+  .help-btn:active {
+    background: var(--red-dark);
+    transform: translateY(1px);
+  }
+
+  @media (hover: hover) {
+    .help-btn:hover {
+      background: var(--red-bright);
+      box-shadow: 0 10px 28px rgba(226, 28, 53, 0.24);
+      transform: translateY(-1px);
+    }
+    .help-btn:hover .help-arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  .help-btn--large {
+    min-height: 60px;
+    padding: 1.125rem 2.25rem;
+    font-size: 1.0625rem;
+  }
+</style>

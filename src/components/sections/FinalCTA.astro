@@ -1,26 +1,72 @@
 ---
 /*
-  One integrated closing statement. No bordered panel, no sidebar block —
-  the section sits on white with a soft crimson bloom behind the type.
-  Copy stays honest for asset mode: it invites exploration of the material,
-  it does not promise dispatch.
+  Premium final CTA. The page's canonical action zone — anchor `#get-help`.
+  All in-page "Get Battery Help" primary buttons scroll here.
+
+  Layout: a large typographic statement, subtle crimson atmosphere behind
+  the type, three restrained actions (Get Battery Help / WhatsApp / Call).
+  When neither WhatsApp nor Call is configured, the primary red button
+  still stands alone as the anchor destination and a small message
+  explains that channels will activate once configured — kept subtle so
+  it doesn't feel like a broken form.
 */
+import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import { hasCallChannel, hasWhatsAppChannel } from "@/lib/leads";
+
+const hasWhatsApp = hasWhatsAppChannel();
+const hasCall = hasCallChannel();
+const anyChannel = hasWhatsApp || hasCall;
 ---
 
-<section class="final" id="final-cta">
+<section class="final" id="get-help">
   <div class="final-bloom" aria-hidden="true"></div>
   <div class="container final-inner">
-    <h2>Work out what your car actually needs.</h2>
+    <span class="label final-label">Get Battery Help</span>
+    <h2>Battery problem?<br />Start here.</h2>
     <p class="lead final-lead">
-      Start from the symptom rather than the fix — the difference between a flat battery, a
-      failed one and a charging fault decides everything that follows.
+      Message or call to describe the vehicle, the symptom and where the car is parked.
+      The enquiry is then handled by the service provider covering battery requests for
+      this site.
     </p>
+
     <div class="final-actions">
-      <a href="#services" class="btn btn-primary" data-event="service_select">
-        Compare your options
-      </a>
-      <a href="#faq" class="action">Read the FAQ</a>
+      {
+        hasWhatsApp ? (
+          <WhatsAppButton
+            service="battery_service"
+            ctaLocation="final_cta_whatsapp"
+            variant="primary"
+            label="Message on WhatsApp"
+          />
+        ) : (
+          <PrimaryHelpButton
+            size="large"
+            label="Get Battery Help"
+            href="#services"
+          />
+        )
+      }
+      {
+        hasCall && (
+          <CallButton ctaLocation="final_cta_call" variant="quiet" label="Call" />
+        )
+      }
     </div>
+
+    {
+      !anyChannel && (
+        <p class="final-empty">
+          Direct WhatsApp and call channels activate once numbers are configured. Until
+          then, use the services list above to review what to describe when you contact
+          a battery-service provider.
+        </p>
+      )
+    }
+
+    <PartnerDisclosure />
   </div>
 </section>
 
@@ -32,23 +78,20 @@
     overflow-x: clip;
   }
 
-  /* The page's closing glow — wide, low-opacity, centred behind the type. */
   .final-bloom {
     position: absolute;
-    /* Track the container's left content edge, then sit behind the headline,
-       rather than keying off a raw vw value (which pushed the bloom half
-       off-screen at wide viewports). */
-    left: calc(max(var(--pad-inline), (100% - var(--container-max)) / 2) + 15rem);
+    left: calc(max(var(--pad-inline), (100% - var(--container-max)) / 2) + 12rem);
     top: 50%;
     width: min(52rem, 120%);
     aspect-ratio: 16 / 10;
     transform: translate(-50%, -50%);
     background: radial-gradient(
       closest-side,
-      rgba(216, 23, 51, 0.13) 0%,
-      rgba(216, 23, 51, 0.05) 42%,
-      rgba(216, 23, 51, 0) 76%
+      rgba(226, 28, 53, 0.14) 0%,
+      rgba(226, 28, 53, 0.05) 42%,
+      rgba(226, 28, 53, 0) 78%
     );
+    filter: blur(60px);
     pointer-events: none;
   }
 
@@ -57,29 +100,40 @@
     z-index: 1;
   }
 
-  /* Left-aligned to the same grid edge as every other section — a centred
-     block with left-aligned text read as a mistake rather than a choice. */
+  .final-label {
+    margin-bottom: 1.25rem;
+  }
+
   .final-inner h2,
   .final-lead,
-  .final-actions {
+  .final-actions,
+  .final-empty {
     max-width: 44rem;
     margin-inline: 0;
   }
 
   .final-inner h2 {
-    max-width: 16ch;
+    max-width: 15ch;
   }
 
   .final-lead {
     margin-top: 1.5rem;
-    max-width: 42ch;
+    max-width: 44ch;
   }
 
   .final-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 2rem;
+    gap: 0.75rem;
     margin-top: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .final-empty {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    max-width: 42ch;
   }
 </style>

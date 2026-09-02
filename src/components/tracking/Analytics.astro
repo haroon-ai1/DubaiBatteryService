@@ -1,0 +1,92 @@
+---
+/*
+  Single point of GA4 wiring.
+
+  - If `siteConfig.analytics.gaMeasurementId` is null, GA4 is not loaded at
+    all — no scripts, no cookies, no network request.
+  - CTA click tracking is delegated to a tiny event delegator that listens
+    for `[data-lead-event]` clicks and pushes GA4 events with a strict,
+    PII-free parameter allow-list. It runs regardless of GA presence so
+    dataLayer pushes stay queued if GA is added later.
+  - Analytics failure must NEVER block WhatsApp/call navigation — anchors
+    remain plain anchors, the click handler never calls preventDefault().
+*/
+import { siteConfig } from "@/config/site";
+
+const gaId = siteConfig.analytics.gaMeasurementId;
+const partnerName = siteConfig.partner.enabled ? siteConfig.partner.name : null;
+---
+
+{
+  gaId && (
+    <>
+      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+      <script is:inline set:html={`
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', '${gaId}', { anonymize_ip: true, send_page_view: true });
+      `} />
+    </>
+  )
+}
+
+<script is:inline define:vars={{ partnerName }}>
+  // Queue exists even without GA — a later measurement id will still see the
+  // history if we choose to flush.
+  window.dataLayer = window.dataLayer || [];
+
+  const ALLOWED_EVENTS = new Set(["click_whatsapp", "click_call"]);
+
+  function readCtx(el) {
+    const dataset = el.dataset || {};
+    const event = dataset.leadEvent;
+    if (!event || !ALLOWED_EVENTS.has(event)) return null;
+    return {
+      event,
+      params: {
+        page: location.pathname,
+        service: dataset.leadService || null,
+        area: dataset.leadArea || null,
+        cta_location: dataset.leadCta || null,
+        partner: partnerName,
+      },
+    };
+  }
+
+  function pushEvent(payload) {
+    try {
+      // GA4 shape: `event(eventName, params)`. Falling back to a raw
+      // dataLayer push keeps the record around when gtag isn't loaded.
+      if (typeof window.gtag === "function") {
+        window.gtag("event", payload.event, payload.params);
+      } else {
+        window.dataLayer.push({ event: payload.event, ...payload.params });
+      }
+    } catch (_e) {
+      /* never rethrow — nav must proceed */
+    }
+  }
+
+  // Guard against double-registering when the same page is re-rendered by
+  // View Transitions or client-side re-hydration frameworks (not used
+  // today, but cheap insurance).
+  if (!window.__dbsLeadDelegator) {
+    window.__dbsLeadDelegator = true;
+    document.addEventListener(
+      "click",
+      (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const el = target.closest("[data-lead-event]");
+        if (!el) return;
+        const payload = readCtx(el);
+        if (!payload) return;
+        pushEvent(payload);
+      },
+      // Non-passive is unnecessary — we never preventDefault().
+      { capture: false, passive: true }
+    );
+  }
+</script>

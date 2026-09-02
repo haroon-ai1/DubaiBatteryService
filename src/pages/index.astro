@@ -1,23 +1,29 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Hero from "@/components/sections/Hero.astro";
-import ServicesIndex from "@/components/sections/ServicesIndex.astro";
-import HowItWorks from "@/components/sections/HowItWorks.astro";
+import QuickActions from "@/components/sections/QuickActions.astro";
+import ServicesIntro from "@/components/sections/ServicesIntro.astro";
 import EditorialFeature from "@/components/sections/EditorialFeature.astro";
+import JumpStartFeature from "@/components/sections/JumpStartFeature.astro";
+import HowItWorks from "@/components/sections/HowItWorks.astro";
+import BatteryTechnology from "@/components/sections/BatteryTechnology.astro";
 import Coverage from "@/components/sections/Coverage.astro";
 import FaqAccordion from "@/components/sections/FaqAccordion.astro";
 import FinalCTA from "@/components/sections/FinalCTA.astro";
 ---
 
 <BaseLayout
-  title="Dubai Battery Service | Car Battery Help in Dubai"
-  description="Car battery replacement, jump-starts, delivery and testing in Dubai — with the technical detail that decides which one your vehicle actually needs."
+  title="Dubai Battery Service — Car Battery Help in Dubai"
+  description="Car battery replacement, jump-start assistance and mobile battery service information for drivers across Dubai. Get help through WhatsApp or call."
   path="/"
 >
   <Hero />
-  <ServicesIndex />
-  <HowItWorks />
+  <QuickActions />
+  <ServicesIntro />
   <EditorialFeature />
+  <JumpStartFeature />
+  <HowItWorks />
+  <BatteryTechnology />
   <Coverage />
   <FaqAccordion />
   <FinalCTA />

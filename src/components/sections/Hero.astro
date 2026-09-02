@@ -2,32 +2,52 @@
 import { Picture } from "astro:assets";
 import heroDesktop from "@/assets/images/hero-desktop.jpg";
 import heroMobile from "@/assets/images/hero-mobile.jpg";
+import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
 
 /*
-  Art direction: the mobile crop is a genuinely different frame (3:2 landscape)
-  rather than a squeezed version of the desktop 4:5 portrait. Swap both files
-  in src/assets/images/ with real photography at the same aspect ratios and
-  nothing here needs to change.
+  Emergency-first hero. The first viewport answers three questions:
+  what is this, where, what can I do.
+
+  Text column carries: small monospace context tag, H1, one supporting
+  line, primary+WhatsApp actions, partner disclosure.
+  Visual column: one premium editorial photograph, subtle crimson bloom.
+  A driver on a phone in a basement car park should be able to reach the
+  primary CTA without scrolling.
+
+  Alt text describes what the current photograph actually shows — update
+  in-place when the source image is replaced.
 */
 const alt =
-  "Mobile car battery service being carried out on a vehicle in Dubai, lit by warm late-afternoon daylight.";
+  "Service technician at the open bonnet of a modern premium SUV, on a Dubai waterfront at golden hour.";
+
+const hasWhatsApp = hasWhatsAppChannel();
 ---
 
 <section class="hero" id="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="label">Mobile car battery help in Dubai</span>
-      <h1>Car battery service,<br />handled properly.</h1>
-      <p class="lead">
-        Replacement, jump-starts, delivery and testing — with the technical detail that
-        actually decides which one your car needs.
+      <span class="hero-tag">Mobile Car Battery Help in Dubai</span>
+      <h1>Car Battery Service<br />in&nbsp;Dubai.</h1>
+      <p class="lead hero-lead">
+        Battery replacement, jump-start assistance and mobile battery service information
+        for drivers across Dubai.
       </p>
       <div class="hero-actions">
-        <a href="#services" class="btn btn-primary" data-event="service_select">
-          Explore battery services
-        </a>
-        <a href="#how-it-works" class="action">How it works</a>
+        <PrimaryHelpButton size="large" class="hero-primary" />
+        {
+          hasWhatsApp && (
+            <WhatsAppButton
+              service="battery_service"
+              ctaLocation="hero_whatsapp"
+              variant="quiet"
+            />
+          )
+        }
       </div>
+      <PartnerDisclosure />
     </div>
 
     <figure class="hero-figure">
@@ -37,7 +57,7 @@ const alt =
         formats={["avif", "webp"]}
         fallbackFormat="jpg"
         widths={[640, 900, 1280]}
-        sizes="(min-width: 64rem) 52vw, 100vw"
+        sizes="(min-width: 64rem) 55vw, 100vw"
         alt={alt}
         loading="eager"
         fetchpriority="high"
@@ -63,48 +83,55 @@ const alt =
 <style>
   .hero {
     position: relative;
-    /* `clip` rather than `hidden`: contains the decorative bloom bleed
-       without creating a scroll container (which would break the sticky
-       header) . */
     overflow-x: clip;
-    padding-top: clamp(2rem, 1rem + 3vw, 4.5rem);
-    padding-bottom: clamp(4rem, 2.5rem + 6vw, 9rem);
+    padding-top: clamp(1.75rem, 1rem + 2.5vw, 4rem);
+    padding-bottom: clamp(3.5rem, 2rem + 5vw, 7.5rem);
   }
 
   .hero-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(2.5rem, 1.5rem + 4vw, 4rem);
+    gap: clamp(2rem, 1.25rem + 3vw, 3.75rem);
     align-items: center;
   }
 
   @media (min-width: 64rem) {
     .hero-grid {
-      /* Asymmetric: copy gets less width than the visual, which keeps the
-         headline measure tight and lets the image carry the composition. */
-      grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-      gap: clamp(3rem, 1rem + 5vw, 6rem);
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: clamp(3rem, 1rem + 5vw, 5.5rem);
     }
   }
 
-  .hero-copy .label {
-    margin-bottom: clamp(1.25rem, 1rem + 1vw, 2rem);
+  .hero-tag {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-primary);
+    margin-bottom: clamp(1rem, 0.75rem + 0.75vw, 1.5rem);
   }
 
   .hero-copy h1 {
-    max-width: 16ch;
+    max-width: 14ch;
+    font-size: clamp(2.375rem, 1.5rem + 3.75vw, 4.75rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
   }
 
-  .hero-copy .lead {
+  .hero-lead {
     margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    max-width: 36ch;
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem 2rem;
+    gap: 0.75rem;
     margin-top: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin-bottom: 1.25rem;
   }
 
   .hero-figure {
@@ -112,28 +139,29 @@ const alt =
     margin: 0;
   }
 
-  /* Soft crimson atmosphere behind the image edge — one of only four glow
-     uses on the page. Sits under the image, bleeds past its corner. */
+  /* Soft crimson atmosphere behind the image edge. Reads as light in the
+     environment, not as a CSS effect glued on. */
   .hero-bloom {
     position: absolute;
-    inset: 8% -12% -14% 6%;
+    inset: 6% -14% -12% 4%;
     background: radial-gradient(
       closest-side,
-      rgba(216, 23, 51, 0.14) 0%,
-      rgba(216, 23, 51, 0.06) 45%,
-      rgba(216, 23, 51, 0) 78%
+      rgba(226, 28, 53, 0.12) 0%,
+      rgba(226, 28, 53, 0.05) 45%,
+      rgba(226, 28, 53, 0) 80%
     );
+    filter: blur(30px);
     z-index: 0;
     pointer-events: none;
   }
 
   @media (max-width: 47.9375rem) {
     .hero-bloom {
-      inset: 12% 0 -8% 0;
+      inset: 8% 0 -6% 0;
       background: radial-gradient(
         closest-side,
-        rgba(216, 23, 51, 0.1) 0%,
-        rgba(216, 23, 51, 0) 72%
+        rgba(226, 28, 53, 0.09) 0%,
+        rgba(226, 28, 53, 0) 72%
       );
     }
   }
@@ -146,7 +174,7 @@ const alt =
     border-radius: var(--radius-img);
   }
 
-  /* Art-directed crops: portrait on desktop, landscape on mobile. */
+  /* Art-directed crops: landscape on desktop, tighter landscape on mobile. */
   .hero-img-desktop {
     display: none;
   }

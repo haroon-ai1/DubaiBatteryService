@@ -8,22 +8,22 @@
 :root {
   /* ---------- Color ---------- */
   --bg-main: #ffffff;
-  --bg-soft: #fafbfc;
-  --bg-warm: #fffafb;
+  --bg-soft: #f8f9fb;
+  --bg-warm: #fff7f8;
 
-  --text-primary: #0e0f12;
-  --text-secondary: #5c606a;
-  --text-muted: #8e929b;
+  --text-primary: #111215;
+  --text-secondary: #62666e;
+  --text-muted: #92969d;
 
-  --red-primary: #d81733;
-  --red-bright: #ef2942;
-  --red-dark: #a80f26;
-  --red-soft: #fdeef1;
+  --red-primary: #e21c35;
+  --red-bright: #f5324c;
+  --red-dark: #b61229;
+  --red-soft: #ffe8ec;
 
   /* A single hairline weight does almost all structural work now — content
      is separated by rules and whitespace, not by bordered containers. */
-  --hairline: rgba(14, 15, 18, 0.09);
-  --hairline-strong: rgba(14, 15, 18, 0.16);
+  --hairline: rgba(18, 20, 24, 0.08);
+  --hairline-strong: rgba(18, 20, 24, 0.16);
 
   --glass-white: rgba(255, 255, 255, 0.7);
   --whatsapp-green: #25d366;
@@ -33,6 +33,11 @@
   /* ---------- Type ---------- */
   --font-body: "Manrope Variable", "Manrope", "Inter", system-ui, -apple-system,
     BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Monospace: used sparingly for technical accents (spec IDs, chemistry
+     labels, section indices). Never for body copy. */
+  --font-mono: "SFMono-Regular", ui-monospace, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
 
   /* Display sizes carry the page. The jump from --fs-display to --fs-body is
      deliberately large: hierarchy comes from scale contrast, not from boxes. */

@@ -1,0 +1,218 @@
+---
+/*
+  Jump-start & Mobile Assistance — second heavyweight editorial section.
+  Composition mirrors Battery Replacement: same type scale and rhythm,
+  reversed left/right on wide viewports for visual variety.
+*/
+import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+const verifies = [
+  "Whether the engine will start at all.",
+  "Whether the battery holds the charge after running.",
+  "Whether the alternator is keeping up under load.",
+  "Whether a parasitic drain returns overnight.",
+];
+---
+
+<section class="feature-alt" id="jump-start">
+  <div class="container feature-grid">
+    <aside class="check-card" aria-label="What a jump-start session verifies">
+      <div class="check-bloom" aria-hidden="true"></div>
+      <div class="check-inner">
+        <div class="check-head">
+          <span class="check-eyebrow">A jump-start session verifies</span>
+          <span class="check-dot" aria-hidden="true">◆</span>
+        </div>
+        <ol class="check-list">
+          {
+            verifies.map((line, i) => (
+              <li>
+                <span class="check-index">{`0${i + 1}`.slice(-2)}</span>
+                <span class="check-text">{line}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="check-note">
+          A car that starts after a jump but keeps going flat is a strong signal that the
+          fix is not another jump-start.
+        </p>
+      </div>
+    </aside>
+
+    <div class="feature-copy">
+      <span class="label feature-label">
+        <span class="feature-index">02</span>
+        Jump-start &amp; Mobile Assistance
+      </span>
+      <h2>A jump start is<br />a diagnostic step,<br />not a fix.</h2>
+      <p class="feature-p">
+        Enough charge to start the engine is useful, but it does not resolve whatever
+        drained the battery in the first place. A repeat drain, a battery close to end of
+        life or an alternator that is not fully recharging all look identical from the
+        ignition.
+      </p>
+      <p class="feature-p">
+        Mobile battery service — assistance carried out where the car sits — covers most
+        of these situations. Some modern vehicles additionally require the new battery to
+        be registered to the car's electronics after replacement.
+      </p>
+
+      <div class="feature-actions">
+        <PrimaryHelpButton label="Get Battery Help" />
+        {
+          hasWhatsApp && (
+            <WhatsAppButton
+              service="jump_start"
+              ctaLocation="service_whatsapp"
+              variant="quiet"
+            />
+          )
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .feature-alt {
+    position: relative;
+    padding-block: var(--section-space);
+    overflow-x: clip;
+    border-top: 1px solid var(--hairline);
+    background: var(--bg-soft);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+    align-items: start;
+  }
+
+  @media (min-width: 64rem) {
+    .feature-grid {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: clamp(3rem, 1rem + 5vw, 6rem);
+    }
+  }
+
+  .feature-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 0.14em;
+    font-weight: 500;
+  }
+
+  .feature-copy h2 {
+    max-width: 18ch;
+  }
+
+  .feature-p {
+    margin-top: 1.5rem;
+    color: var(--text-secondary);
+    max-width: var(--measure);
+  }
+
+  .feature-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: clamp(2rem, 1.5rem + 1vw, 2.5rem);
+  }
+
+  .check-card {
+    position: relative;
+  }
+
+  .check-bloom {
+    position: absolute;
+    inset: -8% -6% -8% -6%;
+    background: radial-gradient(
+      closest-side,
+      rgba(226, 28, 53, 0.09) 0%,
+      rgba(226, 28, 53, 0) 74%
+    );
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .check-inner {
+    position: relative;
+    z-index: 1;
+    padding: clamp(1.75rem, 1.5rem + 1.25vw, 2.5rem);
+    border-top: 1px solid var(--hairline-strong);
+    background: var(--bg-main);
+  }
+
+  .check-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .check-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .check-dot {
+    font-size: 0.5rem;
+    color: var(--red-primary);
+  }
+
+  .check-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .check-list li {
+    display: grid;
+    grid-template-columns: 3rem 1fr;
+    gap: 1rem;
+    padding-block: 1.125rem;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .check-index {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--red-primary);
+    letter-spacing: 0.08em;
+    align-self: baseline;
+  }
+
+  .check-text {
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--text-primary);
+  }
+
+  .check-note {
+    margin-top: 1.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+    max-width: 44ch;
+  }
+</style>
