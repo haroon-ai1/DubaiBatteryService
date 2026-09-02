@@ -58,17 +58,29 @@ function composeMessage(service: ServiceId): string {
   return `${salutation}${attribution}${baseMessage(service)}`;
 }
 
-function normalizeWhatsAppNumber(input: string): string | null {
-  const digits = input.replace(/\D/g, "");
-  // wa.me expects country-coded digits, minimum 8 to filter obvious garbage.
-  return digits.length >= 8 ? digits : null;
+/** Minimum plausible length for a country-coded number. Filters garbage. */
+const MIN_DIGITS = 8;
+
+/**
+ * Reduce any input to bare country-coded digits.
+ * Handles a leading `+` and the international `00` prefix
+ * (e.g. "00971582424859" and "+971582424859" both yield "971582424859").
+ */
+function toInternationalDigits(input: string): string | null {
+  let digits = input.replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  return digits.length >= MIN_DIGITS ? digits : null;
 }
 
+/** wa.me expects digits only — no `+`, no spaces. */
+function normalizeWhatsAppNumber(input: string): string | null {
+  return toInternationalDigits(input);
+}
+
+/** tel: links use E.164 with a leading `+`. */
 function normalizeCallNumber(input: string): string | null {
-  // Keep leading + and digits only.
-  const cleaned = input.replace(/[^\d+]/g, "");
-  if (!cleaned) return null;
-  return cleaned.startsWith("+") ? cleaned : `+${cleaned.replace(/^\++/, "")}`;
+  const digits = toInternationalDigits(input);
+  return digits ? `+${digits}` : null;
 }
 
 /**
@@ -89,17 +101,24 @@ export function getWhatsAppUrl(ctx: LeadContext): string | null {
 /**
  * Build a `tel:` URL. Prefers `callTracking.number` when enabled so raw
  * partner numbers don't leak into the DOM under a tracked scenario.
- * Returns `null` when no callable number is available.
+ * Returns `null` when no callable number is available — including when a
+ * number is configured but fails normalization, so a malformed value can
+ * never render as a dead `tel:null` link.
  */
 export function getCallUrl(_ctx: Pick<LeadContext, "ctaLocation">): string | null {
   const { partner, callTracking } = siteConfig;
-  if (callTracking.enabled && callTracking.number) {
-    return `tel:${normalizeCallNumber(callTracking.number)}`;
-  }
-  if (partner.enabled && partner.callNumber) {
-    return `tel:${normalizeCallNumber(partner.callNumber)}`;
-  }
-  return null;
+
+  const raw =
+    callTracking.enabled && callTracking.number
+      ? callTracking.number
+      : partner.enabled && partner.callNumber
+        ? partner.callNumber
+        : null;
+
+  if (!raw) return null;
+
+  const number = normalizeCallNumber(raw);
+  return number ? `tel:${number}` : null;
 }
 
 /**
