@@ -4,7 +4,7 @@
   number is configured. Never construct wa.me URLs elsewhere; always
   route through `getWhatsAppUrl()`.
 */
-import { getWhatsAppUrl } from "@/lib/leads";
+import { getLeadDataAttributes, getWhatsAppUrl } from "@/lib/leads";
 import type { AreaId, CtaLocation, ServiceId } from "@/lib/services";
 
 interface Props {
@@ -28,6 +28,12 @@ const {
 } = Astro.props;
 
 const href = getWhatsAppUrl({ service, area, ctaLocation });
+const leadAttrs = getLeadDataAttributes({
+  event: "click_whatsapp",
+  ctaLocation,
+  service,
+  area,
+});
 ---
 
 {
@@ -37,10 +43,7 @@ const href = getWhatsAppUrl({ service, area, ctaLocation });
       class:list={["wa-btn", `wa-btn--${variant}`, className]}
       target="_blank"
       rel="noopener"
-      data-lead-event="click_whatsapp"
-      data-lead-service={service}
-      data-lead-cta={ctaLocation}
-      data-lead-area={area ?? ""}
+      {...leadAttrs}
     >
       <svg class="wa-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path

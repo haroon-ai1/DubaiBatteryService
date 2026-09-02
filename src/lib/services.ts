@@ -18,6 +18,8 @@ export type ServiceId =
 export type CtaLocation =
   | "hero_whatsapp"
   | "hero_call"
+  | "quick_actions_whatsapp"
+  | "quick_actions_call"
   | "service_whatsapp"
   | "service_call"
   | "sticky_mobile_whatsapp"

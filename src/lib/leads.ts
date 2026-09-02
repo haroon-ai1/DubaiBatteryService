@@ -10,6 +10,13 @@
 import { siteConfig } from "@/config/site";
 import type { AreaId, CtaLocation, ServiceId } from "@/lib/services";
 
+/**
+ * The two lead-tracking events emitted by the site. Kept as an explicit
+ * union so mistyped event names don't compile — the delegator in
+ * `Analytics.astro` also enforces this at runtime via an allow-list.
+ */
+export type LeadEvent = "click_whatsapp" | "click_call";
+
 export interface LeadContext {
   service: ServiceId;
   ctaLocation: CtaLocation;
@@ -17,6 +24,15 @@ export interface LeadContext {
   area?: AreaId | null;
   /** Path of the current page — passed to GA4, not to WhatsApp. */
   page?: string;
+}
+
+export interface LeadAttributesContext {
+  event: LeadEvent;
+  ctaLocation: CtaLocation;
+  /** Only meaningful for WhatsApp leads. Omit for calls. */
+  service?: ServiceId;
+  /** Explicit page-context area. Omit / null → attribute is not emitted. */
+  area?: AreaId | null;
 }
 
 /**
@@ -119,6 +135,32 @@ export function getCallUrl(_ctx: Pick<LeadContext, "ctaLocation">): string | nul
 
   const number = normalizeCallNumber(raw);
   return number ? `tel:${number}` : null;
+}
+
+/**
+ * Single source of the `data-lead-*` attribute set consumed by
+ * `Analytics.astro`. CTA components must spread this onto their anchor
+ * rather than write the attributes inline — the delegator's `dataset`
+ * reads and these keys must never drift apart.
+ *
+ * `area` is omitted from the DOM when null so the delegator's
+ * `dataset.leadArea || null` fallback stays authoritative and empty
+ * strings do not clutter the markup.
+ */
+export function getLeadDataAttributes(
+  ctx: LeadAttributesContext
+): Record<string, string> {
+  const attrs: Record<string, string> = {
+    "data-lead-event": ctx.event,
+    "data-lead-cta": ctx.ctaLocation,
+  };
+  if (ctx.service) {
+    attrs["data-lead-service"] = ctx.service;
+  }
+  if (ctx.area) {
+    attrs["data-lead-area"] = ctx.area;
+  }
+  return attrs;
 }
 
 /**

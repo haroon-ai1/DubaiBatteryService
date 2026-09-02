@@ -60,7 +60,14 @@ const partnerName = siteConfig.partner.enabled ? siteConfig.partner.name : null;
       // GA4 shape: `event(eventName, params)`. Falling back to a raw
       // dataLayer push keeps the record around when gtag isn't loaded.
       if (typeof window.gtag === "function") {
-        window.gtag("event", payload.event, payload.params);
+        // `transport_type: "beacon"` routes the hit through
+        // navigator.sendBeacon so it survives the tap that hands the tab
+        // off to WhatsApp or the dialer. Without this, mobile taps
+        // regularly cancel the outgoing request on unload.
+        window.gtag("event", payload.event, {
+          ...payload.params,
+          transport_type: "beacon",
+        });
       } else {
         window.dataLayer.push({ event: payload.event, ...payload.params });
       }

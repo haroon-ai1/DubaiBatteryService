@@ -4,7 +4,7 @@
   configured. Prefers a call-tracking DID when enabled; falls back to the
   partner's raw call number otherwise (see `getCallUrl()`).
 */
-import { getCallUrl } from "@/lib/leads";
+import { getCallUrl, getLeadDataAttributes } from "@/lib/leads";
 import type { AreaId, CtaLocation } from "@/lib/services";
 
 interface Props {
@@ -24,6 +24,11 @@ const {
 } = Astro.props;
 
 const href = getCallUrl({ ctaLocation });
+const leadAttrs = getLeadDataAttributes({
+  event: "click_call",
+  ctaLocation,
+  area,
+});
 ---
 
 {
@@ -31,9 +36,7 @@ const href = getCallUrl({ ctaLocation });
     <a
       href={href}
       class:list={["call-btn", `call-btn--${variant}`, className]}
-      data-lead-event="click_call"
-      data-lead-cta={ctaLocation}
-      data-lead-area={area ?? ""}
+      {...leadAttrs}
     >
       <svg class="call-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path
