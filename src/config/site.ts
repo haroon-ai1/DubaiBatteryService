@@ -184,11 +184,11 @@ export const siteConfig: SiteConfig = {
    * optional partner-disclosure line — it is never used as the site's
    * brand, headline, or logo text.
    */
-  partner: {
+    partner: {
     enabled: true,
     name: "Battery Boost Dubai",
-    whatsappNumber: null,
-    callNumber: null,
+    whatsappNumber: "971582424859",
+    callNumber: "+971582424859",
   },
 
   leadAttribution: {
