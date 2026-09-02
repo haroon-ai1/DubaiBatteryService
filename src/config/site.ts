@@ -204,8 +204,8 @@ export const siteConfig: SiteConfig = {
 
   leadEndpoint: null,
 
-  analytics: {
-    gaMeasurementId: null,
+    analytics: {
+    gaMeasurementId: "G-5L189EJK9S",
     googleSiteVerification: null,
     googleAdsConversionId: null,
     metaPixelId: null,
