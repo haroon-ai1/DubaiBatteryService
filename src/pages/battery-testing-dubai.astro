@@ -1,0 +1,215 @@
+---
+import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+const related: RelatedItem[] = [
+  {
+    service: "battery_replacement",
+    href: "/car-battery-replacement-dubai/",
+    blurb: "The replacement path once a test has confirmed the battery is the fault.",
+  },
+  {
+    service: "jump_start",
+    href: "/jump-start-dubai/",
+    blurb: "What a jump actually proves — and why a test is the step that follows.",
+  },
+  {
+    service: "mobile_battery_service",
+    href: "/mobile-battery-service-dubai/",
+    blurb: "Testing carried out at the vehicle rather than on a workshop bench.",
+  },
+];
+---
+
+<ServicePageLayout
+  service="battery_testing"
+  title="Car Battery Testing in Dubai | Dubai Battery Service"
+  description="Car battery testing in Dubai: separating a flat battery from a failing one, load and conductance tests, alternator and parasitic-drain checks, and why testing before replacing avoids a repeat callout. Get help."
+  path="/battery-testing-dubai/"
+  eyebrow="04 · Testing"
+  h1="Car Battery Testing in Dubai."
+  standfirst="A flat battery, a failing battery and a charging fault look almost identical from the driver's seat, and they are not the same problem. What follows covers how each is actually distinguished, why a proper test is quick and cheap compared with fitting the wrong fix, and what a test does and does not tell you about a specific car."
+  breadcrumbLabel="Car Battery Testing"
+  related={related}
+>
+  <h2>Three faults that look the same to the driver</h2>
+  <p>
+    The car doesn't start; the dashboard flickers; the engine cranks slowly and then
+    gives up. From behind the wheel these symptoms are the same regardless of what
+    caused them. Underneath, three distinct faults are responsible:
+  </p>
+  <ul>
+    <li><strong>A flat battery.</strong> The battery is fine — a light was left on, the
+      car sat for weeks, an accessory kept drawing after the ignition was off — and it
+      has simply lost its charge. A recharge or a
+      <a href="/jump-start-dubai/">jump-start</a> puts things right.</li>
+    <li><strong>A failing battery.</strong> The cell has aged out. Internal grid
+      corrosion, plate softening or water loss have taken capacity below the threshold
+      the vehicle needs to start reliably. No amount of charging brings it back — the
+      <a href="/car-battery-replacement-dubai/">battery has to be replaced</a>.</li>
+    <li><strong>A charging or drain fault.</strong> The battery itself is fine, but the
+      alternator isn't refilling it properly during driving, or a stuck accessory is
+      pulling current with the ignition off. Both drain the battery on a rolling basis;
+      a new battery, fitted without addressing the underlying fault, produces exactly
+      the same failure inside weeks.</li>
+  </ul>
+  <p>
+    A test is the mechanism that separates these three. It takes a few minutes and it
+    is cheaper — often free with a service call — than paying to fit the wrong fix.
+  </p>
+
+  <h2>What a battery test actually measures</h2>
+  <p>
+    Two families of test are in common use. Both are quick, both are non-destructive
+    to a healthy battery, and each has its uses.
+  </p>
+
+  <h3>Conductance testing</h3>
+  <p>
+    A conductance tester applies a small AC signal to the battery and measures how
+    freely it flows. That reading correlates with the internal condition of the plates
+    and is compared with the battery's CCA rating to give a state-of-health figure —
+    typically a percentage. Conductance testers are fast, they work on batteries that
+    are too flat for a load test, and they are what most workshop diagnostic tools
+    use. Their main limitation is that they infer condition from a proxy measurement;
+    an unusually cold or extremely discharged battery can produce a misleading reading.
+  </p>
+
+  <h3>Load testing</h3>
+  <p>
+    A carbon-pile load tester draws a heavy current from the battery — traditionally
+    half its CCA rating for fifteen seconds — while the voltage is watched. A healthy
+    battery holds its voltage above the pass threshold; a failing one drops below. Load
+    testing is a more direct measure of what the battery will actually do in the car,
+    but it requires the battery to be reasonably well-charged to be meaningful, and it
+    is harder on a marginal battery than a conductance test.
+  </p>
+  <p>
+    In practice a conductance test is used first because it works on any state of
+    charge. Where the result is borderline, a load test after a charge settles it.
+  </p>
+
+  <h2>Testing the alternator and the parasitic draw</h2>
+  <p>
+    A "flat battery" that turns out to be a healthy battery means the fault is
+    elsewhere in the charging circuit. Two follow-on checks cover almost every case.
+  </p>
+  <p>
+    <strong>Alternator output under load.</strong> With the engine running at fast idle
+    and a moderate electrical load switched on — headlights, blower, rear demist — the
+    voltage at the battery terminals should sit in the 13.8 to 14.6 V range for a
+    healthy 12 V system. Anything lower is undercharging; anything higher is
+    overcharging, which cooks batteries and reads as premature failure. The exact
+    healthy range depends on the vehicle and its temperature.
+  </p>
+  <p>
+    <strong>Parasitic draw with the ignition off.</strong> A modern car is expected to
+    draw a small standing current — typically 30 to 80 mA once the vehicle has fully
+    gone to sleep — for the immobiliser, the alarm and the various control modules. A
+    stuck accessory, a boot light that hasn't switched off, an aftermarket alarm or a
+    faulty module can push that figure into the hundreds of milliamps, which is enough
+    to flatten a battery over a few days of standing. An ammeter on the negative
+    terminal, patient enough to wait for the car to actually sleep, finds it.
+  </p>
+
+  <h2>When testing is worth doing</h2>
+  <p>
+    Anytime the answer isn't obvious, essentially. In practice that means:
+  </p>
+  <ul>
+    <li>the battery has gone flat more than once in a short period</li>
+    <li>the car cranks slowly or hesitantly on cool mornings</li>
+    <li>the battery is more than about three years old, particularly in UAE service</li>
+    <li>stop-start is refusing to engage on a car that normally uses it</li>
+    <li>headlights dim visibly at idle or dashboard voltage displays wander low</li>
+    <li>a
+      <a href="/jump-start-dubai/">jump-start</a> has been needed and there's no
+      obvious one-off cause behind it</li>
+  </ul>
+  <p>
+    In each of those cases the cost of a test is trivial next to the cost of guessing
+    wrong — a battery replaced that didn't need to be, or a battery not replaced when
+    it should have been. The alternator/drain checks add ten or fifteen minutes and
+    remove almost all remaining ambiguity.
+  </p>
+
+  {
+    hasWhatsApp && (
+      <p class="inline-cta">
+        <WhatsAppButton
+          service="battery_testing"
+          ctaLocation="service_inline_whatsapp"
+          variant="primary"
+          label="Message about a battery test"
+        />
+      </p>
+    )
+  }
+
+  <h2>Common questions about battery testing</h2>
+
+  <details class="faq">
+    <summary>How long does a battery test take?</summary>
+    <p>
+      The battery test itself is a few minutes. Where the situation warrants the full
+      alternator-and-parasitic-draw check, allow another ten to fifteen minutes at the
+      vehicle. The whole diagnostic pass is typically finished in the time a
+      <a href="/car-battery-replacement-dubai/">replacement</a> would have taken.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Do I need to remove the battery to have it tested?</summary>
+    <p>
+      No. Modern conductance and load testers connect at the battery terminals with
+      the battery in place. The alternator and parasitic-draw checks are only
+      meaningful with the battery in the car, so removing it would defeat the purpose
+      of the wider test.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>My battery is very flat — can it still be tested?</summary>
+    <p>
+      A conductance tester will produce a reading on a very flat battery, but a load
+      test needs a battery that has been recharged first — a deeply discharged battery
+      will fail a load test whether it is healthy or not. Where the battery is very
+      flat, a charge and a re-test is the honest sequence; skipping straight to a
+      replacement risks throwing away a battery that recovers.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Does the test also check the alternator?</summary>
+    <p>
+      A battery test on its own only looks at the battery. Where the symptom leaves
+      doubt about the wider charging circuit — repeat flat events, weak cranking,
+      stop-start refusing to engage — the alternator output under load and the
+      key-off parasitic draw are checked as well. Those two additional measurements
+      cover almost every "the new battery went flat again" situation.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Can I trust a "free battery test" from a parts shop?</summary>
+    <p>
+      A quick free test with a conductance tool is legitimate and can be useful. Two
+      caveats apply. First, the result depends on the state of charge — a flat battery
+      will read worse than it is. Second, that test only looks at the battery; it does
+      not check whether the alternator is charging or whether a parasitic drain is
+      flattening it. Where the answer matters — because a replacement is on the table
+      — the wider on-site check is what settles it.
+    </p>
+  </details>
+</ServicePageLayout>
+
+<style>
+  .inline-cta {
+    margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
+    max-width: none !important;
+  }
+</style>

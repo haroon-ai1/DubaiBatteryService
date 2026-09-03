@@ -1,0 +1,217 @@
+---
+import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+const related: RelatedItem[] = [
+  {
+    service: "battery_replacement",
+    href: "/car-battery-replacement-dubai/",
+    blurb: "Why the specification the vehicle was engineered around decides service life.",
+  },
+  {
+    service: "battery_testing",
+    href: "/battery-testing-dubai/",
+    blurb: "The check that confirms a new battery is genuinely the right answer.",
+  },
+  {
+    service: "mobile_battery_service",
+    href: "/mobile-battery-service-dubai/",
+    blurb: "The wider on-site service the delivery-and-fit visit is part of.",
+  },
+];
+---
+
+<ServicePageLayout
+  service="battery_delivery"
+  title="Car Battery Delivery in Dubai | Dubai Battery Service"
+  description="Car battery delivery in Dubai: the correct battery brought to the vehicle and fitted on site, why matching to the car matters more than delivery speed, and what a proper on-site fitment covers. Get help."
+  path="/battery-delivery-dubai/"
+  eyebrow="03 · Delivery"
+  h1="Car Battery Delivery in Dubai."
+  standfirst="Battery delivery is only useful if the battery arriving is the correct one for the vehicle, and if the fitment on site is done properly. What follows covers how the right battery is confirmed before the van moves, what a proper on-site fit actually involves, and where a delivery visit fits alongside testing and replacement."
+  breadcrumbLabel="Car Battery Delivery"
+  related={related}
+>
+  <h2>Delivery is a fitment, not a drop-off</h2>
+  <p>
+    A battery left with the driver in a box isn't a service — it's a purchase. Battery
+    delivery in the sense that matters here is different: the correct unit brought to
+    the vehicle, installed at the vehicle, and the old battery taken away for
+    recycling. The value is in getting the specification right before the van leaves,
+    and in the fitment being done properly on arrival.
+  </p>
+  <p>
+    That framing changes what the phone call up front is about. Vehicle make, model,
+    year, engine variant, and — where the driver can read it off the existing battery —
+    the group size and CCA on the label. Those details settle which battery is put in
+    the van. Getting them right is the difference between a job that finishes in
+    twenty minutes and a return trip.
+  </p>
+
+  <h2>Matching the battery to the car</h2>
+  <p>
+    The
+    <a href="/car-battery-replacement-dubai/">battery replacement page</a> covers the
+    specification question in detail — chemistry, capacity, cold-cranking amps and
+    physical fitment. The short version is that every modern car is engineered around
+    a specific battery, and fitting outside that specification is the single most
+    common reason a fresh purchase fails inside months.
+  </p>
+  <p>
+    Three chemistries cover almost every passenger car in service: conventional
+    flooded (older cars without stop-start), Enhanced Flooded Batteries (EFB, for many
+    stop-start cars), and Absorbent Glass Mat (AGM, for premium and energy-management
+    systems). Which one the vehicle requires is set by the manufacturer. Substituting
+    an EFB where AGM was specified, or a conventional flooded battery on a stop-start
+    car, is the pattern that produces early failure.
+  </p>
+
+  <h3>Confirming the specification before dispatch</h3>
+  <p>
+    The correct battery is confirmed against the vehicle registration and, where
+    possible, the label on the existing unit. Group size and terminal orientation are
+    checked so the new battery sits in the tray correctly and the cables reach the
+    posts on the right side. Cold-cranking amps are matched to the manufacturer
+    minimum, not to whatever happens to be in stock. Where the vehicle has active
+    battery management, the correct chemistry is dispatched with an OBD tool to code
+    the new unit into the vehicle's electronics.
+  </p>
+
+  <h2>What a proper on-site fit looks like</h2>
+  <p>
+    A delivered battery that is well fitted looks the same as one fitted in a workshop.
+    The sequence is short but each step matters:
+  </p>
+  <ul>
+    <li>vehicle identified and the correct battery re-confirmed against the label</li>
+    <li>ignition off, key removed from proximity for keyless cars</li>
+    <li>memory keeper connected where the vehicle needs one, to preserve radio
+      codes, seat memory and adaptive-transmission learning</li>
+    <li>negative terminal disconnected first, then positive</li>
+    <li>tray, hold-down and terminals inspected for corrosion and mechanical damage</li>
+    <li>new battery fitted, hold-down torqued so the case doesn't move under
+      acceleration but isn't over-stressed</li>
+    <li>positive terminal connected first, then negative</li>
+    <li>where required, BMS registration performed on the OBD port</li>
+    <li>an under-load voltage check on the running engine verifies the alternator
+      is actually supporting the new battery</li>
+    <li>old battery collected for recycling</li>
+  </ul>
+  <p>
+    None of that is glamour work. It is the reason a properly-delivered battery lasts
+    a normal service life instead of failing on the way home from an unregistered fit.
+  </p>
+
+  <h2>Delivery isn't automatic — testing may come first</h2>
+  <p>
+    Not every "flat battery" call ends in a replacement. A battery that reads flat can
+    be a battery at end of life, a battery drained by a parasitic load, or a battery
+    that isn't being kept charged by a failing alternator. Fitting a new battery to a
+    car with a charging fault produces a repeat callout within weeks.
+  </p>
+  <p>
+    Where the symptom leaves room for doubt, the visit starts with a
+    <a href="/battery-testing-dubai/">battery and charging-system test</a> and moves
+    to a replacement only if the test confirms it. That protects the driver from
+    paying for the wrong fix, and it is why "delivery" here is treated as part of a
+    broader on-site service rather than a standalone product.
+  </p>
+
+  <h2>What UAE service adds to the picture</h2>
+  <p>
+    Lead-acid chemistry ages faster in heat. Manufacturer-quoted service lives are
+    measured against a temperate baseline; sustained under-bonnet temperatures in the
+    UAE summer sit well above that. The internal grid corrosion, positive-plate
+    softening and water loss that finish a battery all accelerate with temperature,
+    which is why a conventional starter battery here often runs closer to two or three
+    years of dependable service than the four to five sometimes quoted.
+  </p>
+  <p>
+    That has practical consequences for delivery. AGM batteries tolerate the heat
+    better than flooded ones because the sealed construction contains water loss, and
+    where the vehicle allows the choice, AGM is generally the more forgiving option in
+    this climate. Where the manufacturer specified flooded, replacing like-for-like is
+    the correct answer — the vehicle wasn't designed for the charging profile of AGM.
+  </p>
+
+  {
+    hasWhatsApp && (
+      <p class="inline-cta">
+        <WhatsAppButton
+          service="battery_delivery"
+          ctaLocation="service_inline_whatsapp"
+          variant="primary"
+          label="Message about battery delivery"
+        />
+      </p>
+    )
+  }
+
+  <h2>Common questions about battery delivery</h2>
+
+  <details class="faq">
+    <summary>How is the correct battery decided before the van leaves?</summary>
+    <p>
+      From the vehicle's make, model, year and engine variant, cross-checked against
+      the label on the existing battery where the driver can read it. Group size,
+      terminal orientation, chemistry (flooded, EFB or AGM) and cold-cranking amps
+      are matched to the manufacturer specification. Sending the wrong battery is
+      the single most common reason a delivery visit ends in a return trip, so this
+      part of the call matters more than the fit itself.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Is the old battery taken away?</summary>
+    <p>
+      Yes. Lead-acid batteries are close to fully recyclable — the lead, plastic case
+      and acid are all recovered by industry. A replaced battery should be collected
+      for recycling at the visit, not left in general waste or kept with the vehicle.
+      Legitimate services do this as standard.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Does the new battery need to be registered to the car?</summary>
+    <p>
+      For many recent European vehicles and most cars with active battery management,
+      yes. The on-board system needs to know a new battery has been fitted so it can
+      reset its charging strategy. Without registration, the alternator continues to
+      charge as though the old battery is still there, which typically overcharges the
+      fresh one and shortens its life. Whether registration is required depends on
+      the specific vehicle — worth confirming for the make and model before booking.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>How long does an on-site delivery-and-fit take?</summary>
+    <p>
+      A straightforward fit — accessible battery, no BMS registration required — is
+      typically twenty minutes or so on site. Cars with under-seat or boot-mounted
+      batteries, or those that need registration through the OBD port, take longer.
+      Travel time to the vehicle isn't included in that figure.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>What if the battery I'm sent turns out to be the wrong one?</summary>
+    <p>
+      If the specification confirmed up front doesn't match what's actually in the
+      vehicle, the correct unit is arranged rather than fitting whatever will bolt
+      down. A close-but-not-correct battery is precisely the failure mode this service
+      exists to avoid — a mismatched fit typically fails inside a few months and the
+      driver ends up paying twice.
+    </p>
+  </details>
+</ServicePageLayout>
+
+<style>
+  .inline-cta {
+    margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
+    max-width: none !important;
+  }
+</style>

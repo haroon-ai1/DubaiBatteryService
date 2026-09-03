@@ -1,0 +1,220 @@
+---
+import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import ServiceImage from "@/components/service/ServiceImage.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+const related: RelatedItem[] = [
+  {
+    service: "battery_testing",
+    href: "/battery-testing-dubai/",
+    blurb: "Where the visit usually starts — separating flat from failing.",
+  },
+  {
+    service: "battery_replacement",
+    href: "/car-battery-replacement-dubai/",
+    blurb: "The specification that decides how long a new battery actually lasts.",
+  },
+  {
+    service: "mobile_battery_service",
+    href: "/mobile-battery-service-dubai/",
+    blurb: "Testing, replacement and BMS work carried out at the vehicle.",
+  },
+];
+---
+
+<ServicePageLayout
+  service="battery_service"
+  title="Car Battery Prices in Dubai | Dubai Battery Service"
+  description="Car battery prices in Dubai: what actually drives the price of a replacement — chemistry, capacity, fitment complexity, BMS registration — and how to compare quotes honestly. Get help."
+  path="/car-battery-prices-dubai/"
+  eyebrow="07 · Battery Service"
+  h1="Car Battery Service in Dubai."
+  standfirst="Battery service is the umbrella term for the different visits a car might actually need — a test, a jump-start, a replacement, a mobile fitment, an emergency call-out. What follows is the map: what each of those actually does, when it's the right call, and where to read more."
+  breadcrumbLabel="Car Battery Service"
+  related={related}
+>
+  <h2>What battery service covers, without the marketing</h2>
+  <p>
+    "Battery service" as a label covers several different visits, and treating them as
+    one blurs the choices a driver actually has. Broadly there are five, and each has
+    a different question behind it.
+  </p>
+  <ul>
+    <li>a
+      <a href="/battery-testing-dubai/">test</a> answers "is this a flat battery, a
+      failing battery, or a charging fault?"</li>
+    <li>a
+      <a href="/jump-start-dubai/">jump-start</a> gets a flat battery running so the
+      alternator can refill it — useful, but not a diagnosis</li>
+    <li>a
+      <a href="/car-battery-replacement-dubai/">replacement</a> is the fix once the
+      test has confirmed the battery itself is done</li>
+    <li>a
+      <a href="/mobile-battery-service-dubai/">mobile visit</a> is any of the above,
+      done at the vehicle rather than in a workshop</li>
+    <li>an
+      <a href="/emergency-battery-service-dubai/">emergency call-out</a> is a mobile
+      visit prioritised for a car that is somewhere it cannot stay</li>
+  </ul>
+  <p>
+    The right question up front — not the most expensive one — is what a proper
+    service starts with. The rest of this page is a map, not a sales pitch: what each
+    visit does, and how to tell which one you actually need.
+  </p>
+
+  <h2>Which visit is which, from the symptom</h2>
+
+  <h3>The car won't start today, and it's the first time</h3>
+  <p>
+    An event-driven flat — a light left on, a door ajar, a keyless system glitch — is
+    a jump-start situation. The battery is fine and a normal drive will refill it.
+    Where the reason is genuinely a one-off, the story ends with the jump. Where the
+    same battery flattens again inside a few weeks, it wasn't a one-off, and the next
+    step is a test.
+  </p>
+
+  <h3>The car has been cranking weakly for days, and now it won't start</h3>
+  <p>
+    That is the failing-battery pattern — a cell that has been slowly losing capacity
+    and has crossed the threshold below which it can't turn the engine. A test
+    confirms it, and a replacement is the answer. Jump-starting will get the car
+    mobile in the meantime, but a battery that has aged out doesn't recover.
+  </p>
+
+  <h3>The car keeps going flat over weeks even though it's driven normally</h3>
+  <p>
+    This one isn't necessarily the battery. A parasitic drain from a stuck accessory,
+    a failing alternator that isn't fully recharging, or a pattern of only very short
+    trips can all produce the same symptom. The test that matters here is not just on
+    the battery but on the wider charging circuit — alternator output under load, and
+    key-off current draw with the car allowed to sleep. Fitting a new battery without
+    settling this produces the same failure again.
+  </p>
+
+  <h3>The car is stranded somewhere it can't stay</h3>
+  <p>
+    An emergency mobile call-out. The priority is prioritised dispatch, the van
+    provisioned to finish the job on site, and the visit still begins with a test
+    rather than assuming a replacement is needed.
+  </p>
+
+  <h2>Where a workshop is the right answer instead</h2>
+  <p>
+    Not everything is a mobile job. A car with a suspected alternator failure, a
+    starter-motor fault, or a hybrid high-voltage traction battery is workshop work —
+    the diagnosis can be done at the vehicle but the fix cannot. An honest visit says
+    so at the visit rather than fitting a new 12 V battery and hoping.
+  </p>
+  <p>
+    That distinction is worth flagging up front, because "the car doesn't start" is a
+    symptom, not a diagnosis. Battery service is the right first stop when the fault
+    could plausibly be a battery — which is most of the time, particularly on cars in
+    UAE service, but not all the time.
+  </p>
+
+  <h2>What the UAE climate changes about the picture</h2>
+  <p>
+    Two things worth carrying forward for any driver here. First, service life.
+    Lead-acid chemistry ages faster in heat, and manufacturer-quoted battery lives are
+    measured against a temperate baseline. A conventional starter battery in a Dubai
+    car typically runs closer to two or three years than the four or five sometimes
+    quoted. AGM tends to last longer because the sealed construction better contains
+    the water loss that finishes a flooded battery. Age alone is not proof of failure,
+    but three-year-plus batteries in this climate warrant more scrutiny than they
+    would elsewhere.
+  </p>
+  <p>
+    Second, failure mode. Batteries here more often fail suddenly than gradually — a
+    car that started fine yesterday is gone by morning. That is part of why mobile
+    service exists: the car is where it is, and there is no reasonable way to move it
+    without starting it first.
+  </p>
+
+  <ServiceImage service="battery_service" slotName="detail" />
+
+  {
+    hasWhatsApp && (
+      <p class="inline-cta">
+        <WhatsAppButton
+          service="battery_service"
+          ctaLocation="service_inline_whatsapp"
+          variant="primary"
+          label="Message about battery service"
+        />
+      </p>
+    )
+  }
+
+  <h2>Common questions about battery service</h2>
+
+  <details class="faq">
+    <summary>How do I know whether I need a test, a jump or a replacement?</summary>
+    <p>
+      A first-time flat with an obvious cause — a light left on, a door ajar — is a
+      <a href="/jump-start-dubai/">jump-start</a> situation. A car that has been
+      cranking weakly for days, or a battery that has gone flat more than once in a
+      short period, is a
+      <a href="/battery-testing-dubai/">test</a> and, almost certainly, a
+      <a href="/car-battery-replacement-dubai/">replacement</a>. When the symptom
+      doesn't clearly point to one or the other, the test is the honest first step.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>How long do car batteries typically last in the UAE?</summary>
+    <p>
+      Shorter than the four to five years often quoted for temperate climates. A
+      conventional starter battery here typically runs closer to two or three years
+      of dependable service. AGM batteries, sealed and more heat-tolerant, tend to
+      last longer. Age alone doesn't prove failure — a test settles it — but a
+      three-year-plus battery in Dubai service warrants a check even when it seems
+      to be behaving.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Can everything be done at the car, or do some jobs need a workshop?</summary>
+    <p>
+      Battery testing, replacement, BMS registration through the OBD port and the
+      wider charging-system checks are all
+      <a href="/mobile-battery-service-dubai/">on-site jobs</a>. Alternator
+      replacement, starter-motor faults and any hybrid high-voltage traction battery
+      work are workshop jobs. The diagnosis at the vehicle is what tells you which
+      category the situation is in.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Is battery service safe on modern cars with electronics?</summary>
+    <p>
+      Yes, when done to the manufacturer's procedure — memory keeper connected where
+      the vehicle needs one, correct disconnection order, correct battery
+      specification, BMS coded to the new unit on cars that require it. Cutting
+      corners on any of those steps can produce electronics issues, lost adaptive
+      learning, or a new battery that overcharges and fails inside the warranty
+      window. The procedure is the difference.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>What information helps most when I make the first call?</summary>
+    <p>
+      Make, model, year and (if known) engine variant of the car; where it is parked
+      and how the visit will reach it; and the symptom in your own words — how the
+      engine sounds when it tries to start, whether the battery has gone flat before,
+      how old the current battery is. That is what settles whether the visit is a
+      jump, a test, or a replacement, and what the van needs to bring.
+    </p>
+  </details>
+</ServicePageLayout>
+
+<style>
+  .inline-cta {
+    margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
+    max-width: none !important;
+  }
+</style>

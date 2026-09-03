@@ -1,0 +1,85 @@
+---
+/*
+  Optional inline image for a service page's `editorial` or `detail` slot.
+  Reads the source (and alt text) from `serviceImages.ts` — when the slot
+  is null, this component renders nothing. Pages sprinkle it wherever the
+  prose naturally wants a visual break.
+
+  The layout owns the `hero` slot directly; this component only handles
+  the two mid-page slots.
+*/
+import { Picture } from "astro:assets";
+import { getServiceImage, type ServiceImageSlot } from "@/config/serviceImages";
+import type { ServiceId } from "@/lib/services";
+
+/*
+  NB: this prop is `slotName`, not `slot`. Astro reserves the bare
+  `slot="xxx"` attribute on a child element for named-slot assignment
+  in the parent layout — passing `slot="detail"` here would send the
+  element into a non-existent parent slot and silently drop it before
+  Astro.props ever saw it.
+*/
+interface Props {
+  service: ServiceId;
+  slotName: Exclude<ServiceImageSlot, "hero">;
+  class?: string;
+}
+
+const { service, slotName, class: className = "" } = Astro.props;
+const entry = getServiceImage(service, slotName);
+
+// Aspect ratios per spec: editorial 16:9, detail 4:3. Sizes hint kept
+// generous — the page's own container caps this.
+const sizesBySlot: Record<Exclude<ServiceImageSlot, "hero">, string> = {
+  editorial: "(min-width: 64rem) 62rem, 100vw",
+  detail: "(min-width: 64rem) 40rem, 100vw",
+};
+
+const widthsBySlot: Record<Exclude<ServiceImageSlot, "hero">, number[]> = {
+  editorial: [640, 960, 1400],
+  detail: [420, 720, 1024],
+};
+---
+
+{
+  entry && (
+    <figure class:list={["service-figure", `service-figure--${slotName}`, className]}>
+      <Picture
+        src={entry.src}
+        formats={["avif", "webp"]}
+        fallbackFormat="jpg"
+        widths={widthsBySlot[slotName]}
+        sizes={sizesBySlot[slotName]}
+        alt={entry.alt}
+        loading="lazy"
+        decoding="async"
+        width={entry.src.width}
+        height={entry.src.height}
+        class="service-figure-img"
+      />
+    </figure>
+  )
+}
+
+<style>
+  .service-figure {
+    margin: clamp(2rem, 1.5rem + 1.5vw, 3rem) 0;
+  }
+
+  .service-figure-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-img);
+    display: block;
+  }
+
+  /* Editorial: full container width, tight vertical rhythm break. */
+  .service-figure--editorial {
+    /* honours prose flow — no side bleed */
+  }
+
+  /* Detail: narrower, aligned with prose measure. */
+  .service-figure--detail {
+    max-width: 40rem;
+  }
+</style>

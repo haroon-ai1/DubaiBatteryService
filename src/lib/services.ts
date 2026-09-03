@@ -16,6 +16,7 @@ export type ServiceId =
   | "emergency_battery_service";
 
 export type CtaLocation =
+  // homepage
   | "hero_whatsapp"
   | "hero_call"
   | "quick_actions_whatsapp"
@@ -25,7 +26,14 @@ export type CtaLocation =
   | "sticky_mobile_whatsapp"
   | "sticky_mobile_call"
   | "final_cta_whatsapp"
-  | "final_cta_call";
+  | "final_cta_call"
+  // service pages — generic across pages; the `service` param already
+  // distinguishes which page the tap came from.
+  | "service_hero_whatsapp"
+  | "service_hero_call"
+  | "service_inline_whatsapp"
+  | "service_final_whatsapp"
+  | "service_final_call";
 
 /** Explicit page-context area IDs. Never inferred from the visitor's device. */
 export type AreaId =

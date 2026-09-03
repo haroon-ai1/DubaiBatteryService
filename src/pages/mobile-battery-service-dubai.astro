@@ -1,0 +1,222 @@
+---
+import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import ServiceImage from "@/components/service/ServiceImage.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+const related: RelatedItem[] = [
+  {
+    service: "battery_replacement",
+    href: "/car-battery-replacement-dubai/",
+    blurb: "The specification that decides how long a fitted battery actually lasts.",
+  },
+  {
+    service: "battery_testing",
+    href: "/battery-testing-dubai/",
+    blurb: "The on-site test that confirms a replacement is really the answer.",
+  },
+  {
+    service: "emergency_battery_service",
+    href: "/emergency-battery-service-dubai/",
+    blurb: "Priority handling when the car is somewhere it cannot stay.",
+  },
+];
+---
+
+<ServicePageLayout
+  service="mobile_battery_service"
+  title="Mobile Car Battery Service in Dubai | Dubai Battery Service"
+  description="Mobile car battery service in Dubai: testing, replacement, BMS registration and charging-system checks carried out at the vehicle. What a proper mobile visit covers and how it differs from a jump-start van. Get help."
+  path="/mobile-battery-service-dubai/"
+  eyebrow="05 · Mobile Service"
+  h1="Mobile Car Battery Service in Dubai."
+  standfirst="A mobile battery service brings the workshop to the vehicle. Done properly, that means the same testing, the same correct-specification replacement and the same charging-system check as a workshop visit — not a battery handed over the window with a spanner. What follows covers what a proper on-site visit actually involves and where it fits alongside a jump-start or a bench diagnosis."
+  breadcrumbLabel="Mobile Battery Service"
+  related={related}
+>
+  <h2>Mobile service, not a jump-start van</h2>
+  <p>
+    "Mobile battery service" is a broad label, so it is worth being specific about
+    what the term covers here. A jump-start van gets the car mobile and leaves; the
+    driver, ideally, then follows up. A proper mobile battery service resolves the
+    fault at the vehicle: the battery is tested, the charging system is checked, and
+    where the battery is genuinely at end of life, the correct replacement is fitted
+    on the spot with the BMS coded to the new unit where the car needs it.
+  </p>
+  <p>
+    In practice most customers don't know at the point of calling whether they need a
+    jump-start or a replacement — the symptoms overlap. A mobile visit that can do
+    either is the pragmatic answer: the visit begins with a
+    <a href="/battery-testing-dubai/">test</a>, and the outcome of that test decides
+    whether the follow-up is a recharge, a
+    <a href="/car-battery-replacement-dubai/">replacement</a>, or a
+    charging-system fault referred on to a workshop.
+  </p>
+
+  <h2>What a proper on-site visit covers</h2>
+  <p>
+    The steps of a mobile visit don't change much from vehicle to vehicle. What matters
+    is that none of them is skipped in the interest of turning the visit around
+    quickly.
+  </p>
+
+  <h3>Diagnosis first</h3>
+  <p>
+    The vehicle description is taken up front — make, model, year, engine variant, and
+    where the car is. On arrival the existing battery is inspected for the obvious
+    (loose or corroded terminals, a leaking or bulging case, a broken hold-down) and
+    then tested. A conductance test on the battery gives a state-of-health reading; an
+    alternator voltage check with a moderate electrical load confirms the charging
+    side of the system is doing its job; a key-off current measurement, patient enough
+    to wait for the car to sleep, catches a parasitic drain.
+  </p>
+  <p>
+    That whole sequence takes ten to fifteen minutes and it settles what the visit
+    actually is. Where the battery is fine and the fault is elsewhere, fitting a new
+    battery would only postpone the failure.
+  </p>
+
+  <h3>Correct battery, correctly fitted</h3>
+  <p>
+    Where the test confirms replacement is the answer, the correct battery is the one
+    the vehicle was engineered around — the right chemistry (flooded, EFB or AGM), the
+    right capacity in ampere-hours, the right cold-cranking amps and the right physical
+    fitment. The
+    <a href="/car-battery-replacement-dubai/">replacement page</a> covers that in
+    detail; the summary is that substituting outside the specification is the single
+    most common reason a fresh battery fails inside months.
+  </p>
+  <p>
+    On site, a memory keeper is fitted where the vehicle needs one to preserve radio
+    codes and adaptive-transmission learning. The battery is disconnected in the right
+    order (negative first, positive second), the terminals and hold-down are inspected,
+    the new battery is installed and secured, and — where the vehicle has active
+    battery management — the BMS is coded to the new unit on the OBD port. A final
+    under-load voltage check confirms the alternator is genuinely supporting the new
+    battery.
+  </p>
+
+  <h3>Old battery removed for recycling</h3>
+  <p>
+    Lead-acid batteries are close to fully recyclable. The replaced unit is taken away
+    at the visit; it doesn't sit in the driver's boot for weeks. That's a small detail
+    that separates a legitimate service from an ad-hoc one.
+  </p>
+
+  <ServiceImage service="mobile_battery_service" slotName="editorial" />
+
+  <h2>When mobile is the right call — and when it isn't</h2>
+  <p>
+    Mobile is the right call when the car is somewhere workable (a home garage, a
+    hotel drop-off, an office car park, a mall entrance) and when the fault has any
+    realistic chance of being a battery. It is also the right call when the driver
+    physically cannot bring the car to a workshop because it won't start.
+  </p>
+  <p>
+    Mobile is not always the answer, though. A car with a suspected alternator failure
+    needs a workshop — replacing the alternator is not a roadside job. A car making
+    starter-motor noises rather than battery noises has a different problem. And a
+    car parked somewhere the visit cannot safely happen (a tight underground bay with
+    no space around the vehicle, for example) may need to be moved first. The phone
+    call up front is where those cases are separated.
+  </p>
+
+  <h2>What UAE-specific service adds</h2>
+  <p>
+    Two things about mobile work in this climate are worth flagging. First, heat.
+    Batteries in the UAE typically run closer to two or three years of dependable
+    service than the four or five sometimes quoted, and the failure mode is often
+    sudden — a battery that started the car fine yesterday can be gone by morning.
+    Mobile service exists partly to handle that: the car is where it is, and there is
+    no reasonable way to move it without starting it first.
+  </p>
+  <p>
+    Second, ambient conditions on site. On days above 40 °C the battery, the tools and
+    the technician are all working outside their comfortable range. A well-run mobile
+    visit accounts for that — parking so the car is in shade where possible, working
+    in a way that keeps the OBD tool out of direct sun, and being patient with a
+    keyless system that sometimes takes longer than expected to sleep for the parasitic
+    check. None of this is dramatic, but it is why the visit takes the time it does.
+  </p>
+
+  {
+    hasWhatsApp && (
+      <p class="inline-cta">
+        <WhatsAppButton
+          service="mobile_battery_service"
+          ctaLocation="service_inline_whatsapp"
+          variant="primary"
+          label="Message about a mobile visit"
+        />
+      </p>
+    )
+  }
+
+  <h2>Common questions about mobile battery service</h2>
+
+  <details class="faq">
+    <summary>What should I share when calling for a mobile visit?</summary>
+    <p>
+      Make, model, year and engine variant of the car; where the car is parked and
+      how the visit will access it; and the symptom in your own words — whether the
+      engine cranks at all, whether it started weakly for a while first, whether the
+      battery has been flat before. That combination is enough to decide what the van
+      brings and to avoid an unnecessary return trip.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>How long does a mobile visit take?</summary>
+    <p>
+      A test-only visit is typically fifteen to twenty minutes on site. A test plus a
+      straightforward replacement is thirty to forty-five minutes. A car that needs
+      BMS registration through the OBD port, or one with an under-seat or boot-mounted
+      battery, takes longer. Travel time to the vehicle isn't included in those
+      figures.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Can everything be done on site, or are some cars a workshop job?</summary>
+    <p>
+      Most passenger cars can be tested and, where necessary, have their battery
+      replaced on site — including cars with BMS registration, which is done through
+      the OBD port. A car with a suspected alternator or starter-motor fault needs a
+      workshop; the diagnosis can still be done at the visit, but the fix cannot. A
+      hybrid's high-voltage traction battery is a workshop-only job in any case; only
+      the 12 V auxiliary battery is a mobile candidate.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Is a mobile visit more expensive than a workshop replacement?</summary>
+    <p>
+      The parts are the same. What differs is the labour and travel component, and
+      that varies by distance and by the complexity of the fit. The value of a mobile
+      visit is a car that doesn't have to be recovered to a workshop and a fault that
+      gets diagnosed rather than guessed at.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Will the visit tell me if the alternator is the actual problem?</summary>
+    <p>
+      The alternator output and key-off parasitic draw are checked as part of the
+      wider on-site diagnosis where the symptom warrants it. If the battery is healthy
+      and the alternator is genuinely undercharging, that will show in the reading —
+      and the honest answer is that the fix is a workshop job, not a mobile one. It is
+      better to know that at the visit than to fit a new battery and see it drain
+      again inside a week.
+    </p>
+  </details>
+</ServicePageLayout>
+
+<style>
+  .inline-cta {
+    margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
+    max-width: none !important;
+  }
+</style>

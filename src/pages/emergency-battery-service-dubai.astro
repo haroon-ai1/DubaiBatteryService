@@ -1,0 +1,210 @@
+---
+import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+const related: RelatedItem[] = [
+  {
+    service: "jump_start",
+    href: "/jump-start-dubai/",
+    blurb: "The quickest resolution when the fault turns out to be a flat charge.",
+  },
+  {
+    service: "battery_replacement",
+    href: "/car-battery-replacement-dubai/",
+    blurb: "The correct on-site replacement when the battery is genuinely done.",
+  },
+  {
+    service: "mobile_battery_service",
+    href: "/mobile-battery-service-dubai/",
+    blurb: "The wider on-site service the emergency visit is a fast variant of.",
+  },
+];
+---
+
+<ServicePageLayout
+  service="emergency_battery_service"
+  title="Emergency Car Battery Service in Dubai | Dubai Battery Service"
+  description="Emergency car battery service in Dubai: priority handling for stranded vehicles, what emergency means in practice, and what to share when calling so the visit resolves the fault rather than a return trip. Get help."
+  path="/emergency-battery-service-dubai/"
+  eyebrow="06 · Emergency"
+  h1="Emergency Car Battery Service in Dubai."
+  standfirst="Emergency battery service is priority handling for a car that is somewhere it cannot stay — a driveway on the way to work, a mall car park after hours, a hotel entrance blocking a lane. What follows covers what that means in practice, how the visit is set up to resolve the fault the first time, and what to share on the call so the van arrives with the right answer."
+  breadcrumbLabel="Emergency Battery Service"
+  related={related}
+>
+  <h2>What "emergency" means here</h2>
+  <p>
+    Emergency is not a marketing word for "we'll try to hurry." It is a shape of visit
+    with two properties: the response is prioritised over ordinary bookings, and the
+    van is provisioned to finish the job on site rather than diagnose and return.
+    Everything else — the test, the fit, the BMS registration, the recycling of the
+    old unit — is the same as a scheduled
+    <a href="/mobile-battery-service-dubai/">mobile visit</a>. The urgency is the
+    variable.
+  </p>
+  <p>
+    That framing matters because a "quick emergency call-out" that leaves the driver
+    with an unresolved fault isn't an emergency service — it is a delay. The point of
+    handling the visit as an emergency is that the car leaves the location under its
+    own power, with the right fix, and doesn't need a second visit two days later.
+  </p>
+
+  <h2>What to share on the call</h2>
+  <p>
+    A useful emergency call is short and specific. The information that actually
+    changes what the van does is a shortlist:
+  </p>
+  <ul>
+    <li>vehicle make, model, year and (if known) the engine variant</li>
+    <li>where the car is — a landmark or a plus-code is more useful than a mall name</li>
+    <li>whether the car will start at all, and if so how it sounds when it tries</li>
+    <li>whether the battery has gone flat recently before this event</li>
+    <li>anything unusual about the location — an underground bay, a barrier, a
+      valet-only entrance</li>
+    <li>any medical, family or safety consideration that raises the urgency</li>
+  </ul>
+  <p>
+    Two minutes on those details is what settles whether the van arrives with the
+    correct battery in it, and whether the visit is a jump-and-continue or a
+    full replacement. Guessing at those over the phone is the single biggest source of
+    wasted return trips.
+  </p>
+
+  <h2>What the visit does when it arrives</h2>
+  <p>
+    An emergency visit follows the same sequence as a scheduled mobile one, run at
+    the pace the situation warrants. The battery is inspected and tested first — a
+    conductance reading takes a minute and decides whether the outcome will be a
+    <a href="/jump-start-dubai/">jump</a> or a
+    <a href="/car-battery-replacement-dubai/">replacement</a>. Where the battery is
+    fine, the car is jumped, the alternator output is checked to confirm the drive
+    home will actually recharge it, and the underlying cause is discussed with the
+    driver.
+  </p>
+  <p>
+    Where the battery is at end of life and the correct replacement is on the van, the
+    swap is done on site: memory keeper connected where the vehicle needs one,
+    negative disconnected first, hold-down inspected, new battery fitted and secured,
+    BMS coded on the OBD port where required, and an under-load voltage check to
+    verify the alternator is genuinely supporting the new unit. The old battery
+    leaves for recycling. Total on-site time for a straightforward job is typically
+    thirty to forty-five minutes.
+  </p>
+
+  <h2>When a battery isn't actually the emergency</h2>
+  <p>
+    Some emergency calls turn out not to be battery jobs. A car that clicks rapidly at
+    the starter rather than cranking may be a starter-motor fault or a bad connection,
+    not a flat battery — and a jump won't help. A car that lost power while driving
+    and now won't restart may be an alternator or an ignition-system problem. A car
+    that cranks briskly but won't fire is a fuel or ignition fault, not a battery
+    fault. An honest emergency service says so at the visit rather than fitting a
+    new battery and hoping.
+  </p>
+  <p>
+    Where the diagnosis at the vehicle rules out a battery issue, the honest next step
+    is a recovery to a workshop and a referral to the right kind of specialist. That
+    is a less satisfying answer than "we can fix it here," but it is the difference
+    between an emergency service and a botched repeat visit.
+  </p>
+
+  <h2>Getting the car and the driver safe first</h2>
+  <p>
+    Before the fix, the situation. If the car is somewhere unsafe — a live lane, a
+    tight roundabout exit, the shoulder of a fast road — the priority is moving the
+    driver away from traffic while the visit is arranged. On a driveway or a car park
+    the situation is generally stable and the visit can be planned around timing
+    rather than urgency. On a public road in Dubai the police non-emergency number
+    is the right first call in any situation where the vehicle is at risk of being
+    hit.
+  </p>
+  <p>
+    For families with children in the car, elderly drivers or anyone with a specific
+    medical concern, flagging that on the call raises the priority further. It also
+    changes the practical advice given during the wait — whether to stay with the
+    car, whether to leave for shade, whether to unlock or leave locked. None of that
+    is standard for every visit, but a well-run emergency service treats it as part
+    of the call rather than an afterthought.
+  </p>
+
+  {
+    hasWhatsApp && (
+      <p class="inline-cta">
+        <WhatsAppButton
+          service="emergency_battery_service"
+          ctaLocation="service_inline_whatsapp"
+          variant="primary"
+          label="Message about an emergency call-out"
+        />
+      </p>
+    )
+  }
+
+  <h2>Common questions about emergency battery service</h2>
+
+  <details class="faq">
+    <summary>How long does an emergency visit take to arrive?</summary>
+    <p>
+      Response time depends on how far the car is from the nearest available van and
+      on traffic at the hour of day. An honest estimate is given on the call — a
+      guaranteed number that ignores traffic isn't honest. Areas with heavier coverage
+      typically see faster arrival than the outskirts.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Is an emergency visit more expensive than a scheduled one?</summary>
+    <p>
+      The parts and the labour on the vehicle are the same as a scheduled
+      <a href="/mobile-battery-service-dubai/">mobile visit</a>. What differs is the
+      dispatch — a priority slot rather than a scheduled window — and, out-of-hours,
+      the fact that the van is running when it would otherwise not be. Any premium
+      over a scheduled visit is disclosed up front, not as a surprise on arrival.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Can the visit help if I'm on a live road rather than a car park?</summary>
+    <p>
+      Yes, but the priority order is different. On a live road the first concern is
+      that the driver and any passengers are not standing beside a stranded car in
+      traffic — that is a call to the police non-emergency line, not to a battery
+      service. Once the situation is safe, an emergency mobile visit can attend, or a
+      recovery can move the vehicle to a location where the fix can be done properly.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>What if my car isn't actually a battery problem?</summary>
+    <p>
+      The visit begins with a test at the vehicle. If the battery is healthy and the
+      fault is elsewhere — a starter motor, an alternator, a fuel or ignition issue —
+      that is what the driver is told at the visit. The right next step is a recovery
+      to the appropriate workshop. Fitting a new battery to a car with a fault that
+      isn't in the battery only wastes money and produces the same failure two days
+      later.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Can the visit help at night or on public holidays?</summary>
+    <p>
+      Availability outside ordinary hours varies by day and by the van's schedule.
+      Where the situation is genuinely urgent — a family stranded, a medical
+      consideration — flagging that on the call is important; response is prioritised
+      accordingly. For a car in a driveway with a routine flat battery, scheduling
+      the visit for the next available slot is usually the more sensible option.
+    </p>
+  </details>
+</ServicePageLayout>
+
+<style>
+  .inline-cta {
+    margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
+    max-width: none !important;
+  }
+</style>

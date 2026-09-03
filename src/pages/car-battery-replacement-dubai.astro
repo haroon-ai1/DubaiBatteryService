@@ -1,0 +1,231 @@
+---
+import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { hasWhatsAppChannel } from "@/lib/leads";
+import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
+
+const hasWhatsApp = hasWhatsAppChannel();
+
+/*
+  In-prose links currently point at sibling service URLs (jump-start,
+  battery-testing, mobile-battery-service) that this branch has not
+  shipped yet. Flagged in the delivery report — the links resolve as
+  soon as those pages land.
+*/
+
+const related: RelatedItem[] = [
+  {
+    service: "jump_start",
+    href: "/jump-start-dubai/",
+    blurb: "What a start after a jump actually proves — and what it doesn't.",
+  },
+  {
+    service: "battery_testing",
+    href: "/battery-testing-dubai/",
+    blurb: "The test that separates a flat battery from a failing one.",
+  },
+  {
+    service: "mobile_battery_service",
+    href: "/mobile-battery-service-dubai/",
+    blurb: "Replacement carried out at the vehicle's location.",
+  },
+];
+---
+
+<ServicePageLayout
+  service="battery_replacement"
+  title="Car Battery Replacement in Dubai | Dubai Battery Service"
+  description="Car battery replacement in Dubai: correct chemistry, capacity and fitment, why wrong batteries fail early, and what a proper on-site job looks like. Get help."
+  path="/car-battery-replacement-dubai/"
+  eyebrow="01 · Replacement"
+  h1="Car Battery Replacement in Dubai."
+  standfirst="The right replacement is the one the vehicle was engineered around — not the cheapest cell that fits under the bonnet. What follows covers what defines a correct battery for a given car, why substituting outside that specification typically fails early, and what a properly-handled replacement looks like on the day."
+  breadcrumbLabel="Car Battery Replacement"
+  related={related}
+>
+  <h2>The specification is set by the car, not the parts counter</h2>
+  <p>
+    Every modern car is engineered around a specific battery: a specific chemistry, a
+    specific capacity in ampere-hours, a specific cold-cranking-amp rating and a specific
+    physical size. The alternator, the electrical control unit and — increasingly — the
+    battery management system are calibrated to those numbers. Fitting a battery outside
+    them is the single most common reason a fresh purchase fails inside months rather
+    than years.
+  </p>
+
+  <h3>Chemistry: conventional, EFB, AGM</h3>
+  <p>
+    Three families cover almost every passenger car in service today. Conventional
+    flooded batteries suit vehicles without stop-start. Enhanced Flooded Batteries
+    (EFB) use the same open electrolyte with reinforced plates for repeated deep
+    cycling, and are specified for a large share of stop-start cars. Absorbent Glass Mat
+    (AGM) batteries are sealed, vibration-resistant, and tolerate the deeper discharges
+    of premium and energy-management systems. Which family the vehicle requires is set
+    by the manufacturer, not the supplier.
+  </p>
+
+  <h3>Capacity and cold-cranking amps</h3>
+  <p>
+    Rated capacity (Ah) and cold-cranking amps (CCA) are minimums, not preferences. A
+    vehicle's start-current draw and its parasitic-load budget are engineering constants.
+    A lower-CCA battery struggles on cold starts and never quite recharges under normal
+    driving; a higher-CCA battery of the same chemistry and physical fitment starts the
+    vehicle cleanly but does not extend life.
+  </p>
+
+  <h3>Physical fitment</h3>
+  <p>
+    Group size, terminal orientation and hold-down geometry all have to match. A battery
+    that drops into the tray but does not clamp correctly moves under acceleration, and
+    vibration cracks internal welds in ways that don't show up on a bench test.
+  </p>
+
+  <h2>Why the wrong battery fails early</h2>
+  <p>
+    Concrete examples from the field. AGM specified, conventional fitted: the deep
+    cycling from stop-start pulls the flooded plates through a duty they weren't designed
+    for, and cells lose capacity within a couple of months. Registration ignored on a car
+    with active battery management: the charging strategy keeps treating the fresh
+    battery as an aged one, overcharges it, and finishes it inside the warranty window.
+    Wrong group size clamped down anyway: the hold-down over-stresses the case, the
+    terminal ends up loaded, and the intermittent contact reads as a "faulty battery"
+    that isn't. Each of these is avoidable by starting from the vehicle's own
+    specification rather than what looks close on the shelf.
+  </p>
+
+  <h2>Heat, and what UAE service life actually looks like</h2>
+  <p>
+    Lead-acid chemistry ages faster in heat. Manufacturer-quoted lives — commonly four to
+    five years — are measured against a temperate baseline. Sustained under-bonnet
+    temperatures in the UAE summer sit well above that, and the internal grid corrosion,
+    positive-plate softening and water loss that ultimately kill a battery all accelerate
+    with temperature.
+  </p>
+  <p>
+    A conventional starter battery in a Dubai vehicle typically runs closer to two or
+    three years of dependable service than the quoted figure. AGM tends to last longer,
+    largely because the sealed construction better contains the water loss that quietly
+    ends a flooded battery in this climate. The rule of thumb worth keeping: rated life
+    is the ceiling, not the median.
+  </p>
+
+  <h2>Registration and the electronics side</h2>
+  <p>
+    Recent European vehicles and most cars with active battery management systems need
+    the new battery declared to the BMS after replacement. The system tracks the
+    battery's expected age and adjusts alternator output, stop-start availability and
+    regenerative-braking behaviour to match. Without registration, the vehicle keeps
+    behaving as though the old, tired battery is still installed — which typically
+    overcharges the fresh one and shortens its life materially.
+  </p>
+  <p>
+    Registration is done with an OBD tool that codes the new battery's chemistry and
+    capacity into the vehicle's electronics. Whether it is required depends on the
+    vehicle rather than the battery, so it is worth confirming for the specific make and
+    model before the job is booked.
+  </p>
+
+  <h2>What a proper replacement looks like on the day</h2>
+  <p>
+    A good replacement is not just the swap. The vehicle is described up front — make,
+    model, year, where it is parked — and the correct battery is confirmed against the
+    existing label and the manufacturer's specification. On arrival, the current battery
+    is <a href="/battery-testing-dubai/">tested first</a>: a battery that reads flat is
+    not always the cause of the symptom, and fitting a new one to a car with a charging
+    fault produces a repeat callout in three weeks.
+  </p>
+  <p>
+    If the test confirms replacement is the answer, the old battery comes out, terminals
+    and hold-down are inspected for corrosion and damage, the new battery is installed
+    and secured, and — where the vehicle requires it — the BMS is coded to the new unit.
+    A quick under-load voltage check verifies the alternator is genuinely supporting the
+    new battery, and the old unit leaves for recycling. Lead-acid batteries are close to
+    fully recyclable; a legitimate service takes the old unit away rather than leaving
+    it with the car.
+  </p>
+  <p>
+    Not every "my battery keeps dying" is fixed by a new battery. A worn alternator, a
+    parasitic drain from a stuck accessory, or a pattern of only very short trips
+    produce identical symptoms. A <a href="/jump-start-dubai/">jump-start session</a>
+    shows what a start does and does not prove; a test settles whether the fault is in
+    the cell or elsewhere in the charging system.
+  </p>
+
+  {
+    hasWhatsApp && (
+      <p class="inline-cta">
+        <WhatsAppButton
+          service="battery_replacement"
+          ctaLocation="service_inline_whatsapp"
+          variant="primary"
+          label="Message about a replacement"
+        />
+      </p>
+    )
+  }
+
+  <h2>Common questions about battery replacement</h2>
+
+  <details class="faq">
+    <summary>How long does a car battery typically last in Dubai?</summary>
+    <p>
+      High heat accelerates the internal wear of a lead-acid battery, so a conventional
+      starter battery in a UAE vehicle often runs closer to two or three years of
+      dependable service than the four to five sometimes quoted for temperate climates.
+      AGM batteries, being sealed and more heat-tolerant, tend to last longer. Age
+      alone is not proof of failure — a test settles it.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Can I fit a battery with a higher CCA than the manufacturer specifies?</summary>
+    <p>
+      A higher-CCA battery of the same chemistry and physical size starts the vehicle
+      without issue, but it does not extend service life and it is typically more
+      expensive. Fitting a lower-CCA battery is the more damaging mistake — it produces
+      hard starts in cold snaps and chronic undercharge in normal use.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Does the new battery need to be registered to the car?</summary>
+    <p>
+      For many recent European vehicles and most cars with active battery management,
+      yes: the on-board system needs to know a new battery has been fitted so it can
+      reset its charging strategy. Without registration, the alternator continues to
+      charge as though the old battery is still there, which typically overcharges the
+      new one and shortens its life. Whether registration is required depends on the
+      specific vehicle.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>Should I stay with the same battery brand?</summary>
+    <p>
+      Brand matters less than getting the chemistry, capacity, CCA and physical fitment
+      right. A different brand meeting the same specification performs equivalently.
+      Warranty terms and after-sales support vary between brands, and those are
+      legitimate reasons to prefer one over another.
+    </p>
+  </details>
+
+  <details class="faq">
+    <summary>What happens to my old battery?</summary>
+    <p>
+      Lead-acid batteries are close to fully recyclable — the lead, plastic case and acid
+      are all recovered by industry. A replaced battery should be taken away for
+      recycling, not left in general waste or kept with the vehicle. Legitimate services
+      do this as standard.
+    </p>
+  </details>
+</ServicePageLayout>
+
+<style>
+  .inline-cta {
+    /* Break the prose flow with generous vertical space without turning
+       the CTA into a boxed panel. The button primitive supplies its own
+       shape. */
+    margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
+    max-width: none !important;
+  }
+</style>

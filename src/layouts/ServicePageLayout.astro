@@ -1,0 +1,685 @@
+---
+/*
+  Shared shell for every /…-dubai/ service page.
+
+  Owns everything each service page repeats:
+    - visible breadcrumb + matching BreadcrumbList JSON-LD (kept in
+      lockstep so schema never diverges from visible content)
+    - service hero (eyebrow / H1 / standfirst / CTA pair / optional image)
+    - a body slot for the page-specific prose
+    - a "Related services" internal-link block
+    - a final CTA that mirrors the homepage FinalCTA treatment
+
+  Restyling of the homepage is out of scope — this file may not import
+  from `src/components/sections/` because those components hard-code
+  homepage-specific CtaLocations. The visual treatment is deliberately
+  duplicated where it needs the different `service_*` CtaLocations.
+
+  Sticky mobile CTA behaviour: the homepage sticky bar observes `#hero`
+  and `#get-help`. This layout keeps both IDs so the bar's hide/show
+  logic works on service pages without modification.
+*/
+import { Picture } from "astro:assets";
+
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import JsonLdBreadcrumbList from "@/components/seo/JsonLdBreadcrumbList.astro";
+import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+
+import { hasCallChannel, hasWhatsAppChannel } from "@/lib/leads";
+import { SERVICES, type ServiceId } from "@/lib/services";
+import { getServiceImage } from "@/config/serviceImages";
+
+export interface RelatedItem {
+  service: ServiceId;
+  href: string;
+  blurb: string;
+}
+
+interface Props {
+  service: ServiceId;
+  title: string;
+  description: string;
+  path: string;
+  eyebrow: string;
+  h1: string;
+  standfirst: string;
+  breadcrumbLabel: string;
+  related: RelatedItem[];
+}
+
+const {
+  service,
+  title,
+  description,
+  path,
+  eyebrow,
+  h1,
+  standfirst,
+  breadcrumbLabel,
+  related,
+} = Astro.props;
+
+const heroImage = getServiceImage(service, "hero");
+
+const hasWhatsApp = hasWhatsAppChannel();
+const hasCall = hasCallChannel();
+const anyChannel = hasWhatsApp || hasCall;
+
+const crumbs = [
+  { name: "Home", path: "/" },
+  { name: breadcrumbLabel, path },
+];
+
+const serviceLabel = SERVICES[service].label;
+---
+
+<BaseLayout title={title} description={description} path={path}>
+  {/* Schema goes into <head> — coupled to the visible breadcrumb below. */}
+  <JsonLdBreadcrumbList slot="head" items={crumbs} />
+
+  <nav class="breadcrumbs" aria-label="Breadcrumb">
+    <div class="container">
+      <ol>
+        {
+          crumbs.map((c, i) => (
+            <li>
+              {i < crumbs.length - 1 ? (
+                <>
+                  <a href={c.path}>{c.name}</a>
+                  <span class="sep" aria-hidden="true">/</span>
+                </>
+              ) : (
+                <span aria-current="page">{c.name}</span>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </nav>
+
+  <section class="service-hero" id="hero">
+    <div class:list={["container", "service-hero-grid", { "no-image": !heroImage }]}>
+      <div class="service-hero-copy">
+        <span class="service-eyebrow">{eyebrow}</span>
+        <h1>{h1}</h1>
+        <p class="lead service-standfirst">{standfirst}</p>
+
+        <div class="service-hero-actions">
+          <PrimaryHelpButton size="large" />
+          {
+            hasWhatsApp && (
+              <WhatsAppButton
+                service={service}
+                ctaLocation="service_hero_whatsapp"
+                variant="quiet"
+              />
+            )
+          }
+          {
+            hasCall && (
+              <CallButton
+                ctaLocation="service_hero_call"
+                variant="quiet"
+              />
+            )
+          }
+        </div>
+
+        <PartnerDisclosure />
+      </div>
+
+      {
+        heroImage && (
+          <figure class="service-hero-figure">
+            <div class="service-hero-bloom" aria-hidden="true" />
+            <Picture
+              src={heroImage.src}
+              formats={["avif", "webp"]}
+              fallbackFormat="jpg"
+              widths={[560, 900, 1280]}
+              sizes="(min-width: 64rem) 52vw, 100vw"
+              alt={heroImage.alt}
+              loading="eager"
+              fetchpriority="high"
+              decoding="sync"
+              width={heroImage.src.width}
+              height={heroImage.src.height}
+              class="service-hero-img"
+            />
+          </figure>
+        )
+      }
+    </div>
+  </section>
+
+  <article class="service-body">
+    <div class="container">
+      <div class="service-prose">
+        <slot />
+      </div>
+    </div>
+  </article>
+
+  {
+    related.length > 0 && (
+      <section class="related section">
+        <div class="container">
+          <div class="related-head">
+            <span class="label">Related</span>
+            <h2>Other things drivers ask about.</h2>
+          </div>
+          <ul class="related-list">
+            {related.map((r) => (
+              <li>
+                <a href={r.href} class="related-link">
+                  <span class="related-label">{SERVICES[r.service].label}</span>
+                  <span class="related-blurb">{r.blurb}</span>
+                  <svg
+                    class="related-arrow"
+                    viewBox="0 0 20 20"
+                    fill="none"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      d="M4 10H16M11 5L16 10L11 15"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )
+  }
+
+  {/* Final CTA — mirrors the homepage treatment but wires the service_*
+      CtaLocations. The `#get-help` id is required so the sticky mobile
+      CTA's IntersectionObserver still hides on approach. */}
+  <section class="final" id="get-help">
+    <div class="final-bloom" aria-hidden="true" />
+    <div class="container final-inner">
+      <span class="label final-label">Get Battery Help</span>
+      <h2>Ready to sort out<br />{serviceLabel.toLowerCase()}?</h2>
+      <p class="lead final-lead">
+        Message or call to describe the vehicle, the symptom and where the car is parked.
+        The enquiry is then handled by the service provider covering battery requests for
+        this site.
+      </p>
+
+      <div class="final-actions">
+        {
+          hasWhatsApp ? (
+            <WhatsAppButton
+              service={service}
+              ctaLocation="service_final_whatsapp"
+              variant="primary"
+              label="Message on WhatsApp"
+            />
+          ) : (
+            <PrimaryHelpButton size="large" href="#hero" />
+          )
+        }
+        {
+          hasCall && (
+            <CallButton ctaLocation="service_final_call" variant="quiet" />
+          )
+        }
+      </div>
+
+      {
+        !anyChannel && (
+          <p class="final-empty">
+            Direct WhatsApp and call channels activate once numbers are configured.
+          </p>
+        )
+      }
+
+      <PartnerDisclosure />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---------------------------------------------------------------------- */
+  /*  Breadcrumb                                                            */
+  /* ---------------------------------------------------------------------- */
+  .breadcrumbs {
+    padding-block: clamp(1rem, 0.5rem + 1vw, 1.5rem);
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .breadcrumbs a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .breadcrumbs a:hover {
+      color: var(--red-primary);
+    }
+  }
+
+  .breadcrumbs .sep {
+    color: var(--text-muted);
+  }
+
+  .breadcrumbs [aria-current="page"] {
+    color: var(--text-primary);
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /*  Service hero                                                          */
+  /* ---------------------------------------------------------------------- */
+  .service-hero {
+    position: relative;
+    overflow-x: clip;
+    padding-top: clamp(2rem, 1.25rem + 2.5vw, 4rem);
+    padding-bottom: clamp(3.5rem, 2rem + 5vw, 6.5rem);
+  }
+
+  .service-hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 1.25rem + 3vw, 3.75rem);
+    align-items: center;
+  }
+
+  @media (min-width: 64rem) {
+    .service-hero-grid {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr);
+      gap: clamp(3rem, 1rem + 5vw, 5.5rem);
+    }
+
+    /* Text-only hero: let the copy claim a measured column instead of
+       stretching across the whole container. */
+    .service-hero-grid.no-image {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .service-hero-grid.no-image .service-hero-copy {
+      max-width: 44rem;
+    }
+  }
+
+  .service-eyebrow {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-primary);
+    margin-bottom: clamp(1rem, 0.75rem + 0.75vw, 1.5rem);
+  }
+
+  .service-hero-copy h1 {
+    max-width: 18ch;
+    font-size: clamp(2.375rem, 1.5rem + 3.5vw, 4.5rem);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+  }
+
+  .service-standfirst {
+    margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+    max-width: 44ch;
+  }
+
+  .service-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .service-hero-figure {
+    position: relative;
+    margin: 0;
+  }
+
+  .service-hero-bloom {
+    position: absolute;
+    inset: 6% -14% -12% 4%;
+    background: radial-gradient(
+      closest-side,
+      rgba(226, 28, 53, 0.11) 0%,
+      rgba(226, 28, 53, 0.04) 45%,
+      rgba(226, 28, 53, 0) 78%
+    );
+    filter: blur(30px);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .service-hero-img {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-img);
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /*  Body prose                                                            */
+  /* ---------------------------------------------------------------------- */
+  .service-body {
+    padding-block: clamp(3rem, 2rem + 3vw, 5rem);
+    border-top: 1px solid var(--hairline);
+  }
+
+  /* Prose lives inside .service-prose so descendant selectors don't reach
+     into anything else. The measure caps at ~34rem so long-form reads
+     comfortably even on wide viewports; images and side-elements can
+     escape via max-width overrides on their own components. */
+  .service-prose {
+    max-width: 44rem;
+  }
+
+  .service-prose :global(h2) {
+    font-size: clamp(1.625rem, 1.2rem + 1.4vw, 2.125rem);
+    line-height: 1.16;
+    letter-spacing: -0.02em;
+    margin-top: clamp(2.75rem, 2rem + 2vw, 4rem);
+    max-width: 26ch;
+  }
+
+  .service-prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .service-prose :global(h3) {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2rem;
+    max-width: 32ch;
+    color: var(--text-primary);
+  }
+
+  .service-prose :global(p),
+  .service-prose :global(ul),
+  .service-prose :global(ol) {
+    margin-top: 1rem;
+    max-width: 34rem;
+    color: var(--text-secondary);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+  }
+
+  .service-prose :global(p:first-child),
+  .service-prose :global(ul:first-child),
+  .service-prose :global(ol:first-child) {
+    margin-top: 0;
+  }
+
+  .service-prose :global(a) {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--red-primary);
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .service-prose :global(a:hover) {
+      color: var(--red-primary);
+    }
+  }
+
+  .service-prose :global(ul),
+  .service-prose :global(ol) {
+    padding-left: 1.25rem;
+    list-style: revert;
+  }
+
+  .service-prose :global(li + li) {
+    margin-top: 0.5rem;
+  }
+
+  /* Native <details>/<summary> FAQ inside prose. Mirrors the homepage
+     accordion visually but scoped to service pages. */
+  .service-prose :global(details.faq) {
+    border-top: 1px solid var(--hairline);
+    padding-block: clamp(1rem, 0.75rem + 0.5vw, 1.5rem);
+  }
+
+  .service-prose :global(details.faq:last-of-type) {
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .service-prose :global(details.faq summary) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    cursor: pointer;
+    list-style: none;
+    color: var(--text-primary);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+    max-width: none;
+  }
+
+  .service-prose :global(details.faq summary::-webkit-details-marker) {
+    display: none;
+  }
+
+  .service-prose :global(details.faq summary::after) {
+    content: "+";
+    color: var(--red-primary);
+    font-family: var(--font-mono);
+    font-size: 1.125rem;
+    line-height: 1;
+    margin-top: 0.125rem;
+    transition: transform var(--dur-standard) var(--ease-standard);
+  }
+
+  .service-prose :global(details.faq[open] summary::after) {
+    transform: rotate(45deg);
+  }
+
+  .service-prose :global(details.faq summary:focus-visible) {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 4px;
+    border-radius: 3px;
+  }
+
+  .service-prose :global(details.faq p) {
+    margin-top: 1rem;
+    max-width: 54ch;
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /*  Related services                                                      */
+  /* ---------------------------------------------------------------------- */
+  .related {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .related-head {
+    margin-bottom: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+  }
+
+  .related-head .label {
+    margin-bottom: 1rem;
+  }
+
+  .related-head h2 {
+    max-width: 22ch;
+  }
+
+  .related-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    border-top: 1px solid var(--hairline);
+  }
+
+  @media (min-width: 40rem) {
+    .related-list {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 2.5rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .related-list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .related-link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "label arrow"
+      "blurb blurb";
+    row-gap: 0.5rem;
+    column-gap: 1rem;
+    align-items: baseline;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--hairline);
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--dur-standard) var(--ease-standard);
+  }
+
+  @media (min-width: 64rem) {
+    .related-link {
+      border-bottom: none;
+    }
+  }
+
+  .related-label {
+    grid-area: label;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+    transition: color var(--dur-standard) var(--ease-standard);
+  }
+
+  .related-blurb {
+    grid-area: blurb;
+    font-size: var(--fs-small);
+    line-height: 1.55;
+    color: var(--text-secondary);
+    max-width: 34ch;
+  }
+
+  .related-arrow {
+    grid-area: arrow;
+    width: 20px;
+    height: 20px;
+    color: var(--text-muted);
+    transition:
+      transform var(--dur-standard) var(--ease-standard),
+      color var(--dur-standard) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .related-link:hover .related-label,
+    .related-link:hover .related-arrow {
+      color: var(--red-primary);
+    }
+    .related-link:hover .related-arrow {
+      transform: translateX(3px);
+    }
+  }
+
+  /* ---------------------------------------------------------------------- */
+  /*  Final CTA — mirrors homepage FinalCTA.astro                           */
+  /* ---------------------------------------------------------------------- */
+  .final {
+    position: relative;
+    padding-block: var(--section-space);
+    border-top: 1px solid var(--hairline);
+    overflow-x: clip;
+  }
+
+  .final-bloom {
+    position: absolute;
+    left: calc(max(var(--pad-inline), (100% - var(--container-max)) / 2) + 12rem);
+    top: 50%;
+    width: min(52rem, 120%);
+    aspect-ratio: 16 / 10;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(
+      closest-side,
+      rgba(226, 28, 53, 0.14) 0%,
+      rgba(226, 28, 53, 0.05) 42%,
+      rgba(226, 28, 53, 0) 78%
+    );
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .final-inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .final-label {
+    margin-bottom: 1.25rem;
+  }
+
+  .final-inner h2,
+  .final-lead,
+  .final-actions,
+  .final-empty {
+    max-width: 44rem;
+    margin-inline: 0;
+  }
+
+  .final-inner h2 {
+    max-width: 18ch;
+  }
+
+  .final-lead {
+    margin-top: 1.5rem;
+    max-width: 44ch;
+  }
+
+  .final-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 2.75rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .final-empty {
+    margin-top: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    max-width: 42ch;
+  }
+</style>
