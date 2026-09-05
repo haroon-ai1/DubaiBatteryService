@@ -57,6 +57,8 @@ function baseMessage(service: ServiceId): string {
       return "I need battery testing.";
     case "emergency_battery_service":
       return "I need emergency battery assistance.";
+    case "battery_prices":
+      return "I'd like a price for a car battery replacement.";
     case "battery_service":
     default:
       return "I need battery assistance.";

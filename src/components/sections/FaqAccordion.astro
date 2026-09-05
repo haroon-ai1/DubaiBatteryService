@@ -1,6 +1,8 @@
 ---
 /*
   Native <details>/<summary> — zero JS, fully keyboard accessible.
+  Emits FAQPage JSON-LD from the same array it renders, so schema can
+  never describe a question the page doesn't display.
   Questions are aligned with the technical topics covered above: chemistry,
   jump-start diagnostics, registration, fitment. Copy stays accurate — no
   operational promises, no fabricated response times.
@@ -35,13 +37,25 @@ const faqs = [
     a: "The existing battery's label is the best starting point: it usually lists group size, capacity and cold-cranking amps, along with the chemistry. Owner's manuals vary in how much they specify, so fitment should be confirmed against reliable vehicle- or manufacturer-specific information.",
   },
 ];
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
 ---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 <section class="section faq" id="faq">
   <div class="container faq-grid">
     <div class="faq-head">
       <span class="label">FAQ</span>
-      <h2>Battery questions,<br />answered plainly.</h2>
+      <h2>Battery questions, <br />answered plainly.</h2>
     </div>
 
     <div class="faq-list">

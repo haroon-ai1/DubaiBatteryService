@@ -1,24 +1,19 @@
 ---
 /*
-  Deliberately small footer. Links point only to on-page anchors while
-  dedicated service/area routes don't exist yet. Includes the partner
-  disclosure and, in asset/lead-partner mode, an explicit line clarifying
-  that this domain is informational — not a dispatched operator.
+  Two-column link footer. Links come from `src/config/navigation.ts`.
+
+  Every service page is listed here, which is what guarantees no service
+  page can be orphaned: the footer is on every page, so each service page
+  always has at least eight inbound internal links.
+
+  Fragment links are ROOT-RELATIVE (`/#faq`) — a bare `#faq` only resolves
+  on the homepage and dead-ends everywhere else.
 */
 import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
 import { siteConfig } from "@/config/site";
+import { FOOTER_GUIDE_LINKS, FOOTER_SERVICE_LINKS } from "@/config/navigation";
 
 const year = new Date().getFullYear();
-
-const links = [
-  { label: "Services", href: "#services" },
-  { label: "Replacement", href: "#replacement" },
-  { label: "Jump-start", href: "#jump-start" },
-  { label: "Battery chemistry", href: "#battery-technology" },
-  { label: "Areas", href: "#areas" },
-  { label: "FAQ", href: "#faq" },
-  { label: "Get Battery Help", href: "#get-help" },
-];
 
 const isOperator = siteConfig.operationalMode === "operator";
 ---
@@ -40,9 +35,22 @@ const isOperator = siteConfig.operationalMode === "operator";
     </div>
 
     <nav class="footer-nav" aria-label="Footer">
-      <ul>
-        {links.map((link) => <li><a href={link.href}>{link.label}</a></li>)}
-      </ul>
+      <div class="footer-col">
+        <h2 class="footer-col-title">Services</h2>
+        <ul>
+          {FOOTER_SERVICE_LINKS.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h2 class="footer-col-title">Guides</h2>
+        <ul>
+          {FOOTER_GUIDE_LINKS.map((link) => (
+            <li><a href={link.href}>{link.label}</a></li>
+          ))}
+        </ul>
+      </div>
     </nav>
   </div>
 
@@ -102,11 +110,24 @@ const isOperator = siteConfig.operationalMode === "operator";
     font-size: var(--fs-small);
   }
 
+  .footer-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem 3rem;
+  }
+
+  .footer-col-title {
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.25rem;
+  }
+
   .footer-nav ul {
     display: flex;
-    flex-wrap: wrap;
-    column-gap: 2rem;
-    row-gap: 0;
+    flex-direction: column;
   }
 
   .footer-nav a {

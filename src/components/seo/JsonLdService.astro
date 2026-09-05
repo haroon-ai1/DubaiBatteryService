@@ -1,0 +1,64 @@
+---
+/*
+  `Service` schema for a single service page.
+
+  Safe to emit regardless of `entityVerified`: it describes the service
+  the page is *about* and the area it concerns, not a business entity.
+  The `provider` key is the one that would assert an entity, so it is
+  only attached when `hasVerifiedEntity` is true AND a business name
+  exists — same gate as JsonLdOrganization / JsonLdLocalBusiness.
+
+  `areaServed` is built from `siteConfig.serviceAreas`, so the covered
+  districts stay in one place instead of being restated per page.
+*/
+import { siteConfig, hasVerifiedEntity } from "@/config/site";
+import { SERVICES, type ServiceId } from "@/lib/services";
+
+interface Props {
+  service: ServiceId;
+  /** Page path, e.g. "/jump-start-dubai/". */
+  path: string;
+  /** Human-readable service name — usually the page H1 without the period. */
+  name: string;
+  description: string;
+}
+
+const { service, path, name, description } = Astro.props;
+
+const url = new URL(path, siteConfig.siteUrl).toString();
+const { business } = siteConfig;
+
+const provider =
+  hasVerifiedEntity && business.businessName
+    ? {
+        "@type": "AutomotiveBusiness",
+        name: business.businessName,
+        url: siteConfig.siteUrl,
+        telephone: business.phone ?? undefined,
+        address: business.address ?? undefined,
+      }
+    : undefined;
+
+const json = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${url}#service`,
+  name,
+  description,
+  serviceType: SERVICES[service].label,
+  category: "Automotive battery service",
+  url,
+  areaServed: [
+    { "@type": "City", name: "Dubai", addressCountry: siteConfig.country },
+    ...siteConfig.serviceAreas.map((area) => ({
+      "@type": "Place",
+      name: `${area}, Dubai`,
+    })),
+  ],
+  audience: { "@type": "Audience", audienceType: "Drivers in Dubai" },
+  provider,
+  isRelatedTo: undefined,
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(json)} />

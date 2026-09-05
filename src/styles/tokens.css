@@ -11,12 +11,19 @@
   --bg-soft: #f8f9fb;
   --bg-warm: #fff7f8;
 
-  --text-primary: #111215;
-  --text-secondary: #62666e;
-  --text-muted: #92969d;
+  --text-primary: #111215; /* 18.73:1 on white */
+  --text-secondary: #62666e; /* 5.76:1 on white, 5.47:1 on --bg-soft */
+  /* Was #92969d — 2.97:1, a WCAG AA failure on both surfaces, and it was
+     carrying the partner-routing disclosure. 4.83:1 on white, 4.58:1 on
+     --bg-soft. Visually near-identical, actually readable. */
+  --text-muted: #6e727a;
 
-  --red-primary: #e21c35;
-  --red-bright: #f5324c;
+  --red-primary: #e21c35; /* 4.72:1 with white text */
+  /* Hover state. Was #f5324c — 3.86:1 with white text, which only passes
+     for large text, and the button label is 16px/600. A *brighter* hover
+     cannot reach 4.5:1 against white, so the hover now deepens instead.
+     5.13:1, and it still reads as an obvious state change. */
+  --red-bright: #d81733;
   --red-dark: #b61229;
   --red-soft: #ffe8ec;
 
@@ -26,7 +33,15 @@
   --hairline-strong: rgba(18, 20, 24, 0.16);
 
   --glass-white: rgba(255, 255, 255, 0.7);
+
+  /* WhatsApp brand green. White text on this is 1.98:1 — a severe failure,
+     and it was the label colour on the primary conversion button. The
+     filled variants now use --whatsapp-ink (9.44:1) instead of white and
+     keep the brand colour. --whatsapp-deep is for text/icons ON white,
+     where #25d366 itself is only 1.98:1. */
   --whatsapp-green: #25d366;
+  --whatsapp-ink: #08240f;
+  --whatsapp-deep: #0b7a3b; /* 4.61:1 on white */
 
   --focus-ring: #1450e0; /* distinct from brand red so focus is never read as an error state */
 

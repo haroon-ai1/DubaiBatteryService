@@ -1,5 +1,6 @@
 ---
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
 import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
@@ -23,12 +24,40 @@ const related: RelatedItem[] = [
     blurb: "Priority handling when the car is somewhere it cannot stay.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    "q": "How long should I drive the car after a jump-start?",
+    "a": "Long enough for the alternator to put a meaningful charge back into the battery — typically at least twenty to thirty minutes of ordinary driving, not short local trips with the engine repeatedly stopped and restarted. Stop-start systems will often stay disabled until the battery has recovered a healthy state of charge, which is normal behaviour."
+  },
+  {
+    "q": "My car starts after a jump — do I still need to have anything checked?",
+    "a": "If the flat battery was a clear one-off event — a light left on, a door ajar — then no, a normal drive will refill it. If the battery has gone flat more than once, if it is more than about three years old, or if the car has been cranking weakly on cool mornings, a <a href=\"/battery-testing-dubai/\">battery and charging-system test</a> is the only way to settle whether the fault is in the battery, the alternator or a parasitic drain."
+  },
+  {
+    "q": "Can jump-starting damage my car?",
+    "a": "Done correctly to the manufacturer's specified points, no. Done with reversed polarity, on the wrong terminals of a car with electronic battery management, or from a very high-current source such as a running truck alternator into a small car, jump-starting can damage the battery, the alternator diodes or sensitive electronics. Following the sequence above and using the marked jump-start points where the car has them is the safe path."
+  },
+  {
+    "q": "How many times can I jump-start the same battery before replacing it?",
+    "a": "There is no fixed number. A healthy battery that was flattened by a one-off event will accept a jump indefinitely without harm; a battery that repeatedly needs jumping has already failed as a battery, and each deep discharge shortens whatever life remains. Two flat events in a short period is the point at which a <a href=\"/battery-testing-dubai/\">test</a>, and typically a <a href=\"/car-battery-replacement-dubai/\">replacement</a>, is the right next step."
+  },
+  {
+    "q": "Are portable jump-starter packs safe to use?",
+    "a": "Good quality lithium jump-packs are safe on most passenger cars when used to the manufacturer's instructions and to the correct jump-start points on the vehicle. They generally have polarity protection and current-limiting built in. They are not a substitute for a proper diagnosis when the same battery keeps needing them."
+  }
+];
 ---
 
 <ServicePageLayout
   service="jump_start"
   title="Car Jump Start in Dubai | Dubai Battery Service"
-  description="Car jump start in Dubai: what a successful jump actually proves, when it's the right call, and how to tell whether the battery, alternator or a parasitic drain is behind it. Get help."
+  description="Car jump start in Dubai — what a successful jump proves, what it doesn't, and how to tell the battery from the alternator or a parasitic drain."
   path="/jump-start-dubai/"
   eyebrow="02 · Jump Start"
   h1="Car Jump Start in Dubai."
@@ -138,66 +167,8 @@ const related: RelatedItem[] = [
 
   <h2>Common questions about jump-starting</h2>
 
-  <details class="faq">
-    <summary>How long should I drive the car after a jump-start?</summary>
-    <p>
-      Long enough for the alternator to put a meaningful charge back into the battery —
-      typically at least twenty to thirty minutes of ordinary driving, not short local
-      trips with the engine repeatedly stopped and restarted. Stop-start systems will
-      often stay disabled until the battery has recovered a healthy state of charge,
-      which is normal behaviour.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 
-  <details class="faq">
-    <summary>My car starts after a jump — do I still need to have anything checked?</summary>
-    <p>
-      If the flat battery was a clear one-off event — a light left on, a door ajar —
-      then no, a normal drive will refill it. If the battery has gone flat more than
-      once, if it is more than about three years old, or if the car has been cranking
-      weakly on cool mornings, a
-      <a href="/battery-testing-dubai/">battery and charging-system test</a> is the
-      only way to settle whether the fault is in the battery, the alternator or a
-      parasitic drain.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Can jump-starting damage my car?</summary>
-    <p>
-      Done correctly to the manufacturer's specified points, no. Done with reversed
-      polarity, on the wrong terminals of a car with electronic battery management,
-      or from a very high-current source such as a running truck alternator into a
-      small car, jump-starting can damage the battery, the alternator diodes or
-      sensitive electronics. Following the sequence above and using the marked
-      jump-start points where the car has them is the safe path.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>How many times can I jump-start the same battery before replacing it?</summary>
-    <p>
-      There is no fixed number. A healthy battery that was flattened by a one-off
-      event will accept a jump indefinitely without harm; a battery that repeatedly
-      needs jumping has already failed as a battery, and each deep discharge shortens
-      whatever life remains. Two flat events in a short period is the point at which
-      a
-      <a href="/battery-testing-dubai/">test</a>, and typically a
-      <a href="/car-battery-replacement-dubai/">replacement</a>, is the right next
-      step.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Are portable jump-starter packs safe to use?</summary>
-    <p>
-      Good quality lithium jump-packs are safe on most passenger cars when used to
-      the manufacturer's instructions and to the correct jump-start points on the
-      vehicle. They generally have polarity protection and current-limiting built in.
-      They are not a substitute for a proper diagnosis when the same battery keeps
-      needing them.
-    </p>
-  </details>
 </ServicePageLayout>
 
 <style>

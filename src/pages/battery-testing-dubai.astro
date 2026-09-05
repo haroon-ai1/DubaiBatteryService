@@ -1,5 +1,6 @@
 ---
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
 import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
@@ -23,12 +24,40 @@ const related: RelatedItem[] = [
     blurb: "Testing carried out at the vehicle rather than on a workshop bench.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    "q": "How long does a battery test take?",
+    "a": "The battery test itself is a few minutes. Where the situation warrants the full alternator-and-parasitic-draw check, allow another ten to fifteen minutes at the vehicle. The whole diagnostic pass is typically finished in the time a <a href=\"/car-battery-replacement-dubai/\">replacement</a> would have taken."
+  },
+  {
+    "q": "Do I need to remove the battery to have it tested?",
+    "a": "No. Modern conductance and load testers connect at the battery terminals with the battery in place. The alternator and parasitic-draw checks are only meaningful with the battery in the car, so removing it would defeat the purpose of the wider test."
+  },
+  {
+    "q": "My battery is very flat — can it still be tested?",
+    "a": "A conductance tester will produce a reading on a very flat battery, but a load test needs a battery that has been recharged first — a deeply discharged battery will fail a load test whether it is healthy or not. Where the battery is very flat, a charge and a re-test is the honest sequence; skipping straight to a replacement risks throwing away a battery that recovers."
+  },
+  {
+    "q": "Does the test also check the alternator?",
+    "a": "A battery test on its own only looks at the battery. Where the symptom leaves doubt about the wider charging circuit — repeat flat events, weak cranking, stop-start refusing to engage — the alternator output under load and the key-off parasitic draw are checked as well. Those two additional measurements cover almost every \"the new battery went flat again\" situation."
+  },
+  {
+    "q": "Can I trust a \"free battery test\" from a parts shop?",
+    "a": "A quick free test with a conductance tool is legitimate and can be useful. Two caveats apply. First, the result depends on the state of charge — a flat battery will read worse than it is. Second, that test only looks at the battery; it does not check whether the alternator is charging or whether a parasitic drain is flattening it. Where the answer matters — because a replacement is on the table — the wider on-site check is what settles it."
+  }
+];
 ---
 
 <ServicePageLayout
   service="battery_testing"
   title="Car Battery Testing in Dubai | Dubai Battery Service"
-  description="Car battery testing in Dubai: separating a flat battery from a failing one, load and conductance tests, alternator and parasitic-drain checks, and why testing before replacing avoids a repeat callout. Get help."
+  description="Car battery testing in Dubai. Tell a flat battery from a failing one, plus alternator and parasitic-drain checks, before you pay for a replacement."
   path="/battery-testing-dubai/"
   eyebrow="04 · Testing"
   h1="Car Battery Testing in Dubai."
@@ -152,59 +181,8 @@ const related: RelatedItem[] = [
 
   <h2>Common questions about battery testing</h2>
 
-  <details class="faq">
-    <summary>How long does a battery test take?</summary>
-    <p>
-      The battery test itself is a few minutes. Where the situation warrants the full
-      alternator-and-parasitic-draw check, allow another ten to fifteen minutes at the
-      vehicle. The whole diagnostic pass is typically finished in the time a
-      <a href="/car-battery-replacement-dubai/">replacement</a> would have taken.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 
-  <details class="faq">
-    <summary>Do I need to remove the battery to have it tested?</summary>
-    <p>
-      No. Modern conductance and load testers connect at the battery terminals with
-      the battery in place. The alternator and parasitic-draw checks are only
-      meaningful with the battery in the car, so removing it would defeat the purpose
-      of the wider test.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>My battery is very flat — can it still be tested?</summary>
-    <p>
-      A conductance tester will produce a reading on a very flat battery, but a load
-      test needs a battery that has been recharged first — a deeply discharged battery
-      will fail a load test whether it is healthy or not. Where the battery is very
-      flat, a charge and a re-test is the honest sequence; skipping straight to a
-      replacement risks throwing away a battery that recovers.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Does the test also check the alternator?</summary>
-    <p>
-      A battery test on its own only looks at the battery. Where the symptom leaves
-      doubt about the wider charging circuit — repeat flat events, weak cranking,
-      stop-start refusing to engage — the alternator output under load and the
-      key-off parasitic draw are checked as well. Those two additional measurements
-      cover almost every "the new battery went flat again" situation.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Can I trust a "free battery test" from a parts shop?</summary>
-    <p>
-      A quick free test with a conductance tool is legitimate and can be useful. Two
-      caveats apply. First, the result depends on the state of charge — a flat battery
-      will read worse than it is. Second, that test only looks at the battery; it does
-      not check whether the alternator is charging or whether a parasitic drain is
-      flattening it. Where the answer matters — because a replacement is on the table
-      — the wider on-site check is what settles it.
-    </p>
-  </details>
 </ServicePageLayout>
 
 <style>

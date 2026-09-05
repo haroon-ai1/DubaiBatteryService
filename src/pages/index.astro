@@ -10,12 +10,40 @@ import BatteryTechnology from "@/components/sections/BatteryTechnology.astro";
 import Coverage from "@/components/sections/Coverage.astro";
 import FaqAccordion from "@/components/sections/FaqAccordion.astro";
 import FinalCTA from "@/components/sections/FinalCTA.astro";
+import {
+  HERO_DESKTOP_MEDIA,
+  HERO_DESKTOP_SIZES,
+  HERO_MOBILE_SIZES,
+  heroDesktopSet,
+  heroMobileSet,
+} from "@/lib/heroImages";
+
+/*
+  Preload the AVIF the hero <picture> will actually pick, per breakpoint.
+  `media` keeps mobile from preloading the desktop crop — which is the bug
+  the old two-<Picture> hero had, just moved into <head>.
+*/
+const preloadImages = [
+  {
+    srcset: heroDesktopSet.avif,
+    sizes: HERO_DESKTOP_SIZES,
+    type: "image/avif",
+    media: HERO_DESKTOP_MEDIA,
+  },
+  {
+    srcset: heroMobileSet.avif,
+    sizes: HERO_MOBILE_SIZES,
+    type: "image/avif",
+    media: "(max-width: 63.9375rem)",
+  },
+];
 ---
 
 <BaseLayout
-  title="Dubai Battery Service — Car Battery Help in Dubai"
-  description="Car battery replacement, jump-start assistance and mobile battery service information for drivers across Dubai. Get help through WhatsApp or call."
+  title="Car Battery Replacement Dubai | Mobile Service & Jump Start"
+  description="Car battery replacement, jump-start and mobile battery service across Dubai. Message on WhatsApp or call — what to describe so it's fixed first visit."
   path="/"
+  preloadImages={preloadImages}
 >
   <Hero />
   <QuickActions />

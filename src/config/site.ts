@@ -39,6 +39,45 @@ export interface TrustClaims {
   vehicleAccessCapability: string | null;
 }
 
+/**
+ * A single indicative price band shown on /car-battery-prices-dubai/.
+ *
+ * These are RANGES, never quotes. The page says so in visible copy. They
+ * exist because the URL, title and meta description all target "car
+ * battery prices in Dubai" and the page previously contained no price
+ * information whatsoever — it ranked for nothing and would have bounced
+ * anyone who did land on it.
+ */
+export interface PriceBand {
+  /** e.g. "Conventional flooded — small car" */
+  label: string;
+  /** e.g. "35-45 Ah" */
+  spec: string;
+  /** Typical vehicles, plain language. */
+  fits: string;
+  low: number;
+  high: number;
+}
+
+export interface PricingConfig {
+  /**
+   * When false the whole price table is withheld and the page falls back
+   * to explaining cost DRIVERS only — same null-discipline as `claims`.
+   */
+  showBands: boolean;
+  /**
+   * ⚠️ VERIFY BEFORE LAUNCH. These are indicative Dubai market ranges for
+   * supply + standard on-site fitting, not partner pricing. Confirm them
+   * against the partner's actual current list, then update
+   * `lastReviewed`. Do not present them as quotes anywhere.
+   */
+  bands: PriceBand[];
+  /** ISO date. Rendered on the page so a stale table is visibly stale. */
+  lastReviewed: string;
+  /** Additional line items that move a quote. */
+  extras: { label: string; note: string }[];
+}
+
 export interface Brands {
   batteryBrands: string[];
   authorizedBrands: string[];
@@ -109,6 +148,7 @@ export interface SiteConfig {
 
   business: BusinessInfo;
   claims: TrustClaims;
+  pricing: PricingConfig;
   serviceAreas: string[];
   brands: Brands;
 
@@ -159,6 +199,70 @@ export const siteConfig: SiteConfig = {
     customerCount: null,
     licenseNumber: null,
     vehicleAccessCapability: null,
+  },
+
+  pricing: {
+    showBands: true,
+    lastReviewed: "2026-09-05",
+    bands: [
+      {
+        label: "Conventional flooded — small car",
+        spec: "35–45 Ah",
+        fits: "Yaris, Corolla, Sunny, Elantra and similar without stop-start",
+        low: 220,
+        high: 400,
+      },
+      {
+        label: "Conventional flooded — mid-size",
+        spec: "55–75 Ah",
+        fits: "Camry, Accord, Altima, mid-size saloons without stop-start",
+        low: 350,
+        high: 650,
+      },
+      {
+        label: "EFB — stop-start",
+        spec: "60–75 Ah",
+        fits: "Many stop-start models where the maker specifies EFB, not AGM",
+        low: 450,
+        high: 800,
+      },
+      {
+        label: "AGM — stop-start / heavy electronics",
+        spec: "60–80 Ah",
+        fits: "German saloons and crossovers with battery management",
+        low: 700,
+        high: 1400,
+      },
+      {
+        label: "AGM — large SUV",
+        spec: "90–105 Ah",
+        fits: "Patrol, Land Cruiser, large premium SUVs",
+        low: 1000,
+        high: 2000,
+      },
+    ],
+    extras: [
+      {
+        label: "On-site fitting",
+        note: "Usually included in a mobile quote. Ask — if it is priced separately, that changes the comparison.",
+      },
+      {
+        label: "BMS / battery registration",
+        note: "Required by many German makes. Typically a small added charge; some providers include it, some don't.",
+      },
+      {
+        label: "Out-of-hours or emergency call-out",
+        note: "Night, weekend and roadside jobs are often priced above a scheduled daytime visit.",
+      },
+      {
+        label: "Old battery collection",
+        note: "The used battery has scrap value. Some quotes deduct it, some quietly keep it.",
+      },
+      {
+        label: "Warranty",
+        note: "A 12-month and a 24-month battery at the same price are not the same purchase.",
+      },
+    ],
   },
 
   serviceAreas: [

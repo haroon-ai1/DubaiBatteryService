@@ -30,7 +30,7 @@ const spec = [
         <span class="feature-index">01</span>
         Battery Replacement
       </span>
-      <h2>The right battery<br />matters more than<br />the brand on it.</h2>
+      <h2>The right battery <br />matters more than <br />the brand on it.</h2>
       <p class="feature-p">
         Capacity, cold-cranking amps and physical fitment are set by the vehicle, not by
         preference. Fitting a conventional starter battery where the manufacturer specifies
@@ -41,6 +41,13 @@ const spec = [
         Sustained heat is the other factor. High ambient temperatures accelerate the
         chemical wear inside a lead-acid battery, which is why replacement intervals in the
         UAE often run shorter than a manufacturer's rated life suggests elsewhere.
+      </p>
+      <p class="feature-p">
+        Full detail on
+        <a href="/car-battery-replacement-dubai/">car battery replacement in Dubai</a> —
+        what defines a correct fit, and what a properly-handled job covers on the day.
+        If you want the cost side first, see
+        <a href="/car-battery-prices-dubai/">car battery prices in Dubai</a>.
       </p>
 
       <div class="feature-actions">
@@ -122,6 +129,21 @@ const spec = [
 
   .feature-copy h2 {
     max-width: 18ch;
+  }
+
+  .feature-copy a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--red-primary);
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .feature-copy a:hover {
+      color: var(--red-primary);
+    }
   }
 
   .feature-p {

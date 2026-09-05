@@ -1,81 +1,100 @@
 ---
-import { Picture } from "astro:assets";
-import heroDesktop from "@/assets/images/hero-desktop.jpg";
-import heroMobile from "@/assets/images/hero-mobile.jpg";
-import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
-import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
-import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
-import { hasWhatsAppChannel } from "@/lib/leads";
-
 /*
   Emergency-first hero. The first viewport answers three questions:
   what is this, where, what can I do.
 
-  Text column carries: small monospace context tag, H1, one supporting
-  line, primary+WhatsApp actions, partner disclosure.
-  Visual column: one premium editorial photograph, subtle crimson bloom.
-  A driver on a phone in a basement car park should be able to reach the
-  primary CTA without scrolling.
+  ACTION HIERARCHY: WhatsApp is the primary (filled) button and Call sits
+  beside it. Previously the loudest element was the red "Get Battery Help"
+  button, which is an in-page scroll to #get-help at the very bottom of a
+  ten-section page — the single most prominent control on an emergency
+  site did nothing but move the viewport. The scroll-CTA is now only the
+  fallback for when no channel is configured.
 
-  Alt text describes what the current photograph actually shows — update
-  in-place when the source image is replaced.
+  IMAGE: one <picture>, art-directed with `media`. See src/lib/heroImages.ts
+  for why this isn't Astro's <Picture> component.
 */
-const alt =
-  "Service technician at the open bonnet of a modern premium SUV, on a Dubai waterfront at golden hour.";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import { hasCallChannel, hasWhatsAppChannel } from "@/lib/leads";
+import {
+  HERO_ALT,
+  HERO_DESKTOP_MEDIA,
+  HERO_DESKTOP_SIZES,
+  HERO_MOBILE_SIZES,
+  heroDesktopSet,
+  heroMobileSet,
+} from "@/lib/heroImages";
 
 const hasWhatsApp = hasWhatsAppChannel();
+const hasCall = hasCallChannel();
 ---
 
 <section class="hero" id="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
       <span class="hero-tag">Mobile Car Battery Help in Dubai</span>
-      <h1>Car Battery Service<br />in&nbsp;Dubai.</h1>
+      <h1>Car Battery Service <br />in&nbsp;Dubai.</h1>
       <p class="lead hero-lead">
         Battery replacement, jump-start assistance and mobile battery service information
         for drivers across Dubai.
       </p>
       <div class="hero-actions">
-        <PrimaryHelpButton size="large" class="hero-primary" />
         {
-          hasWhatsApp && (
+          hasWhatsApp ? (
             <WhatsAppButton
               service="battery_service"
               ctaLocation="hero_whatsapp"
-              variant="quiet"
+              variant="primary"
+              label="WhatsApp Now"
+              class="hero-primary"
             />
+          ) : (
+            <PrimaryHelpButton size="large" class="hero-primary" />
           )
         }
+        {hasCall && <CallButton ctaLocation="hero_call" variant="quiet" label="Call" />}
       </div>
       <PartnerDisclosure />
     </div>
 
     <figure class="hero-figure">
       <div class="hero-bloom" aria-hidden="true"></div>
-      <Picture
-        src={heroDesktop}
-        formats={["avif", "webp"]}
-        fallbackFormat="jpg"
-        widths={[640, 900, 1280]}
-        sizes="(min-width: 64rem) 55vw, 100vw"
-        alt={alt}
-        loading="eager"
-        fetchpriority="high"
-        decoding="sync"
-        class="hero-img hero-img-desktop"
-      />
-      <Picture
-        src={heroMobile}
-        formats={["avif", "webp"]}
-        fallbackFormat="jpg"
-        widths={[480, 780, 1200]}
-        sizes="100vw"
-        alt={alt}
-        loading="eager"
-        fetchpriority="high"
-        decoding="sync"
-        class="hero-img hero-img-mobile"
-      />
+      <picture>
+        <source
+          media={HERO_DESKTOP_MEDIA}
+          type="image/avif"
+          srcset={heroDesktopSet.avif}
+          sizes={HERO_DESKTOP_SIZES}
+        />
+        <source
+          media={HERO_DESKTOP_MEDIA}
+          type="image/webp"
+          srcset={heroDesktopSet.webp}
+          sizes={HERO_DESKTOP_SIZES}
+        />
+        <source
+          media={HERO_DESKTOP_MEDIA}
+          type="image/jpeg"
+          srcset={heroDesktopSet.jpg}
+          sizes={HERO_DESKTOP_SIZES}
+        />
+        <source type="image/avif" srcset={heroMobileSet.avif} sizes={HERO_MOBILE_SIZES} />
+        <source type="image/webp" srcset={heroMobileSet.webp} sizes={HERO_MOBILE_SIZES} />
+        <img
+          src={heroMobileSet.fallback}
+          srcset={heroMobileSet.jpg}
+          sizes={HERO_MOBILE_SIZES}
+          alt={HERO_ALT}
+          width={heroMobileSet.width}
+          height={heroMobileSet.height}
+          loading="eager"
+          fetchpriority="high"
+          decoding="sync"
+          class="hero-img"
+        />
+      </picture>
     </figure>
   </div>
 </section>
@@ -123,6 +142,14 @@ const hasWhatsApp = hasWhatsAppChannel();
   .hero-lead {
     margin-top: clamp(1.25rem, 1rem + 1vw, 1.75rem);
     max-width: 36ch;
+  }
+
+  /* The hero's primary action is now WhatsApp, so it needs the `large`
+     sizing the red PrimaryHelpButton used to bring with it. */
+  :global(.hero-primary) {
+    min-height: 60px !important;
+    padding: 1.125rem 2.25rem !important;
+    font-size: 1.0625rem !important;
   }
 
   .hero-actions {
@@ -174,17 +201,19 @@ const hasWhatsApp = hasWhatsAppChannel();
     border-radius: var(--radius-img);
   }
 
-  /* Art-directed crops: landscape on desktop, tighter landscape on mobile. */
-  .hero-img-desktop {
-    display: none;
+  /* Art direction now happens in <picture> via `media`, not by hiding a
+     second <img> with CSS — the preload scanner ignores `display: none`
+     and fetched both sets. The intrinsic width/height on the <img> is the
+     mobile crop (1200x800); the desktop source is 1280x941, so the box is
+     given an explicit aspect-ratio per breakpoint to keep CLS at zero. */
+  .hero-img {
+    aspect-ratio: 1200 / 800;
+    object-fit: cover;
   }
 
   @media (min-width: 64rem) {
-    .hero-img-desktop {
-      display: block;
-    }
-    .hero-img-mobile {
-      display: none;
+    .hero-img {
+      aspect-ratio: 1280 / 941;
     }
   }
 </style>

@@ -1,0 +1,71 @@
+---
+/*
+  Native <details>/<summary> FAQ list + the matching FAQPage JSON-LD.
+
+  The two are emitted from the SAME array, on purpose — the same rule the
+  breadcrumb follows. Schema that describes questions a visitor cannot see
+  is a structured-data violation, and hand-maintaining a second copy of
+  the Q&A in a <script> tag is exactly how that drift happens.
+
+  Answers may contain inline markup (links, <strong>). The visible answer
+  renders it; the JSON-LD gets a tag-stripped plain-text version, which is
+  what schema.org's acceptedAnswer.text wants.
+
+  Only ONE FaqBlock may appear per page — two FAQPage blocks on one URL is
+  invalid. `scripts/check-links.mjs` asserts this at build time.
+*/
+
+export interface FaqEntry {
+  /** Plain text. Rendered inside <summary>. */
+  q: string;
+  /** May contain inline HTML (<a>, <strong>, <em>). */
+  a: string;
+}
+
+interface Props {
+  faqs: FaqEntry[];
+  /** Set false on pages that already emit FAQPage schema elsewhere. */
+  schema?: boolean;
+}
+
+const { faqs, schema = true } = Astro.props;
+
+/** Strip tags and collapse whitespace for the schema's plain-text answer. */
+function toPlainText(html: string): string {
+  return html
+    .replace(/<[^>]+>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&mdash;/g, "—")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+const json = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: toPlainText(f.a),
+    },
+  })),
+};
+---
+
+{
+  faqs.map((faq) => (
+    <details class="faq">
+      <summary>{faq.q}</summary>
+      <p set:html={faq.a} />
+    </details>
+  ))
+}
+
+{
+  schema && faqs.length > 0 && (
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(json)} />
+  )
+}

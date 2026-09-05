@@ -257,6 +257,3 @@ ol {
   border: 0;
 }
 
-.safe-bottom {
-  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
-}

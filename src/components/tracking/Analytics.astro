@@ -20,14 +20,47 @@ const partnerName = siteConfig.partner.enabled ? siteConfig.partner.name : null;
 {
   gaId && (
     <>
-      <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-      <script is:inline set:html={`
+      {/* DNS + TLS warmed early; the script itself is deferred below. */}
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      <script
+        is:inline
+        set:html={`
+        // gtag() is defined immediately so events fired before the GA
+        // script arrives are queued on dataLayer and replayed by GA on
+        // load — nothing is lost by deferring.
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         window.gtag = gtag;
         gtag('js', new Date());
         gtag('config', '${gaId}', { anonymize_ip: true, send_page_view: true });
-      `} />
+
+        // The GA script used to load in <head> with async. Async doesn't
+        // block parsing, but it still opens a third-party connection and
+        // spends bandwidth while the LCP hero image is in flight. Loading
+        // it after 'load' (or on the first interaction, whichever comes
+        // first) keeps measurement intact and gives the hero the network
+        // to itself on a cold mobile connection.
+        (function () {
+          var loaded = false;
+          function loadGa() {
+            if (loaded) return;
+            loaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=${gaId}';
+            document.head.appendChild(s);
+          }
+          // A tap on a CTA must never wait for analytics, so any early
+          // interaction pulls GA forward rather than dropping the event.
+          ['pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
+            addEventListener(evt, loadGa, { once: true, passive: true, capture: true });
+          });
+          if (document.readyState === 'complete') loadGa();
+          else addEventListener('load', loadGa, { once: true });
+        })();
+      `}
+      />
     </>
   )
 }

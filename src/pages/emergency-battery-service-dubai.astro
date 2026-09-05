@@ -1,5 +1,6 @@
 ---
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
 import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
@@ -23,12 +24,40 @@ const related: RelatedItem[] = [
     blurb: "The wider on-site service the emergency visit is a fast variant of.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    "q": "How long does an emergency visit take to arrive?",
+    "a": "Response time depends on how far the car is from the nearest available van and on traffic at the hour of day. An honest estimate is given on the call — a guaranteed number that ignores traffic isn't honest. Areas with heavier coverage typically see faster arrival than the outskirts."
+  },
+  {
+    "q": "Is an emergency visit more expensive than a scheduled one?",
+    "a": "The parts and the labour on the vehicle are the same as a scheduled <a href=\"/mobile-battery-service-dubai/\">mobile visit</a>. What differs is the dispatch — a priority slot rather than a scheduled window — and, out-of-hours, the fact that the van is running when it would otherwise not be. Any premium over a scheduled visit is disclosed up front, not as a surprise on arrival."
+  },
+  {
+    "q": "Can the visit help if I'm on a live road rather than a car park?",
+    "a": "Yes, but the priority order is different. On a live road the first concern is that the driver and any passengers are not standing beside a stranded car in traffic — that is a call to the police non-emergency line, not to a battery service. Once the situation is safe, an emergency mobile visit can attend, or a recovery can move the vehicle to a location where the fix can be done properly."
+  },
+  {
+    "q": "What if my car isn't actually a battery problem?",
+    "a": "The visit begins with a test at the vehicle. If the battery is healthy and the fault is elsewhere — a starter motor, an alternator, a fuel or ignition issue — that is what the driver is told at the visit. The right next step is a recovery to the appropriate workshop. Fitting a new battery to a car with a fault that isn't in the battery only wastes money and produces the same failure two days later."
+  },
+  {
+    "q": "Can the visit help at night or on public holidays?",
+    "a": "Availability outside ordinary hours varies by day and by the van's schedule. Where the situation is genuinely urgent — a family stranded, a medical consideration — flagging that on the call is important; response is prioritised accordingly. For a car in a driveway with a routine flat battery, scheduling the visit for the next available slot is usually the more sensible option."
+  }
+];
 ---
 
 <ServicePageLayout
   service="emergency_battery_service"
-  title="Emergency Car Battery Service in Dubai | Dubai Battery Service"
-  description="Emergency car battery service in Dubai: priority handling for stranded vehicles, what emergency means in practice, and what to share when calling so the visit resolves the fault rather than a return trip. Get help."
+  title="Emergency Car Battery Service Dubai | Stranded Car Help"
+  description="Emergency car battery service in Dubai. Stranded? What to share so it's fixed on the first visit rather than a return trip. Message on WhatsApp."
   path="/emergency-battery-service-dubai/"
   eyebrow="06 · Emergency"
   h1="Emergency Car Battery Service in Dubai."
@@ -146,60 +175,8 @@ const related: RelatedItem[] = [
 
   <h2>Common questions about emergency battery service</h2>
 
-  <details class="faq">
-    <summary>How long does an emergency visit take to arrive?</summary>
-    <p>
-      Response time depends on how far the car is from the nearest available van and
-      on traffic at the hour of day. An honest estimate is given on the call — a
-      guaranteed number that ignores traffic isn't honest. Areas with heavier coverage
-      typically see faster arrival than the outskirts.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 
-  <details class="faq">
-    <summary>Is an emergency visit more expensive than a scheduled one?</summary>
-    <p>
-      The parts and the labour on the vehicle are the same as a scheduled
-      <a href="/mobile-battery-service-dubai/">mobile visit</a>. What differs is the
-      dispatch — a priority slot rather than a scheduled window — and, out-of-hours,
-      the fact that the van is running when it would otherwise not be. Any premium
-      over a scheduled visit is disclosed up front, not as a surprise on arrival.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Can the visit help if I'm on a live road rather than a car park?</summary>
-    <p>
-      Yes, but the priority order is different. On a live road the first concern is
-      that the driver and any passengers are not standing beside a stranded car in
-      traffic — that is a call to the police non-emergency line, not to a battery
-      service. Once the situation is safe, an emergency mobile visit can attend, or a
-      recovery can move the vehicle to a location where the fix can be done properly.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>What if my car isn't actually a battery problem?</summary>
-    <p>
-      The visit begins with a test at the vehicle. If the battery is healthy and the
-      fault is elsewhere — a starter motor, an alternator, a fuel or ignition issue —
-      that is what the driver is told at the visit. The right next step is a recovery
-      to the appropriate workshop. Fitting a new battery to a car with a fault that
-      isn't in the battery only wastes money and produces the same failure two days
-      later.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Can the visit help at night or on public holidays?</summary>
-    <p>
-      Availability outside ordinary hours varies by day and by the van's schedule.
-      Where the situation is genuinely urgent — a family stranded, a medical
-      consideration — flagging that on the call is important; response is prioritised
-      accordingly. For a car in a driveway with a routine flat battery, scheduling
-      the visit for the next available slot is usually the more sensible option.
-    </p>
-  </details>
 </ServicePageLayout>
 
 <style>

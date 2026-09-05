@@ -87,9 +87,11 @@ const leadAttrs = getLeadDataAttributes({
 
   /* Filled WhatsApp-green. Use only where WhatsApp is the intended action —
      the primary red button carries the branded call to action. */
+  /* Dark ink, not white: #111-family text on #25d366 is 9.44:1, white is
+     1.98:1. Keeps the brand green, makes the label legible in daylight. */
   .wa-btn--primary {
     background: var(--whatsapp-green);
-    color: #ffffff;
+    color: var(--whatsapp-ink);
   }
 
   .wa-btn--primary:active {
@@ -98,7 +100,7 @@ const leadAttrs = getLeadDataAttributes({
 
   @media (hover: hover) {
     .wa-btn--primary:hover {
-      background: #1fbe5c;
+      background: #1cc25e;
       box-shadow: 0 10px 28px rgba(37, 211, 102, 0.22);
       transform: translateY(-1px);
     }
@@ -112,14 +114,16 @@ const leadAttrs = getLeadDataAttributes({
     border-color: var(--hairline-strong);
   }
 
+  /* On a white surface the brand green is 1.98:1, so the icon uses the
+     deeper tone. Still unmistakably WhatsApp. */
   .wa-btn--quiet .wa-icon {
-    color: var(--whatsapp-green);
+    color: var(--whatsapp-deep);
   }
 
   @media (hover: hover) {
     .wa-btn--quiet:hover {
-      border-color: var(--whatsapp-green);
-      color: var(--whatsapp-green);
+      border-color: var(--whatsapp-deep);
+      color: var(--whatsapp-deep);
     }
   }
 
@@ -128,7 +132,7 @@ const leadAttrs = getLeadDataAttributes({
     min-height: 48px;
     padding: 0.625rem 1rem;
     background: var(--whatsapp-green);
-    color: #ffffff;
+    color: var(--whatsapp-ink);
     font-size: var(--fs-small);
   }
 </style>

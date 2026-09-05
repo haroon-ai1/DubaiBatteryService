@@ -1,5 +1,6 @@
 ---
 import "@/styles/global.css";
+import { siteConfig } from "@/config/site";
 import SeoHead from "@/components/seo/SeoHead.astro";
 import JsonLdWebSite from "@/components/seo/JsonLdWebSite.astro";
 import Header from "@/components/layout/Header.astro";
@@ -7,19 +8,46 @@ import Footer from "@/components/layout/Footer.astro";
 import StickyMobileCTA from "@/components/layout/StickyMobileCTA.astro";
 import Analytics from "@/components/tracking/Analytics.astro";
 
+/**
+ * A single LCP image to preload. Pass the SAME srcset strings the page's
+ * <picture> uses — a preload that doesn't match what <picture> selects
+ * downloads a file nobody renders and makes LCP worse, not better.
+ */
+export interface PreloadImage {
+  srcset: string;
+  sizes: string;
+  type: string;
+  media?: string;
+}
+
 interface Props {
   title: string;
   description: string;
   path: string;
   ogImage?: string;
   robots?: string;
+  preloadImages?: PreloadImage[];
+  /**
+   * Where the header's "Get Battery Help" scroll-CTA points. Defaults to
+   * this page's own #get-help section. Pages that don't render one (404)
+   * must pass a root-relative "/#get-help" so the button isn't dead.
+   */
+  helpHref?: string;
 }
 
-const { title, description, path, ogImage, robots } = Astro.props;
+const {
+  title,
+  description,
+  path,
+  ogImage,
+  robots,
+  preloadImages = [],
+  helpHref = "#get-help",
+} = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={siteConfig.locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,6 +60,20 @@ const { title, description, path, ogImage, robots } = Astro.props;
     <!-- Self-hosted variable font, preloaded to avoid layout shift / FOIT -->
     <link rel="preload" href="/fonts/manrope-variable.woff2" as="font" type="font/woff2" crossorigin />
 
+    {/* LCP image preload — beats the stylesheet to the network queue. */}
+    {
+      preloadImages.map((img) => (
+        <link
+          rel="preload"
+          as="image"
+          imagesrcset={img.srcset}
+          imagesizes={img.sizes}
+          type={img.type}
+          media={img.media}
+        />
+      ))
+    }
+
     <SeoHead title={title} description={description} path={path} ogImage={ogImage} robots={robots} />
     <JsonLdWebSite />
     <Analytics />
@@ -40,7 +82,7 @@ const { title, description, path, ogImage, robots } = Astro.props;
   </head>
   <body>
     <a href="#main" class="skip-link">Skip to content</a>
-    <Header />
+    <Header helpHref={helpHref} />
     <main id="main">
       <slot />
     </main>

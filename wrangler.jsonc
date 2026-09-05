@@ -9,6 +9,12 @@
   // any unmatched route instead of a blank platform 404.
   "assets": {
     "directory": "./dist",
-    "not_found_handling": "404-page"
+    // Serves dist/404.html with a real 404 status for unmatched routes
+    // instead of a blank platform page.
+    "not_found_handling": "404-page",
+    // Pinned rather than left on the "auto" default so it provably matches
+    // astro.config.mjs `trailingSlash: "always"`. Without this, /page and
+    // /page/ can both resolve and split signals across two URLs.
+    "html_handling": "force-trailing-slash"
   }
 }

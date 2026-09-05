@@ -18,6 +18,24 @@ const {
   robots = "index, follow",
 } = Astro.props;
 
+/* The shipped OG asset is 1200x630. Declaring the dimensions lets
+   WhatsApp, Slack and X render the large card straight away instead of
+   waiting on a HEAD request — and WhatsApp is this site's main channel,
+   so the link will be pasted into chats constantly. */
+const OG_IMAGE_WIDTH = "1200";
+const OG_IMAGE_HEIGHT = "630";
+
+if (import.meta.env.DEV) {
+  // Google renders ~155 chars. Six of the eight descriptions previously
+  // ran 183-216 and were truncated mid-CTA.
+  if (description.length > 155) {
+    console.warn(`[seo] description is ${description.length} chars (max 155): ${path}`);
+  }
+  if (title.length > 60) {
+    console.warn(`[seo] title is ${title.length} chars (max 60): ${path}`);
+  }
+}
+
 const canonicalUrl = new URL(path, siteConfig.siteUrl).toString();
 const absoluteOgImage = new URL(ogImage, siteConfig.siteUrl).toString();
 ---
@@ -33,12 +51,16 @@ const absoluteOgImage = new URL(ogImage, siteConfig.siteUrl).toString();
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
 <meta property="og:image" content={absoluteOgImage} />
+<meta property="og:image:width" content={OG_IMAGE_WIDTH} />
+<meta property="og:image:height" content={OG_IMAGE_HEIGHT} />
+<meta property="og:image:alt" content={`${siteConfig.siteName} — car battery help in Dubai`} />
 <meta property="og:locale" content={siteConfig.locale.replace("-", "_")} />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={absoluteOgImage} />
+<meta name="twitter:image:alt" content={`${siteConfig.siteName} — car battery help in Dubai`} />
 
 {
   siteConfig.analytics.googleSiteVerification && (

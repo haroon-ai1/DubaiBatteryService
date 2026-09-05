@@ -19,10 +19,11 @@
   and `#get-help`. This layout keeps both IDs so the bar's hide/show
   logic works on service pages without modification.
 */
-import { Picture } from "astro:assets";
+import { Picture, getImage } from "astro:assets";
 
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import JsonLdBreadcrumbList from "@/components/seo/JsonLdBreadcrumbList.astro";
+import JsonLdService from "@/components/seo/JsonLdService.astro";
 import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import CallButton from "@/components/actions/CallButton.astro";
@@ -48,6 +49,14 @@ interface Props {
   standfirst: string;
   breadcrumbLabel: string;
   related: RelatedItem[];
+  /**
+   * Subject of the closing "Ready to sort out …?" heading. Defaults to
+   * the lowercased service label, which reads awkwardly for some
+   * services ("battery prices"), so pages may override it.
+   */
+  finalHeadingSubject?: string;
+  /** Overrides the `Service` schema name. Defaults to the H1, sans period. */
+  schemaName?: string;
 }
 
 const {
@@ -60,9 +69,22 @@ const {
   standfirst,
   breadcrumbLabel,
   related,
+  finalHeadingSubject,
+  schemaName,
 } = Astro.props;
 
 const heroImage = getServiceImage(service, "hero");
+
+/* Preload the hero AVIF when this page has one. Same widths/sizes as the
+   <Picture> below, so the preload and the picked candidate agree. */
+const HERO_WIDTHS = [560, 900, 1280];
+const HERO_SIZES = "(min-width: 64rem) 52vw, 100vw";
+const heroAvif = heroImage
+  ? await getImage({ src: heroImage.src, format: "avif", widths: HERO_WIDTHS, alt: "" })
+  : null;
+const preloadImages = heroAvif
+  ? [{ srcset: heroAvif.srcSet.attribute, sizes: HERO_SIZES, type: "image/avif" }]
+  : [];
 
 const hasWhatsApp = hasWhatsAppChannel();
 const hasCall = hasCallChannel();
@@ -74,11 +96,25 @@ const crumbs = [
 ];
 
 const serviceLabel = SERVICES[service].label;
+const finalSubject = finalHeadingSubject ?? serviceLabel.toLowerCase();
+const schemaServiceName = schemaName ?? h1.replace(/\.$/, "");
 ---
 
-<BaseLayout title={title} description={description} path={path}>
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  preloadImages={preloadImages}
+>
   {/* Schema goes into <head> — coupled to the visible breadcrumb below. */}
   <JsonLdBreadcrumbList slot="head" items={crumbs} />
+  <JsonLdService
+    slot="head"
+    service={service}
+    path={path}
+    name={schemaServiceName}
+    description={description}
+  />
 
   <nav class="breadcrumbs" aria-label="Breadcrumb">
     <div class="container">
@@ -140,8 +176,8 @@ const serviceLabel = SERVICES[service].label;
               src={heroImage.src}
               formats={["avif", "webp"]}
               fallbackFormat="jpg"
-              widths={[560, 900, 1280]}
-              sizes="(min-width: 64rem) 52vw, 100vw"
+              widths={HERO_WIDTHS}
+              sizes={HERO_SIZES}
               alt={heroImage.alt}
               loading="eager"
               fetchpriority="high"
@@ -209,7 +245,7 @@ const serviceLabel = SERVICES[service].label;
     <div class="final-bloom" aria-hidden="true" />
     <div class="container final-inner">
       <span class="label final-label">Get Battery Help</span>
-      <h2>Ready to sort out<br />{serviceLabel.toLowerCase()}?</h2>
+      <h2>Ready to sort out <br />{finalSubject}?</h2>
       <p class="lead final-lead">
         Message or call to describe the vehicle, the symptom and where the car is parked.
         The enquiry is then handled by the service provider covering battery requests for

@@ -1,22 +1,44 @@
 ---
+/*
+  /car-battery-prices-dubai/
+
+  This page previously carried a "Car Battery Prices in Dubai" title and
+  meta description over a body that was a general battery-service
+  overview — H1 "Car Battery Service in Dubai.", breadcrumb "Car Battery
+  Service", and not one price, cost or AED figure anywhere in it. Title
+  and intent are now aligned, and the service-taxonomy content that used
+  to live here is compressed into a "which visit do I need" section that
+  links out rather than competing with the service pages.
+
+  Price bands come from `siteConfig.pricing` and render as clearly-labelled
+  indicative RANGES with a review date. They are never presented as quotes.
+*/
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import ServiceImage from "@/components/service/ServiceImage.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
+import { siteConfig } from "@/config/site";
 import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
 
 const hasWhatsApp = hasWhatsAppChannel();
+const { pricing, currency } = siteConfig;
+
+const reviewed = new Date(pricing.lastReviewed).toLocaleDateString("en-GB", {
+  month: "long",
+  year: "numeric",
+});
 
 const related: RelatedItem[] = [
   {
-    service: "battery_testing",
-    href: "/battery-testing-dubai/",
-    blurb: "Where the visit usually starts — separating flat from failing.",
-  },
-  {
     service: "battery_replacement",
     href: "/car-battery-replacement-dubai/",
-    blurb: "The specification that decides how long a new battery actually lasts.",
+    blurb: "The specification that decides both the price and how long it lasts.",
+  },
+  {
+    service: "battery_testing",
+    href: "/battery-testing-dubai/",
+    blurb: "Cheaper than a replacement, and it tells you whether you need one.",
   },
   {
     service: "mobile_battery_service",
@@ -24,197 +46,389 @@ const related: RelatedItem[] = [
     blurb: "Testing, replacement and BMS work carried out at the vehicle.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    q: "How much does a car battery cost in Dubai?",
+    a: 'For most cars, somewhere between AED 220 and AED 2,000 supplied and fitted, and the spread is not arbitrary — it tracks chemistry and capacity. A small conventional battery for a car without stop-start sits at the bottom of that range. A large AGM for a Patrol or Land Cruiser sits at the top. The band table on this page breaks it down by specification, but the figure for your car is decided by what the manufacturer specified, not by what you would prefer to spend.',
+  },
+  {
+    q: "Why is an AGM battery so much more expensive than a conventional one?",
+    a: 'Construction cost. An AGM battery holds its electrolyte in a glass-mat separator under compression in a sealed case, which tolerates deep cycling and high electrical loads that would finish a flooded battery quickly. If your car was engineered around AGM, fitting a cheaper flooded battery to save money typically buys you a replacement again within months, so the saving is not real. <a href="/car-battery-replacement-dubai/">Battery replacement</a> covers why the specification is not negotiable.',
+  },
+  {
+    q: "Is mobile battery replacement more expensive than going to a workshop?",
+    a: "Not usually by much, and often not at all. Most mobile providers include on-site fitting in the quoted price because fitting a battery takes minutes and the van is already going out. Where a genuine premium does appear is out-of-hours and emergency work: a 2 a.m. roadside call-out is priced differently from a scheduled afternoon visit. Against that, a workshop visit has its own cost, since a car that will not start needs recovery or a taxi.",
+  },
+  {
+    q: "What should I ask before accepting a battery quote?",
+    a: "Five things: is fitting included, what chemistry and capacity is actually being supplied, does the price cover BMS registration if your car needs it, how long is the warranty and is it pro-rata or full replacement, and is the old battery being taken away or deducted. Two quotes that look identical on the headline number can be quite different once those are answered.",
+  },
+  {
+    q: "Are the prices on this page a quote?",
+    a: "No. They are indicative market ranges for Dubai, published so you can sanity-check what you are being told, and they are reviewed periodically rather than live. A real figure for your car needs the make, model, year and the current battery's specification. Send those over and you get an actual number rather than a range.",
+  },
+];
 ---
 
 <ServicePageLayout
-  service="battery_service"
+  service="battery_prices"
   title="Car Battery Prices in Dubai | Dubai Battery Service"
-  description="Car battery prices in Dubai: what actually drives the price of a replacement — chemistry, capacity, fitment complexity, BMS registration — and how to compare quotes honestly. Get help."
+  description="What a car battery costs in Dubai by type and size, what pushes a quote up, and the five questions that make two quotes actually comparable."
   path="/car-battery-prices-dubai/"
-  eyebrow="07 · Battery Service"
-  h1="Car Battery Service in Dubai."
-  standfirst="Battery service is the umbrella term for the different visits a car might actually need — a test, a jump-start, a replacement, a mobile fitment, an emergency call-out. What follows is the map: what each of those actually does, when it's the right call, and where to read more."
-  breadcrumbLabel="Car Battery Service"
+  eyebrow="07 · Prices"
+  h1="Car Battery Prices in Dubai."
+  standfirst="Battery quotes in Dubai vary by a factor of ten, and most of that spread is real rather than markup — chemistry, capacity and fitment complexity are set by the vehicle. What follows is what a battery actually costs here, what moves the number, and how to compare two quotes without guessing."
+  breadcrumbLabel="Car Battery Prices"
+  finalHeadingSubject="a price for your car"
+  schemaName="Car Battery Replacement Pricing in Dubai"
   related={related}
 >
-  <h2>What battery service covers, without the marketing</h2>
+  <h2>What a car battery costs in Dubai</h2>
   <p>
-    "Battery service" as a label covers several different visits, and treating them as
-    one blurs the choices a driver actually has. Broadly there are five, and each has
-    a different question behind it.
+    The ranges below cover the battery supplied and fitted at the vehicle, for the
+    common specifications on Dubai roads. They are indicative market ranges, not
+    quotes — the point is to give you something to measure a quote against, not to
+    price your car sight-unseen.
+  </p>
+
+  {
+    pricing.showBands && (
+      <>
+        <div class="price-table-wrap">
+          <table class="price-table">
+            <caption class="visually-hidden">
+              Indicative car battery price ranges in Dubai by battery type and capacity
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Battery type</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Typically fits</th>
+                <th scope="col" class="num">
+                  Range ({currency})
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {pricing.bands.map((band) => (
+                <tr>
+                  <th scope="row">{band.label}</th>
+                  <td>{band.spec}</td>
+                  <td class="fits">{band.fits}</td>
+                  <td class="num">
+                    {band.low.toLocaleString("en-AE")}–{band.high.toLocaleString("en-AE")}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="price-note">
+          Indicative ranges for supply and standard on-site fitting in Dubai, reviewed{" "}
+          {reviewed}. Not a quote and not a price list — your car's actual figure
+          depends on the specification covered below.
+        </p>
+      </>
+    )
+  }
+
+  <h2>What actually moves the number</h2>
+
+  <h3>Chemistry — the single biggest factor</h3>
+  <p>
+    Conventional flooded, EFB and AGM are three different products at three different
+    price points, and which one your car takes is a manufacturer decision rather than
+    a preference. A stop-start car specified for AGM will physically accept a cheap
+    flooded battery, start on it, and destroy it inside months, because the cycling
+    duty it was never built for finishes it. That is the most common way a driver ends
+    up paying twice. The <a href="/car-battery-replacement-dubai/">replacement page</a>
+    covers how to identify what your car requires.
+  </p>
+
+  <h3>Capacity and cold-cranking amps</h3>
+  <p>
+    Amp-hours and CCA are set by the vehicle's electrical demand. A large SUV with a
+    big engine, a second battery circuit or heavy accessory load needs a physically
+    larger, more expensive cell than a small saloon. Going below the specified figure
+    to save money produces slow cranking and a battery working permanently at its
+    limit, which in this climate means a short life.
+  </p>
+
+  <h3>Fitment complexity</h3>
+  <p>
+    A battery sitting under the bonnet on an open tray is a fast job. A battery under a
+    seat, in the boot floor, behind a wheel-arch liner or under a cover requiring trim
+    removal is not, and where labour is priced separately that difference shows up.
+    Modern German cars are the common case.
+  </p>
+
+  <h3>BMS registration</h3>
+  <p>
+    Many cars with battery management need the new battery registered or coded so the
+    charging strategy matches it. Skipping the step does not stop the car starting — it
+    quietly leaves the alternator charging to the old battery's profile, which shortens
+    the new one's life. Some quotes include registration, some add it, and some omit it
+    without mentioning it. Worth asking directly.
+  </p>
+
+  <h3>When and where the call happens</h3>
+  <p>
+    A scheduled daytime visit to a parking bay is priced differently from a 2 a.m.
+    hard-shoulder <a href="/emergency-battery-service-dubai/">emergency call-out</a>.
+    That premium is a real cost rather than a markup, but it is worth knowing it exists
+    so a night quote and a daytime quote are not compared as though they were the same
+    job.
+  </p>
+
+  <div class="extras">
+    <h3 class="extras-title">Line items that change a comparison</h3>
+    <dl class="extras-list">
+      {
+        pricing.extras.map((item) => (
+          <div class="extras-row">
+            <dt>{item.label}</dt>
+            <dd>{item.note}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <ServiceImage service="battery_prices" slotName="detail" />
+
+  <h2>How to compare two quotes honestly</h2>
+  <p>
+    Headline numbers are close to meaningless on their own. Ask both providers the same
+    five questions and the cheaper quote usually stops being the cheaper quote, or
+    becomes obviously the better one:
+  </p>
+  <ol>
+    <li>What chemistry and capacity is being supplied — exactly?</li>
+    <li>Is on-site fitting included in that figure?</li>
+    <li>Does it cover BMS registration, if my car needs it?</li>
+    <li>What is the warranty term, and is it full replacement or pro-rata?</li>
+    <li>Is the old battery taken away, and is its scrap value deducted?</li>
+  </ol>
+  <p>
+    A brand name is a much weaker signal than the answers to those five. A well-known
+    brand in the wrong specification is a worse purchase than an unfamiliar one in the
+    right specification.
+  </p>
+
+  <h2>Where the cheapest quote costs more</h2>
+  <p>
+    Battery pricing has an unusual property: the cheap option frequently costs more
+    within the same year, because the failure mode is early replacement rather than
+    poor performance. Three patterns account for most of it.
   </p>
   <ul>
-    <li>a
-      <a href="/battery-testing-dubai/">test</a> answers "is this a flat battery, a
-      failing battery, or a charging fault?"</li>
-    <li>a
-      <a href="/jump-start-dubai/">jump-start</a> gets a flat battery running so the
-      alternator can refill it — useful, but not a diagnosis</li>
-    <li>a
-      <a href="/car-battery-replacement-dubai/">replacement</a> is the fix once the
-      test has confirmed the battery itself is done</li>
-    <li>a
-      <a href="/mobile-battery-service-dubai/">mobile visit</a> is any of the above,
-      done at the vehicle rather than in a workshop</li>
-    <li>an
-      <a href="/emergency-battery-service-dubai/">emergency call-out</a> is a mobile
-      visit prioritised for a car that is somewhere it cannot stay</li>
+    <li>
+      A flooded battery fitted where the maker specified EFB or AGM. Cheapest at
+      purchase, often replaced inside twelve months.
+    </li>
+    <li>
+      A battery replaced without a <a href="/battery-testing-dubai/">test</a> first,
+      when the real fault was an alternator or a parasitic drain. The new battery
+      flattens the same way and the money is simply gone.
+    </li>
+    <li>
+      Old stock. A lead-acid battery ages on the shelf, and a cell that has sat for a
+      year in a warehouse starts life partly used up. The date code is worth asking
+      about.
+    </li>
   </ul>
   <p>
-    The right question up front — not the most expensive one — is what a proper
-    service starts with. The rest of this page is a map, not a sales pitch: what each
-    visit does, and how to tell which one you actually need.
-  </p>
-
-  <h2>Which visit is which, from the symptom</h2>
-
-  <h3>The car won't start today, and it's the first time</h3>
-  <p>
-    An event-driven flat — a light left on, a door ajar, a keyless system glitch — is
-    a jump-start situation. The battery is fine and a normal drive will refill it.
-    Where the reason is genuinely a one-off, the story ends with the jump. Where the
-    same battery flattens again inside a few weeks, it wasn't a one-off, and the next
-    step is a test.
-  </p>
-
-  <h3>The car has been cranking weakly for days, and now it won't start</h3>
-  <p>
-    That is the failing-battery pattern — a cell that has been slowly losing capacity
-    and has crossed the threshold below which it can't turn the engine. A test
-    confirms it, and a replacement is the answer. Jump-starting will get the car
-    mobile in the meantime, but a battery that has aged out doesn't recover.
-  </p>
-
-  <h3>The car keeps going flat over weeks even though it's driven normally</h3>
-  <p>
-    This one isn't necessarily the battery. A parasitic drain from a stuck accessory,
-    a failing alternator that isn't fully recharging, or a pattern of only very short
-    trips can all produce the same symptom. The test that matters here is not just on
-    the battery but on the wider charging circuit — alternator output under load, and
-    key-off current draw with the car allowed to sleep. Fitting a new battery without
-    settling this produces the same failure again.
-  </p>
-
-  <h3>The car is stranded somewhere it can't stay</h3>
-  <p>
-    An emergency mobile call-out. The priority is prioritised dispatch, the van
-    provisioned to finish the job on site, and the visit still begins with a test
-    rather than assuming a replacement is needed.
-  </p>
-
-  <h2>Where a workshop is the right answer instead</h2>
-  <p>
-    Not everything is a mobile job. A car with a suspected alternator failure, a
-    starter-motor fault, or a hybrid high-voltage traction battery is workshop work —
-    the diagnosis can be done at the vehicle but the fix cannot. An honest visit says
-    so at the visit rather than fitting a new 12 V battery and hoping.
-  </p>
-  <p>
-    That distinction is worth flagging up front, because "the car doesn't start" is a
-    symptom, not a diagnosis. Battery service is the right first stop when the fault
-    could plausibly be a battery — which is most of the time, particularly on cars in
-    UAE service, but not all the time.
+    The useful frame is cost per year of service, not cost at the counter. An AGM at
+    AED 900 that runs four years is cheaper than AED 400 twice in eighteen months, and
+    it does not strand you in between.
   </p>
 
   <h2>What the UAE climate changes about the picture</h2>
   <p>
-    Two things worth carrying forward for any driver here. First, service life.
-    Lead-acid chemistry ages faster in heat, and manufacturer-quoted battery lives are
+    Lead-acid chemistry ages faster in heat, and manufacturer-quoted service lives are
     measured against a temperate baseline. A conventional starter battery in a Dubai
     car typically runs closer to two or three years than the four or five sometimes
     quoted. AGM tends to last longer because the sealed construction better contains
-    the water loss that finishes a flooded battery. Age alone is not proof of failure,
-    but three-year-plus batteries in this climate warrant more scrutiny than they
-    would elsewhere.
+    the water loss that finishes a flooded battery. That changes the arithmetic above:
+    the premium chemistry recovers its extra cost faster here than it would in Europe.
   </p>
   <p>
-    Second, failure mode. Batteries here more often fail suddenly than gradually — a
-    car that started fine yesterday is gone by morning. That is part of why mobile
-    service exists: the car is where it is, and there is no reasonable way to move it
-    without starting it first.
+    Failure mode matters too. Batteries here more often fail suddenly than gradually —
+    a car that started fine yesterday is gone by morning. Replacing on age, before the
+    failure, is usually cheaper than replacing during one, because it takes the
+    emergency call-out premium off the bill entirely.
   </p>
 
-  <ServiceImage service="battery_service" slotName="detail" />
+  <h2>Which visit do you actually need?</h2>
+  <p>
+    Price only becomes meaningful once you know what you are buying. Four situations
+    cover almost everything:
+  </p>
+  <ul>
+    <li>
+      <strong>First time it won't start, no prior warning.</strong> Usually an
+      event-driven flat, such as a light left on or a door ajar. A
+      <a href="/jump-start-dubai/">jump-start</a> and a normal drive, and the story
+      ends there.
+    </li>
+    <li>
+      <strong>Cranking weakly for days, now dead.</strong> The failing-battery pattern.
+      A <a href="/battery-testing-dubai/">test</a> confirms it and a
+      <a href="/car-battery-replacement-dubai/">replacement</a> is the answer.
+    </li>
+    <li>
+      <strong>Keeps going flat despite normal driving.</strong> Often not the battery
+      at all, but a parasitic drain or an alternator not fully recharging. A test on
+      the wider charging circuit comes first; fitting a battery without it repeats the
+      failure at full price.
+    </li>
+    <li>
+      <strong>Stranded somewhere it can't stay.</strong> An
+      <a href="/emergency-battery-service-dubai/">emergency call-out</a>, or a
+      <a href="/mobile-battery-service-dubai/">mobile visit</a> if the car is parked
+      safely.
+    </li>
+  </ul>
+  <p>
+    One case sits outside all of this. A suspected alternator or starter-motor fault,
+    or a hybrid high-voltage traction battery, is workshop work: the diagnosis can
+    happen at the car, the repair cannot. A provider quoting a 12 V battery for those
+    symptoms is not quoting the job you need.
+  </p>
 
   {
     hasWhatsApp && (
       <p class="inline-cta">
         <WhatsAppButton
-          service="battery_service"
+          service="battery_prices"
           ctaLocation="service_inline_whatsapp"
           variant="primary"
-          label="Message about battery service"
+          label="Get a price for your car"
         />
       </p>
     )
   }
 
-  <h2>Common questions about battery service</h2>
+  <h2>Common questions about battery prices</h2>
 
-  <details class="faq">
-    <summary>How do I know whether I need a test, a jump or a replacement?</summary>
-    <p>
-      A first-time flat with an obvious cause — a light left on, a door ajar — is a
-      <a href="/jump-start-dubai/">jump-start</a> situation. A car that has been
-      cranking weakly for days, or a battery that has gone flat more than once in a
-      short period, is a
-      <a href="/battery-testing-dubai/">test</a> and, almost certainly, a
-      <a href="/car-battery-replacement-dubai/">replacement</a>. When the symptom
-      doesn't clearly point to one or the other, the test is the honest first step.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>How long do car batteries typically last in the UAE?</summary>
-    <p>
-      Shorter than the four to five years often quoted for temperate climates. A
-      conventional starter battery here typically runs closer to two or three years
-      of dependable service. AGM batteries, sealed and more heat-tolerant, tend to
-      last longer. Age alone doesn't prove failure — a test settles it — but a
-      three-year-plus battery in Dubai service warrants a check even when it seems
-      to be behaving.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Can everything be done at the car, or do some jobs need a workshop?</summary>
-    <p>
-      Battery testing, replacement, BMS registration through the OBD port and the
-      wider charging-system checks are all
-      <a href="/mobile-battery-service-dubai/">on-site jobs</a>. Alternator
-      replacement, starter-motor faults and any hybrid high-voltage traction battery
-      work are workshop jobs. The diagnosis at the vehicle is what tells you which
-      category the situation is in.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Is battery service safe on modern cars with electronics?</summary>
-    <p>
-      Yes, when done to the manufacturer's procedure — memory keeper connected where
-      the vehicle needs one, correct disconnection order, correct battery
-      specification, BMS coded to the new unit on cars that require it. Cutting
-      corners on any of those steps can produce electronics issues, lost adaptive
-      learning, or a new battery that overcharges and fails inside the warranty
-      window. The procedure is the difference.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>What information helps most when I make the first call?</summary>
-    <p>
-      Make, model, year and (if known) engine variant of the car; where it is parked
-      and how the visit will reach it; and the symptom in your own words — how the
-      engine sounds when it tries to start, whether the battery has gone flat before,
-      how old the current battery is. That is what settles whether the visit is a
-      jump, a test, or a replacement, and what the van needs to bring.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 </ServicePageLayout>
 
 <style>
   .inline-cta {
     margin: clamp(2.5rem, 2rem + 2vw, 3.5rem) 0 !important;
     max-width: none !important;
+  }
+
+  /* The table is the reason this page exists — let it use the full prose
+     column rather than the 34rem body measure. */
+  .price-table-wrap {
+    margin: clamp(1.75rem, 1.25rem + 1.5vw, 2.5rem) 0 1rem;
+    max-width: none !important;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .price-table {
+    width: 100%;
+    min-width: 34rem;
+    border-collapse: collapse;
+    font-size: var(--fs-small);
+    text-align: left;
+  }
+
+  .price-table th,
+  .price-table td {
+    padding: 0.875rem 1rem 0.875rem 0;
+    border-bottom: 1px solid var(--hairline);
+    vertical-align: top;
+  }
+
+  .price-table thead th {
+    border-bottom-color: var(--hairline-strong);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .price-table tbody th {
+    font-weight: 600;
+    color: var(--text-primary);
+    padding-right: 1.5rem;
+  }
+
+  .price-table td {
+    color: var(--text-secondary);
+  }
+
+  .price-table .fits {
+    max-width: 22ch;
+  }
+
+  .price-table .num {
+    text-align: right;
+    padding-right: 0;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-primary);
+    font-weight: 600;
+  }
+
+  .price-note {
+    font-size: 0.8125rem !important;
+    color: var(--text-muted) !important;
+    max-width: 46ch !important;
+  }
+
+  .extras {
+    margin-top: clamp(2rem, 1.5rem + 1.5vw, 3rem);
+    padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) 0;
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+    max-width: 34rem;
+  }
+
+  .extras-title {
+    margin-top: 0 !important;
+    font-size: 0.6875rem !important;
+    font-family: var(--font-mono);
+    font-weight: 500 !important;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-primary) !important;
+  }
+
+  .extras-row {
+    display: grid;
+    gap: 0.25rem;
+    padding-top: 1rem;
+  }
+
+  .extras-row + .extras-row {
+    margin-top: 1rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .extras-row dt {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--fs-small);
+  }
+
+  .extras-row dd {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--fs-small);
+    line-height: 1.55;
   }
 </style>

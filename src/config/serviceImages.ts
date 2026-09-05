@@ -24,10 +24,10 @@ import type { ServiceId } from "@/lib/services";
 // path fails the build with a clear error rather than shipping a broken <img>.
 // -----------------------------------------------------------------------------
 
-import batteryDeliveryHero from "@/assets/images/services/battery-delivery-dubai-hero.png";
-import batteryEmergencyHero from "@/assets/images/services/battery-emergency-dubai-hero.png";
-import batteryPricesDetail from "@/assets/images/services/battery-prices-dubai-detail.png";
-import mobileServiceEditorial from "@/assets/images/services/mobile-service-dubai-editorial.png";
+import batteryDeliveryHero from "@/assets/images/services/battery-delivery-dubai-hero.jpg";
+import batteryEmergencyHero from "@/assets/images/services/battery-emergency-dubai-hero.jpg";
+import batteryPricesDetail from "@/assets/images/services/battery-prices-dubai-detail.jpg";
+import mobileServiceEditorial from "@/assets/images/services/mobile-service-dubai-editorial.jpg";
 
 export type ServiceImageSlot = "hero" | "editorial" | "detail";
 
@@ -50,15 +50,16 @@ export interface ServiceImageSlots {
 const EMPTY_SLOTS: ServiceImageSlots = { hero: null, editorial: null, detail: null };
 
 export const SERVICE_IMAGES: Record<ServiceId, ServiceImageSlots> = {
-  // The prices page is served by the `battery_service` ServiceId (renamed
-  // route). Its detail slot illustrates the specification side of pricing.
-  battery_service: {
+  // `battery_service` is the generic umbrella id used by page-agnostic
+  // CTAs. It has no page, so it has no image slots.
+  battery_service: { ...EMPTY_SLOTS },
+  battery_prices: {
     hero: null,
     editorial: null,
     detail: {
       src: batteryPricesDetail,
       alt:
-        "Car battery label showing chemistry, capacity and cold-cranking-amp rating — the specification that decides the correct replacement.",
+        "Car battery label showing chemistry, capacity and cold-cranking-amp rating — the specification that decides both the correct replacement and its price.",
     },
   },
   battery_replacement: { ...EMPTY_SLOTS },

@@ -1,5 +1,6 @@
 ---
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import ServiceImage from "@/components/service/ServiceImage.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
@@ -24,12 +25,40 @@ const related: RelatedItem[] = [
     blurb: "Priority handling when the car is somewhere it cannot stay.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    "q": "What should I share when calling for a mobile visit?",
+    "a": "Make, model, year and engine variant of the car; where the car is parked and how the visit will access it; and the symptom in your own words — whether the engine cranks at all, whether it started weakly for a while first, whether the battery has been flat before. That combination is enough to decide what the van brings and to avoid an unnecessary return trip."
+  },
+  {
+    "q": "How long does a mobile visit take?",
+    "a": "A test-only visit is typically fifteen to twenty minutes on site. A test plus a straightforward replacement is thirty to forty-five minutes. A car that needs BMS registration through the OBD port, or one with an under-seat or boot-mounted battery, takes longer. Travel time to the vehicle isn't included in those figures."
+  },
+  {
+    "q": "Can everything be done on site, or are some cars a workshop job?",
+    "a": "Most passenger cars can be tested and, where necessary, have their battery replaced on site — including cars with BMS registration, which is done through the OBD port. A car with a suspected alternator or starter-motor fault needs a workshop; the diagnosis can still be done at the visit, but the fix cannot. A hybrid's high-voltage traction battery is a workshop-only job in any case; only the 12 V auxiliary battery is a mobile candidate."
+  },
+  {
+    "q": "Is a mobile visit more expensive than a workshop replacement?",
+    "a": "The parts are the same. What differs is the labour and travel component, and that varies by distance and by the complexity of the fit. The value of a mobile visit is a car that doesn't have to be recovered to a workshop and a fault that gets diagnosed rather than guessed at."
+  },
+  {
+    "q": "Will the visit tell me if the alternator is the actual problem?",
+    "a": "The alternator output and key-off parasitic draw are checked as part of the wider on-site diagnosis where the symptom warrants it. If the battery is healthy and the alternator is genuinely undercharging, that will show in the reading — and the honest answer is that the fix is a workshop job, not a mobile one. It is better to know that at the visit than to fit a new battery and see it drain again inside a week."
+  }
+];
 ---
 
 <ServicePageLayout
   service="mobile_battery_service"
   title="Mobile Car Battery Service in Dubai | Dubai Battery Service"
-  description="Mobile car battery service in Dubai: testing, replacement, BMS registration and charging-system checks carried out at the vehicle. What a proper mobile visit covers and how it differs from a jump-start van. Get help."
+  description="Mobile car battery service in Dubai. Testing, replacement, BMS registration and charging checks done at your vehicle. What a proper visit covers."
   path="/mobile-battery-service-dubai/"
   eyebrow="05 · Mobile Service"
   h1="Mobile Car Battery Service in Dubai."
@@ -157,61 +186,8 @@ const related: RelatedItem[] = [
 
   <h2>Common questions about mobile battery service</h2>
 
-  <details class="faq">
-    <summary>What should I share when calling for a mobile visit?</summary>
-    <p>
-      Make, model, year and engine variant of the car; where the car is parked and
-      how the visit will access it; and the symptom in your own words — whether the
-      engine cranks at all, whether it started weakly for a while first, whether the
-      battery has been flat before. That combination is enough to decide what the van
-      brings and to avoid an unnecessary return trip.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 
-  <details class="faq">
-    <summary>How long does a mobile visit take?</summary>
-    <p>
-      A test-only visit is typically fifteen to twenty minutes on site. A test plus a
-      straightforward replacement is thirty to forty-five minutes. A car that needs
-      BMS registration through the OBD port, or one with an under-seat or boot-mounted
-      battery, takes longer. Travel time to the vehicle isn't included in those
-      figures.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Can everything be done on site, or are some cars a workshop job?</summary>
-    <p>
-      Most passenger cars can be tested and, where necessary, have their battery
-      replaced on site — including cars with BMS registration, which is done through
-      the OBD port. A car with a suspected alternator or starter-motor fault needs a
-      workshop; the diagnosis can still be done at the visit, but the fix cannot. A
-      hybrid's high-voltage traction battery is a workshop-only job in any case; only
-      the 12 V auxiliary battery is a mobile candidate.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Is a mobile visit more expensive than a workshop replacement?</summary>
-    <p>
-      The parts are the same. What differs is the labour and travel component, and
-      that varies by distance and by the complexity of the fit. The value of a mobile
-      visit is a car that doesn't have to be recovered to a workshop and a fault that
-      gets diagnosed rather than guessed at.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Will the visit tell me if the alternator is the actual problem?</summary>
-    <p>
-      The alternator output and key-off parasitic draw are checked as part of the
-      wider on-site diagnosis where the symptom warrants it. If the battery is healthy
-      and the alternator is genuinely undercharging, that will show in the reading —
-      and the honest answer is that the fix is a workshop job, not a mobile one. It is
-      better to know that at the visit than to fit a new battery and see it drain
-      again inside a week.
-    </p>
-  </details>
 </ServicePageLayout>
 
 <style>

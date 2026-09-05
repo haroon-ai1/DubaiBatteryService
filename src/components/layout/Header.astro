@@ -1,23 +1,28 @@
 ---
 /*
-  Nav links point to on-page anchors while dedicated routes don't exist.
-  When /car-battery-replacement-dubai/, /areas/, /guides/ ship, replace
-  the anchor hrefs with real routes and extend the list — do not link to
-  routes that don't exist yet.
+  Nav points at real service routes. It previously used bare fragments
+  (#services, #replacement, #areas, #faq) which resolve only on the
+  homepage — every one of them dead-ended on all seven service pages.
+  Links live in `src/config/navigation.ts`; never hard-code them here.
 
   Header CTA copy is deliberately the emergency-first primary label —
   "Get Battery Help" — matching the hero and final CTA button so the
   same intent surfaces the same words.
 */
 import PrimaryHelpButton from "@/components/actions/PrimaryHelpButton.astro";
+import { PRIMARY_NAV } from "@/config/navigation";
 
-const navItems = [
-  { label: "Services", href: "#services" },
-  { label: "Replacement", href: "#replacement" },
-  { label: "Jump-start", href: "#jump-start" },
-  { label: "Areas", href: "#areas" },
-  { label: "FAQ", href: "#faq" },
-];
+interface Props {
+  /** Target for the scroll-CTA. See BaseLayout's `helpHref`. */
+  helpHref?: string;
+}
+
+const { helpHref = "#get-help" } = Astro.props;
+
+const navItems = PRIMARY_NAV;
+
+/* Normalised current path, for aria-current on the active nav item. */
+const here = Astro.url.pathname.replace(/\/?$/, "/");
 ---
 
 <div id="header-sentinel" aria-hidden="true"></div>
@@ -39,7 +44,9 @@ const navItems = [
         {
           navItems.map((item) => (
             <li>
-              <a href={item.href}>{item.label}</a>
+              <a href={item.href} aria-current={item.href === here ? "page" : undefined}>
+                {item.label}
+              </a>
             </li>
           ))
         }
@@ -47,7 +54,7 @@ const navItems = [
     </nav>
 
     <div class="header-actions">
-      <PrimaryHelpButton class="header-cta" label="Get Battery Help" />
+      <PrimaryHelpButton class="header-cta" label="Get Battery Help" href={helpHref} />
       <button
         type="button"
         id="menu-toggle"
@@ -82,7 +89,11 @@ const navItems = [
       {
         navItems.map((item) => (
           <li>
-            <a href={item.href} class="mobile-nav-link">
+            <a
+              href={item.href}
+              class="mobile-nav-link"
+              aria-current={item.href === here ? "page" : undefined}
+            >
               {item.label}
             </a>
           </li>
@@ -90,7 +101,7 @@ const navItems = [
       }
     </ul>
   </nav>
-  <PrimaryHelpButton class="mobile-nav-cta" size="large" label="Get Battery Help" />
+  <PrimaryHelpButton class="mobile-nav-cta" size="large" label="Get Battery Help" href={helpHref} />
 </dialog>
 
 <style>
@@ -173,6 +184,10 @@ const navItems = [
     font-weight: 600;
     letter-spacing: -0.005em;
     transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .desktop-nav a[aria-current="page"] {
+    color: var(--text-primary);
   }
 
   @media (hover: hover) {
@@ -289,6 +304,10 @@ const navItems = [
 
   .mobile-nav nav {
     padding: 1rem clamp(1rem, 5vw, 2rem);
+  }
+
+  .mobile-nav-link[aria-current="page"] {
+    color: var(--red-primary);
   }
 
   .mobile-nav-link {

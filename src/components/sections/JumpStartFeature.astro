@@ -49,7 +49,7 @@ const verifies = [
         <span class="feature-index">02</span>
         Jump-start &amp; Mobile Assistance
       </span>
-      <h2>A jump start is<br />a diagnostic step,<br />not a fix.</h2>
+      <h2>A jump start is <br />a diagnostic step, <br />not a fix.</h2>
       <p class="feature-p">
         Enough charge to start the engine is useful, but it does not resolve whatever
         drained the battery in the first place. A repeat drain, a battery close to end of
@@ -60,6 +60,12 @@ const verifies = [
         Mobile battery service — assistance carried out where the car sits — covers most
         of these situations. Some modern vehicles additionally require the new battery to
         be registered to the car's electronics after replacement.
+      </p>
+      <p class="feature-p">
+        More on <a href="/jump-start-dubai/">car jump start in Dubai</a>, on
+        <a href="/mobile-battery-service-dubai/">mobile battery service</a>, and on the
+        <a href="/battery-testing-dubai/">battery test</a> that tells the two situations
+        apart.
       </p>
 
       <div class="feature-actions">
@@ -118,6 +124,21 @@ const verifies = [
 
   .feature-copy h2 {
     max-width: 18ch;
+  }
+
+  .feature-copy a {
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--red-primary);
+    text-underline-offset: 0.2em;
+    text-decoration-thickness: 1px;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  @media (hover: hover) {
+    .feature-copy a:hover {
+      color: var(--red-primary);
+    }
   }
 
   .feature-p {

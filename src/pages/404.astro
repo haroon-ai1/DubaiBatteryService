@@ -1,5 +1,19 @@
 ---
+/*
+  A lost visitor on an emergency-intent site is exactly the person you
+  want to catch, so this page carries live channels rather than only a
+  "go home" link. It previously offered a dead `#get-help` header button
+  and a `/#services` link, and the sticky mobile bar never appeared here
+  at all because its IntersectionObserver had no `#hero` to watch.
+*/
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import { hasCallChannel, hasWhatsAppChannel } from "@/lib/leads";
+import { LINKED_SERVICES } from "@/lib/services";
+
+const hasWhatsApp = hasWhatsAppChannel();
+const hasCall = hasCallChannel();
 ---
 
 <BaseLayout
@@ -7,6 +21,7 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
   description="This page doesn't exist or may have moved."
   path="/404/"
   robots="noindex, nofollow"
+  helpHref="/#get-help"
 >
   <section class="not-found">
     <div class="container not-found-inner">
@@ -16,9 +31,32 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         It may have moved, or the link might be out of date.
       </p>
       <div class="not-found-actions">
-        <a href="/" class="btn btn-primary">Go home</a>
-        <a href="/#services" class="action">Explore services</a>
+        {
+          hasWhatsApp && (
+            <WhatsAppButton
+              service="battery_service"
+              ctaLocation="notfound_whatsapp"
+              variant="primary"
+              label="WhatsApp Now"
+            />
+          )
+        }
+        {hasCall && <CallButton ctaLocation="notfound_call" variant="quiet" label="Call" />}
       </div>
+
+      <nav class="not-found-links" aria-label="Services">
+        <p class="not-found-links-title">Or pick up where you meant to go:</p>
+        <ul>
+          {
+            LINKED_SERVICES.map((service) => (
+              <li>
+                <a href={service.path as string}>{service.label}</a>
+              </li>
+            ))
+          }
+          <li><a href="/">Home</a></li>
+        </ul>
+      </nav>
     </div>
   </section>
 </BaseLayout>
@@ -34,6 +72,36 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
   .not-found-inner .label {
     margin-bottom: 1.25rem;
+  }
+
+  .not-found-links {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 3.5rem);
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--hairline);
+  }
+
+  .not-found-links-title {
+    font-size: var(--fs-small);
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .not-found-links ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.5rem;
+  }
+
+  .not-found-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--fs-small);
+    font-weight: 600;
+    color: var(--text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--red-primary);
+    text-underline-offset: 0.2em;
   }
 
   .not-found-inner .lead {

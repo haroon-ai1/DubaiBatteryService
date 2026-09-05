@@ -1,5 +1,6 @@
 ---
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
 import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
@@ -23,12 +24,40 @@ const related: RelatedItem[] = [
     blurb: "The wider on-site service the delivery-and-fit visit is part of.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    "q": "How is the correct battery decided before the van leaves?",
+    "a": "From the vehicle's make, model, year and engine variant, cross-checked against the label on the existing battery where the driver can read it. Group size, terminal orientation, chemistry (flooded, EFB or AGM) and cold-cranking amps are matched to the manufacturer specification. Sending the wrong battery is the single most common reason a delivery visit ends in a return trip, so this part of the call matters more than the fit itself."
+  },
+  {
+    "q": "Is the old battery taken away?",
+    "a": "Yes. Lead-acid batteries are close to fully recyclable — the lead, plastic case and acid are all recovered by industry. A replaced battery should be collected for recycling at the visit, not left in general waste or kept with the vehicle. Legitimate services do this as standard."
+  },
+  {
+    "q": "Does the new battery need to be registered to the car?",
+    "a": "For many recent European vehicles and most cars with active battery management, yes. The on-board system needs to know a new battery has been fitted so it can reset its charging strategy. Without registration, the alternator continues to charge as though the old battery is still there, which typically overcharges the fresh one and shortens its life. Whether registration is required depends on the specific vehicle — worth confirming for the make and model before booking."
+  },
+  {
+    "q": "How long does an on-site delivery-and-fit take?",
+    "a": "A straightforward fit — accessible battery, no BMS registration required — is typically twenty minutes or so on site. Cars with under-seat or boot-mounted batteries, or those that need registration through the OBD port, take longer. Travel time to the vehicle isn't included in that figure."
+  },
+  {
+    "q": "What if the battery I'm sent turns out to be the wrong one?",
+    "a": "If the specification confirmed up front doesn't match what's actually in the vehicle, the correct unit is arranged rather than fitting whatever will bolt down. A close-but-not-correct battery is precisely the failure mode this service exists to avoid — a mismatched fit typically fails inside a few months and the driver ends up paying twice."
+  }
+];
 ---
 
 <ServicePageLayout
   service="battery_delivery"
   title="Car Battery Delivery in Dubai | Dubai Battery Service"
-  description="Car battery delivery in Dubai: the correct battery brought to the vehicle and fitted on site, why matching to the car matters more than delivery speed, and what a proper on-site fitment covers. Get help."
+  description="Car battery delivery in Dubai — the right battery brought to your car and fitted on the spot. What a proper on-site fitment covers. Message on WhatsApp."
   path="/battery-delivery-dubai/"
   eyebrow="03 · Delivery"
   h1="Car Battery Delivery in Dubai."
@@ -153,60 +182,8 @@ const related: RelatedItem[] = [
 
   <h2>Common questions about battery delivery</h2>
 
-  <details class="faq">
-    <summary>How is the correct battery decided before the van leaves?</summary>
-    <p>
-      From the vehicle's make, model, year and engine variant, cross-checked against
-      the label on the existing battery where the driver can read it. Group size,
-      terminal orientation, chemistry (flooded, EFB or AGM) and cold-cranking amps
-      are matched to the manufacturer specification. Sending the wrong battery is
-      the single most common reason a delivery visit ends in a return trip, so this
-      part of the call matters more than the fit itself.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 
-  <details class="faq">
-    <summary>Is the old battery taken away?</summary>
-    <p>
-      Yes. Lead-acid batteries are close to fully recyclable — the lead, plastic case
-      and acid are all recovered by industry. A replaced battery should be collected
-      for recycling at the visit, not left in general waste or kept with the vehicle.
-      Legitimate services do this as standard.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Does the new battery need to be registered to the car?</summary>
-    <p>
-      For many recent European vehicles and most cars with active battery management,
-      yes. The on-board system needs to know a new battery has been fitted so it can
-      reset its charging strategy. Without registration, the alternator continues to
-      charge as though the old battery is still there, which typically overcharges the
-      fresh one and shortens its life. Whether registration is required depends on
-      the specific vehicle — worth confirming for the make and model before booking.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>How long does an on-site delivery-and-fit take?</summary>
-    <p>
-      A straightforward fit — accessible battery, no BMS registration required — is
-      typically twenty minutes or so on site. Cars with under-seat or boot-mounted
-      batteries, or those that need registration through the OBD port, take longer.
-      Travel time to the vehicle isn't included in that figure.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>What if the battery I'm sent turns out to be the wrong one?</summary>
-    <p>
-      If the specification confirmed up front doesn't match what's actually in the
-      vehicle, the correct unit is arranged rather than fitting whatever will bolt
-      down. A close-but-not-correct battery is precisely the failure mode this service
-      exists to avoid — a mismatched fit typically fails inside a few months and the
-      driver ends up paying twice.
-    </p>
-  </details>
 </ServicePageLayout>
 
 <style>

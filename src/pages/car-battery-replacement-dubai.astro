@@ -1,5 +1,6 @@
 ---
 import ServicePageLayout from "@/layouts/ServicePageLayout.astro";
+import FaqBlock from "@/components/seo/FaqBlock.astro";
 import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
 import { hasWhatsAppChannel } from "@/lib/leads";
 import type { RelatedItem } from "@/layouts/ServicePageLayout.astro";
@@ -30,12 +31,40 @@ const related: RelatedItem[] = [
     blurb: "Replacement carried out at the vehicle's location.",
   },
 ];
+
+/*
+  Rendered by <FaqBlock>, which emits the visible <details> list and the
+  FAQPage JSON-LD from this one array — so schema can never describe a
+  question the page doesn't show.
+*/
+const faqs = [
+  {
+    "q": "How long does a car battery typically last in Dubai?",
+    "a": "High heat accelerates the internal wear of a lead-acid battery, so a conventional starter battery in a UAE vehicle often runs closer to two or three years of dependable service than the four to five sometimes quoted for temperate climates. AGM batteries, being sealed and more heat-tolerant, tend to last longer. Age alone is not proof of failure — a test settles it."
+  },
+  {
+    "q": "Can I fit a battery with a higher CCA than the manufacturer specifies?",
+    "a": "A higher-CCA battery of the same chemistry and physical size starts the vehicle without issue, but it does not extend service life and it is typically more expensive. Fitting a lower-CCA battery is the more damaging mistake — it produces hard starts in cold snaps and chronic undercharge in normal use."
+  },
+  {
+    "q": "Does the new battery need to be registered to the car?",
+    "a": "For many recent European vehicles and most cars with active battery management, yes: the on-board system needs to know a new battery has been fitted so it can reset its charging strategy. Without registration, the alternator continues to charge as though the old battery is still there, which typically overcharges the new one and shortens its life. Whether registration is required depends on the specific vehicle."
+  },
+  {
+    "q": "Should I stay with the same battery brand?",
+    "a": "Brand matters less than getting the chemistry, capacity, CCA and physical fitment right. A different brand meeting the same specification performs equivalently. Warranty terms and after-sales support vary between brands, and those are legitimate reasons to prefer one over another."
+  },
+  {
+    "q": "What happens to my old battery?",
+    "a": "Lead-acid batteries are close to fully recyclable — the lead, plastic case and acid are all recovered by industry. A replaced battery should be taken away for recycling, not left in general waste or kept with the vehicle. Legitimate services do this as standard."
+  }
+];
 ---
 
 <ServicePageLayout
   service="battery_replacement"
   title="Car Battery Replacement in Dubai | Dubai Battery Service"
-  description="Car battery replacement in Dubai: correct chemistry, capacity and fitment, why wrong batteries fail early, and what a proper on-site job looks like. Get help."
+  description="Car battery replacement in Dubai — correct chemistry, capacity and fitment, why the wrong battery fails early, and what a proper on-site job looks like."
   path="/car-battery-replacement-dubai/"
   eyebrow="01 · Replacement"
   h1="Car Battery Replacement in Dubai."
@@ -166,58 +195,8 @@ const related: RelatedItem[] = [
 
   <h2>Common questions about battery replacement</h2>
 
-  <details class="faq">
-    <summary>How long does a car battery typically last in Dubai?</summary>
-    <p>
-      High heat accelerates the internal wear of a lead-acid battery, so a conventional
-      starter battery in a UAE vehicle often runs closer to two or three years of
-      dependable service than the four to five sometimes quoted for temperate climates.
-      AGM batteries, being sealed and more heat-tolerant, tend to last longer. Age
-      alone is not proof of failure — a test settles it.
-    </p>
-  </details>
+  <FaqBlock faqs={faqs} />
 
-  <details class="faq">
-    <summary>Can I fit a battery with a higher CCA than the manufacturer specifies?</summary>
-    <p>
-      A higher-CCA battery of the same chemistry and physical size starts the vehicle
-      without issue, but it does not extend service life and it is typically more
-      expensive. Fitting a lower-CCA battery is the more damaging mistake — it produces
-      hard starts in cold snaps and chronic undercharge in normal use.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Does the new battery need to be registered to the car?</summary>
-    <p>
-      For many recent European vehicles and most cars with active battery management,
-      yes: the on-board system needs to know a new battery has been fitted so it can
-      reset its charging strategy. Without registration, the alternator continues to
-      charge as though the old battery is still there, which typically overcharges the
-      new one and shortens its life. Whether registration is required depends on the
-      specific vehicle.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>Should I stay with the same battery brand?</summary>
-    <p>
-      Brand matters less than getting the chemistry, capacity, CCA and physical fitment
-      right. A different brand meeting the same specification performs equivalently.
-      Warranty terms and after-sales support vary between brands, and those are
-      legitimate reasons to prefer one over another.
-    </p>
-  </details>
-
-  <details class="faq">
-    <summary>What happens to my old battery?</summary>
-    <p>
-      Lead-acid batteries are close to fully recyclable — the lead, plastic case and acid
-      are all recovered by industry. A replaced battery should be taken away for
-      recycling, not left in general waste or kept with the vehicle. Legitimate services
-      do this as standard.
-    </p>
-  </details>
 </ServicePageLayout>
 
 <style>

@@ -18,7 +18,7 @@ const hasCall = hasCallChannel();
 const anyChannel = hasWhatsApp || hasCall;
 ---
 
-<div class="sticky-cta safe-bottom" id="sticky-mobile-cta" aria-hidden="true" inert>
+<div class="sticky-cta" id="sticky-mobile-cta" aria-hidden="true" inert>
   <div class="sticky-cta-inner">
     {
       hasWhatsApp && (
@@ -52,7 +52,11 @@ const anyChannel = hasWhatsApp || hasCall;
     position: fixed;
     left: 12px;
     right: 12px;
-    bottom: 12px;
+    /* The shared `.safe-bottom` utility was dead here: Astro's scoped
+       `.sticky-cta[data-astro-cid-…]` selector outranks it and the
+       shorthand `padding` below reset padding-bottom anyway. Handled
+       inline instead. */
+    bottom: max(12px, env(safe-area-inset-bottom));
     z-index: var(--z-sticky-cta);
     background: var(--glass-white);
     border: 1px solid var(--hairline);
@@ -138,7 +142,11 @@ const anyChannel = hasWhatsApp || hasCall;
     }
   }
 
-  if (bar && hero && "IntersectionObserver" in window) {
+  // On pages with no #hero (the 404), there is nothing to observe — show
+  // the bar rather than leaving it permanently inert and invisible.
+  if (bar && !hero) {
+    setHidden(false);
+  } else if (bar && hero && "IntersectionObserver" in window) {
     let heroVisible = true;
     let finalVisible = false;
 
