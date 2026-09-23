@@ -1,0 +1,96 @@
+---
+import GuideLayout from "@/layouts/GuideLayout.astro";
+const faqs = [
+  {
+    q: "Should I disconnect my car battery when travelling in summer?",
+    a: "For trips longer than two or three weeks, disconnecting the negative terminal (or using a smart battery maintainer) prevents the car's standby drain from flattening the battery. On some modern cars disconnecting resets settings or needs a relearn afterwards — check the manual or ask first.",
+  },
+  {
+    q: "Does running the AC drain the car battery?",
+    a: "Not while the engine is running — the alternator powers it. Sitting with the engine off and the ignition on, fan running, will drain the battery quickly.",
+  },
+  {
+    q: "Should I have my battery checked before summer?",
+    a: 'Yes, if it\'s more than two years old. A quick test before the heat arrives shows whether it\'s likely to make it through. Our <a href="/battery-testing-dubai/">battery test</a> is free.',
+  },
+];
+---
+
+<GuideLayout
+  slug="car-battery-care-dubai-summer"
+  service="battery_testing"
+  lead="Dubai's summer is the hardest season of the year on a car battery. These ten habits won't make a battery last forever, but they'll help it last longer — and fail less suddenly."
+  faqs={faqs}
+>
+  <ol>
+    <li>
+      <h3>Park in the shade — or underground</h3>
+      <p>
+        Under-bonnet temperatures in direct sun are extreme. Covered or basement parking is the single biggest thing you
+        can do for battery life. Even a car-park sunshade helps a little.
+      </p>
+    </li>
+    <li>
+      <h3>Drive for 30 minutes at least once a week</h3>
+      <p>
+        Short trips don't fully recharge the battery after starting. A longer drive — Sheikh Zayed Road or Emirates Road
+        counts — lets the alternator top it up properly.
+      </p>
+    </li>
+    <li>
+      <h3>Plan ahead before travelling</h3>
+      <p>
+        Leaving the car for the summer holidays? A modern car's standby drain can flatten the battery in two to three
+        weeks. Ask someone to run it, use a smart maintainer, or disconnect it (check your manual first).
+      </p>
+    </li>
+    <li>
+      <h3>Get the battery tested before the heat</h3>
+      <p>
+        If your battery is over two years old, test it in April or May. A weak battery that limps through the summer
+        often fails at the first cooler morning.
+      </p>
+    </li>
+    <li>
+      <h3>Keep the terminals clean and tight</h3>
+      <p>
+        White or blue-green crust on the terminals increases resistance. A loose clamp can cause a no-start even with a good
+        battery. Both are quick fixes during a service visit.
+      </p>
+    </li>
+    <li>
+      <h3>Watch parasitic loads</h3>
+      <p>
+        Dash cams in parking mode, aftermarket trackers and accessories add up. Set parking-mode cut-off voltages
+        sensibly, or switch them off if the car will sit for a while.
+      </p>
+    </li>
+    <li>
+      <h3>Don't sit with the ignition on and engine off</h3>
+      <p>
+        Running the fan, lights and screens with the engine off — waiting outside the school or the mall — can drain a
+        tired battery surprisingly fast.
+      </p>
+    </li>
+    <li>
+      <h3>Take stop-start behaviour as a hint</h3>
+      <p>
+        If stop-start never activates any more, the car may be protecting a weak battery. Get it tested.
+      </p>
+    </li>
+    <li>
+      <h3>Replace with the right type</h3>
+      <p>
+        When it's time, fit the type your car was built for — and consider AGM where it fits, as it copes better with
+        heat. See <a href="/guides/agm-vs-efb-vs-conventional-battery/">AGM vs EFB vs conventional</a>.
+      </p>
+    </li>
+    <li>
+      <h3>Know who you'll call</h3>
+      <p>
+        Save a 24/7 battery service number in your phone before you need it. If it happens, a{" "}
+        <a href="/emergency-battery-service-dubai/">mobile technician can come to you</a> wherever the car is.
+      </p>
+    </li>
+  </ol>
+</GuideLayout>

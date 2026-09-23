@@ -1,0 +1,50 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { siteConfig } from "@/config/site";
+---
+
+<ContentLayout
+  title="Privacy Policy | Dubai Battery Service"
+  description="How Dubai Battery Service handles data: anonymous analytics, no forms, no data sold. WhatsApp and phone contact go directly to the service team."
+  path="/privacy-policy/"
+  crumbs={[
+    { name: "Home", path: "/" },
+    { name: "Privacy policy", path: "/privacy-policy/" },
+  ]}
+  eyebrow="Legal"
+  h1="Privacy Policy"
+  lead="Short version: this site collects as little as possible, never sells data, and has no forms."
+  heroCtas={false}
+  sidebar={false}
+  ctaBand={false}
+>
+  <p><em>Last updated: 24 September 2026</em></p>
+
+  <h2>What this website collects</h2>
+  <p>
+    {siteConfig.siteName} does not have sign-up or contact forms, and does not ask for your name, email or phone number on
+    the website. We use Google Analytics 4 to understand how the site is used — for example which pages are visited and
+    when someone taps a WhatsApp or call button. IP anonymisation is enabled, and the events we send contain no personal
+    information: only the page, the service, the area and which button was tapped.
+  </p>
+
+  <h2>When you contact us on WhatsApp or by phone</h2>
+  <p>
+    WhatsApp and call buttons connect you directly to the independent mobile battery team that carries out the work. Any
+    information you share in that conversation (such as your location or car details) is shared with them so they can
+    help you, and is handled under their own practices and WhatsApp's terms. The pre-filled WhatsApp message contains no
+    personal data.
+  </p>
+
+  <h2>Cookies</h2>
+  <p>
+    Google Analytics sets first-party cookies to distinguish visits. You can block or delete cookies in your browser
+    settings; the site works fully without them.
+  </p>
+
+  <h2>Data sharing</h2>
+  <p>We do not sell or rent personal data. Analytics data is processed by Google under its terms.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy? Reach us through the <a href="/contact/">contact page</a>.</p>
+</ContentLayout>

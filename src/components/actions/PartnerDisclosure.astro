@@ -1,0 +1,19 @@
+---
+/*
+  Quiet compliance line placed near lead CTAs when partner routing is on.
+  Links to /about/ where the lead-routing model is explained in full.
+*/
+import { siteConfig } from "@/config/site";
+const show = siteConfig.partner.enabled && siteConfig.leadAttribution.enabled;
+interface Props { class?: string }
+const { class: className = "" } = Astro.props;
+---
+
+{
+  show && (
+    <p class:list={["disclosure", className]}>
+      Jobs are carried out by our vetted Dubai partner technicians.{" "}
+      <a href="/about/">How it works</a>
+    </p>
+  )
+}

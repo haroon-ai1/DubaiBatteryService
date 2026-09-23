@@ -1,0 +1,61 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import ServicesGrid from "@/components/blocks/ServicesGrid.astro";
+---
+
+<BaseLayout
+  title="Page not found | Dubai Battery Service"
+  description="This page doesn't exist or may have moved. Need battery help in Dubai? WhatsApp or call — 24/7."
+  path="/404/"
+  robots="noindex, nofollow"
+>
+  <section class="nf on-ink" id="hero">
+    <div class="container">
+      <p class="eyebrow">Error 404</p>
+      <h1>That page has gone flat.</h1>
+      <p class="lead">The page you were looking for doesn't exist or has moved. If your car battery has too, we can still help.</p>
+      <div class="cta-row">
+        <WhatsAppButton service="battery_service" ctaLocation="notfound_whatsapp" size="lg" />
+        <CallButton ctaLocation="notfound_call" variant="volt" size="lg" showNumber />
+      </div>
+      <p><a class="home" href="/">← Back to the homepage</a></p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <h2 class="h">Our services</h2>
+      <ServicesGrid />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    background: var(--ink);
+    color: var(--text-on-ink);
+    padding-block: clamp(3rem, 2rem + 5vw, 7rem);
+  }
+  .nf .container {
+    display: grid;
+    gap: 1.25rem;
+    max-width: 48rem;
+    margin-inline: auto;
+    justify-items: start;
+  }
+  .nf h1 {
+    color: #fff;
+    font-size: var(--fs-display);
+  }
+  .nf .lead {
+    color: var(--text-on-ink-2);
+  }
+  .home {
+    color: var(--volt);
+    font-weight: 700;
+  }
+  .h {
+    margin-bottom: 1.5rem;
+  }
+</style>

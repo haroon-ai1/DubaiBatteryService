@@ -1,0 +1,86 @@
+---
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@/config/site";
+import type { ServiceId } from "@/lib/services";
+
+interface Props {
+  service: ServiceId;
+  area?: string | null;
+  areaName?: string | null;
+  makeName?: string | null;
+  title?: string;
+}
+const { service, area = null, areaName = null, makeName = null, title } = Astro.props;
+const c = siteConfig.claims;
+const heading = title ?? (areaName ? `Battery help in ${areaName}` : "Need battery help now?");
+---
+
+<div class="side-card">
+  <p class="sc-title">{heading}</p>
+  <ul class="sc-facts">
+    {c.is24x7 && <li><Icon name="clock" /> Open 24/7, every day</li>}
+    {c.responseTime && <li><Icon name="van" /> Typical arrival {c.responseTime}</li>}
+    {c.startingPriceAed && <li><Icon name="tag" /> Batteries from AED {c.startingPriceAed}</li>}
+    {c.warranty && <li><Icon name="shield" /> {c.warranty} warranty</li>}
+    {c.freeTesting && <li><Icon name="gauge" /> Free battery &amp; alternator test</li>}
+  </ul>
+  <div class="sc-ctas">
+    <WhatsAppButton
+      service={service}
+      ctaLocation="sidebar_whatsapp"
+      area={area}
+      areaName={areaName}
+      makeName={makeName}
+      block
+      label="WhatsApp us"
+    />
+    <CallButton ctaLocation="sidebar_call" area={area} variant="ink" block showNumber />
+  </div>
+  <p class="sc-note">Send your car's make, model and year plus a location pin for a fast, exact quote.</p>
+</div>
+
+<style>
+  .side-card {
+    display: grid;
+    gap: 1.1rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    background: #fff;
+    border: 1px solid var(--hairline);
+    box-shadow: var(--shadow-card);
+    border-top: 4px solid var(--volt);
+  }
+  .sc-title {
+    font-weight: 800;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .sc-facts {
+    display: grid;
+    gap: 0.55rem;
+    font-size: var(--fs-small);
+    font-weight: 600;
+  }
+  .sc-facts li {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+  .sc-facts :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--volt-ink);
+    flex-shrink: 0;
+  }
+  .sc-ctas {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .sc-note {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+</style>

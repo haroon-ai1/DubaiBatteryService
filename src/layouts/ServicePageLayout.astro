@@ -1,0 +1,193 @@
+---
+/*
+  Shared shell for every service page.
+
+    - dark PageHero (breadcrumb + BreadcrumbList JSON-LD, H1, CTAs,
+      image or quote panel)
+    - floating trust strip
+    - article body (slot) + sticky sidebar CTA card on desktop
+    - price bands, coverage, related services
+    - FAQ (visible list + FAQPage JSON-LD from ONE array)
+    - closing CTA band (#get-help)
+*/
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import ServicesGrid from "@/components/blocks/ServicesGrid.astro";
+import AreasGrid from "@/components/blocks/AreasGrid.astro";
+import PriceTable from "@/components/blocks/PriceTable.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import GuidesGrid from "@/components/blocks/GuidesGrid.astro";
+import SidebarCta from "@/components/blocks/SidebarCta.astro";
+import JsonLdService from "@/components/seo/JsonLdService.astro";
+import type { FaqEntry } from "@/components/seo/FaqBlock.astro";
+import { getServiceImage } from "@/config/serviceImages";
+import type { ServiceId } from "@/lib/services";
+
+interface Props {
+  service: ServiceId;
+  title: string;
+  description: string;
+  path: string;
+  eyebrow: string;
+  h1: string;
+  standfirst: string;
+  breadcrumbLabel: string;
+  faqs: FaqEntry[];
+  faqHeading?: string;
+  /** Overrides the `Service` schema name. Defaults to the H1. */
+  schemaName?: string;
+  showPrices?: boolean;
+  waLabel?: string;
+  ctaHeading?: string;
+}
+
+const {
+  service,
+  title,
+  description,
+  path,
+  eyebrow,
+  h1,
+  standfirst,
+  breadcrumbLabel,
+  faqs,
+  faqHeading,
+  schemaName,
+  showPrices = true,
+  waLabel,
+  ctaHeading,
+} = Astro.props;
+
+const guideOrder: Record<string, string[]> = {
+  emergency_battery_service: ["signs-car-battery-is-dying", "how-long-car-battery-lasts-uae", "agm-vs-efb-vs-conventional-battery"],
+  jump_start: ["signs-car-battery-is-dying", "how-long-car-battery-lasts-uae", "car-battery-care-dubai-summer"],
+  battery_testing: ["signs-car-battery-is-dying", "agm-vs-efb-vs-conventional-battery", "what-to-do-car-battery-dies-dubai"],
+  battery_delivery: ["signs-car-battery-is-dying", "car-wont-start-battery-or-alternator", "car-battery-care-dubai-summer"],
+};
+// GuidesGrid shows the first 3 not excluded; excluding these rotates which guides each page links.
+const guideExclude = guideOrder[service] ?? [];
+const image = getServiceImage(service, "hero") ?? getServiceImage(service, "editorial");
+const crumbs = [
+  { name: "Home", path: "/" },
+  { name: "Services", path: "/services/" },
+  { name: breadcrumbLabel, path },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} stickyService={service}>
+  <JsonLdService slot="head" service={service} path={path} name={schemaName ?? h1.replace(/\.$/, "")} description={description} />
+
+  <PageHero
+    crumbs={crumbs}
+    eyebrow={eyebrow}
+    h1={h1}
+    lead={standfirst}
+    service={service}
+    image={image}
+    waLabel={waLabel}
+  />
+
+  <div class="container trust-wrap">
+    <TrustStrip variant="float" />
+  </div>
+
+  <section class="section">
+    <div class="container body-grid">
+      <article class="prose">
+        <slot />
+      </article>
+      <aside class="side">
+        <SidebarCta service={service} />
+      </aside>
+    </div>
+  </section>
+
+  {
+    showPrices && (
+      <section class="section section--soft">
+        <div class="container">
+          <div class="section-head section-head--split">
+            <div>
+              <p class="eyebrow">Prices</p>
+              <h2>Typical car battery prices in Dubai</h2>
+            </div>
+            <p>
+              Supplied and fitted, in AED. Message the car's make, model and year for an exact price.{" "}
+              <a class="text-link" href="/car-battery-prices-dubai/">Full price guide</a>
+            </p>
+          </div>
+          <PriceTable compact />
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Coverage</p>
+        <h2>Available across Dubai</h2>
+        <p>Pick your area for local parking and access notes — or just send a location pin.</p>
+      </div>
+      <AreasGrid variant="chips" />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Related</p>
+        <h2>Other battery services</h2>
+      </div>
+      <ServicesGrid exclude={[service]} limit={3} />
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} heading={faqHeading} />
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Guides</p>
+        <h2>Helpful battery guides</h2>
+      </div>
+      <GuidesGrid limit={3} exclude={guideExclude} />
+    </div>
+  </section>
+
+  <CtaBand service={service} heading={ctaHeading} />
+</BaseLayout>
+
+<style>
+  .trust-wrap {
+    position: relative;
+    margin-top: -2.5rem;
+    z-index: 2;
+  }
+  .body-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .body-grid .prose {
+    max-width: 46rem;
+  }
+  @media (min-width: 64rem) {
+    .body-grid {
+      grid-template-columns: minmax(0, 46rem) 21rem;
+      justify-content: space-between;
+      gap: 3rem;
+      align-items: start;
+    }
+    .side {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .side {
+      display: none;
+    }
+  }
+</style>

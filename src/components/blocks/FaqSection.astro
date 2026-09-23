@@ -1,0 +1,36 @@
+---
+import FaqBlock, { type FaqEntry } from "@/components/seo/FaqBlock.astro";
+interface Props {
+  faqs: FaqEntry[];
+  heading?: string;
+  intro?: string;
+  soft?: boolean;
+}
+const { faqs, heading = "Frequently asked questions", intro, soft = false } = Astro.props;
+---
+
+<section class:list={["section", soft && "section--soft"]} id="faq">
+  <div class="container faq-grid">
+    <div class="section-head">
+      <p class="eyebrow">FAQ</p>
+      <h2>{heading}</h2>
+      {intro && <p>{intro}</p>}
+    </div>
+    <FaqBlock faqs={faqs} />
+  </div>
+</section>
+
+<style>
+  @media (min-width: 64rem) {
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 4rem;
+      align-items: start;
+    }
+    .faq-grid .section-head {
+      position: sticky;
+      top: calc(var(--header-h) + 2rem);
+    }
+  }
+</style>

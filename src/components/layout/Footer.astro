@@ -1,0 +1,171 @@
+---
+import Logo from "@/components/ui/Logo.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import { siteConfig } from "@/config/site";
+import {
+  FOOTER_SERVICE_LINKS,
+  FOOTER_AREA_LINKS,
+  FOOTER_MAKE_LINKS,
+  FOOTER_COMPANY_LINKS,
+} from "@/config/navigation";
+
+const year = new Date().getFullYear();
+const { claims, partner } = siteConfig;
+const cols = [
+  { title: "Services", links: FOOTER_SERVICE_LINKS, more: null },
+  { title: "Areas", links: FOOTER_AREA_LINKS, more: { label: "All Dubai areas", href: "/areas/" } },
+  { title: "Car makes", links: FOOTER_MAKE_LINKS, more: { label: "All car makes", href: "/car-makes/" } },
+  { title: "Company", links: FOOTER_COMPANY_LINKS, more: null },
+];
+---
+
+<footer class="site-footer on-ink">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <Logo inverse />
+        <p>
+          Car battery replacement, jump starts and free battery testing at your location, anywhere in
+          Dubai{claims.is24x7 ? " — 24 hours a day, 7 days a week" : ""}.
+        </p>
+        <ul class="facts">
+          {claims.responseTime && <li>Typical arrival: <strong>{claims.responseTime}</strong></li>}
+          {claims.warranty && <li>Warranty: <strong>{claims.warranty.toLowerCase()}</strong></li>}
+          {claims.startingPriceAed && <li>Batteries from: <strong>AED {claims.startingPriceAed}</strong></li>}
+          {claims.paymentMethods && <li>Payment: <strong>{claims.paymentMethods.toLowerCase()}</strong></li>}
+        </ul>
+        <div class="cta-row">
+          <WhatsAppButton service="battery_service" ctaLocation="footer_whatsapp" size="sm" />
+          <CallButton ctaLocation="footer_call" variant="ghost-ink" size="sm" showNumber />
+        </div>
+      </div>
+
+      {
+        cols.map((c) => (
+          <nav class="footer-col" aria-label={c.title}>
+            <h2>{c.title}</h2>
+            <ul>
+              {c.links.map((l) => (
+                <li>
+                  <a href={l.href}>{l.label}</a>
+                </li>
+              ))}
+              {c.more && (
+                <li>
+                  <a href={c.more.href} class="more">
+                    {c.more.label} →
+                  </a>
+                </li>
+              )}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {year} {siteConfig.siteName}. Serving Dubai, UAE.</p>
+      {
+        partner.enabled && (
+          <p>
+            {siteConfig.siteName} connects drivers with an independent, vetted mobile battery team, who carry out
+            and guarantee the work. <a href="/about/">Learn more</a>.
+          </p>
+        )
+      }
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--ink);
+    color: var(--text-on-ink-2);
+    padding-block: clamp(3rem, 2.5rem + 3vw, 5rem) 2rem;
+    padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+    font-size: var(--fs-small);
+  }
+  .footer-top {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+    display: grid;
+    gap: 1.1rem;
+    align-content: start;
+    max-width: 26rem;
+  }
+  .footer-brand p {
+    color: var(--text-on-ink-2);
+    line-height: 1.6;
+  }
+  .facts {
+    display: grid;
+    gap: 0.35rem;
+  }
+  .facts strong {
+    color: #fff;
+    font-weight: 700;
+  }
+  .footer-col h2 {
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--volt);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  .footer-col ul {
+    display: grid;
+    gap: 0.55rem;
+  }
+  .footer-col a {
+    color: var(--text-on-ink-2);
+    text-decoration: none;
+  }
+  .footer-col a:hover {
+    color: #fff;
+    text-decoration: underline;
+  }
+  .footer-col .more {
+    color: #fff;
+    font-weight: 700;
+  }
+  @media (min-width: 64rem) {
+    .footer-top {
+      grid-template-columns: 1.5fr repeat(4, 1fr);
+    }
+    .footer-brand {
+      grid-column: auto;
+    }
+  }
+  .footer-bottom {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--hairline-ink);
+    display: grid;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--text-on-ink-3);
+  }
+  .footer-bottom a {
+    color: var(--text-on-ink-2);
+  }
+  @media (min-width: 64rem) {
+    .footer-bottom {
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+    }
+    .footer-bottom p:last-child {
+      text-align: right;
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .site-footer {
+      padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+    }
+  }
+</style>

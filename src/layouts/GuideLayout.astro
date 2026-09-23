@@ -1,0 +1,71 @@
+---
+/*
+  Guide/article shell. Title, description and dates come from the GUIDES
+  index entry so the index, cards and Article schema always agree.
+*/
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import GuidesGrid from "@/components/blocks/GuidesGrid.astro";
+import { GUIDE_BY_SLUG, guidePath } from "@/data/guides";
+import { siteConfig } from "@/config/site";
+import type { FaqEntry } from "@/components/seo/FaqBlock.astro";
+import type { ServiceId } from "@/lib/services";
+
+interface Props {
+  slug: string;
+  lead: string;
+  faqs?: FaqEntry[];
+  service?: ServiceId;
+}
+const { slug, lead, faqs = [], service = "battery_service" } = Astro.props;
+const g = GUIDE_BY_SLUG.get(slug);
+if (!g) throw new Error(`Unknown guide: ${slug}`);
+const path = guidePath(g);
+const url = new URL(path, siteConfig.siteUrl).toString();
+const fmt = (d: string) => new Date(d).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+
+const article = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": `${url}#article`,
+  headline: g.title,
+  description: g.description,
+  datePublished: g.published,
+  dateModified: g.updated,
+  inLanguage: siteConfig.locale,
+  mainEntityOfPage: url,
+  image: new URL(siteConfig.defaultOgImage, siteConfig.siteUrl).toString(),
+  author: { "@type": "Organization", name: siteConfig.siteName, url: siteConfig.siteUrl },
+  publisher: { "@type": "Organization", name: siteConfig.siteName, url: siteConfig.siteUrl },
+};
+---
+
+<ContentLayout
+  title={g.seoTitle}
+  description={g.description}
+  path={path}
+  ogType="article"
+  crumbs={[
+    { name: "Home", path: "/" },
+    { name: "Guides", path: "/guides/" },
+    { name: g.title.replace(/\s*\(.*\)$/, ""), path },
+  ]}
+  eyebrow={`${g.category} · ${g.readMinutes} min read`}
+  h1={g.title}
+  lead={lead}
+  service={service}
+  faqs={faqs}
+  faqHeading="Quick answers"
+  bullets={[`Updated ${fmt(g.updated)}`, "Written for Dubai drivers"]}
+>
+  <script slot="head" is:inline type="application/ld+json" set:html={JSON.stringify(article)} />
+  <slot />
+  <section slot="after" class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Keep reading</p>
+        <h2>More battery guides</h2>
+      </div>
+      <GuidesGrid exclude={[slug]} limit={3} />
+    </div>
+  </section>
+</ContentLayout>

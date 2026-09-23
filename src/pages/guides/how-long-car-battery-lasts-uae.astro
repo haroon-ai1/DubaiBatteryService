@@ -1,0 +1,111 @@
+---
+import GuideLayout from "@/layouts/GuideLayout.astro";
+const faqs = [
+  {
+    q: "Is 3 years old for a car battery in Dubai?",
+    a: "For a conventional flooded battery, yes — three years is around the typical end of life in the UAE. Many will go longer with covered parking and regular long drives, but it's a sensible point to test the battery before each summer.",
+  },
+  {
+    q: "Do car batteries die faster in summer or winter in the UAE?",
+    a: "Heat does the damage in summer, but many batteries actually fail in the cooler months or at the first hot spell after them. The summer degrades the battery; a cooler morning or an unusually demanding start is what finally exposes it.",
+  },
+  {
+    q: "Does an AGM battery last longer in the heat?",
+    a: "Generally, yes. AGM batteries are sealed and lose less water, which is one of the main heat-related failure modes. They cost more, and they're required on many stop-start and premium cars anyway.",
+  },
+];
+---
+
+<GuideLayout
+  slug="how-long-car-battery-lasts-uae"
+  service="battery_testing"
+  lead="Batteries that last four to five years in cooler countries often manage only two or three in the UAE. Here's why the heat is so hard on them — and what actually helps."
+  faqs={faqs}
+>
+  <div class="callout">
+    <p>
+      <strong>Short answer:</strong> about 2–3 years for a typical conventional battery in Dubai, often less for cars
+      parked outdoors in the sun; AGM batteries typically last longer. Rated life on the label is the ceiling, not the
+      average.
+    </p>
+  </div>
+
+  <h2>Why heat shortens battery life</h2>
+  <p>
+    A lead-acid car battery works through chemical reactions, and like most chemical reactions they speed up with
+    temperature. That includes the unwanted ones. Heat accelerates corrosion of the internal lead grids, causes water in
+    the electrolyte to evaporate, and speeds up self-discharge when the car is parked.
+  </p>
+  <p>
+    Under the bonnet of a car parked in a Dubai summer, temperatures are far higher than the air temperature. The battery
+    sits there, day after day, being slowly cooked. The damage is cumulative and permanent — which is why a battery can
+    seem fine in August and then fail on a cool morning in November.
+  </p>
+
+  <h2>Typical battery life in the UAE by type</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">Battery type</th>
+          <th scope="col">Typical life in the UAE</th>
+          <th scope="col">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Conventional flooded</strong></td>
+          <td>About 2–3 years</td>
+          <td>Most affected by water loss in heat</td>
+        </tr>
+        <tr>
+          <td><strong>EFB</strong></td>
+          <td>About 2–4 years</td>
+          <td>Tougher than conventional, built for stop-start</td>
+        </tr>
+        <tr>
+          <td><strong>AGM</strong></td>
+          <td>About 3–5 years</td>
+          <td>Sealed; generally the most heat-tolerant</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>These are typical ranges, not guarantees — parking, driving pattern and the car's electrical load all matter.</p>
+
+  <h2>What else wears a battery out</h2>
+  <ul>
+    <li>
+      <strong>Short trips.</strong> Starting the engine takes a big gulp of energy. A 10-minute drive doesn't fully put it
+      back, so a car used only for short hops slowly runs its battery down.
+    </li>
+    <li>
+      <strong>Long periods parked.</strong> Modern cars draw a small current even when off. Leave one for two or three
+      weeks — common over the summer travel season — and the battery can go flat, and deep discharges damage it.
+    </li>
+    <li>
+      <strong>Heavy electrical load.</strong> Dash cams on parking mode, aftermarket lights, amplifiers and fridges all add
+      load.
+    </li>
+    <li>
+      <strong>The wrong battery.</strong> A conventional battery fitted to a car that needs EFB or AGM will fail early,
+      often within months.
+    </li>
+    <li>
+      <strong>A faulty alternator.</strong> Undercharging or overcharging both shorten battery life.
+    </li>
+  </ul>
+
+  <h2>How to make a battery last longer in Dubai</h2>
+  <ol>
+    <li>Park in the shade or underground whenever you can.</li>
+    <li>Take a longer drive (30 minutes or more) at least once a week.</li>
+    <li>Before travelling for more than two weeks, ask about disconnecting the battery or using a smart maintainer.</li>
+    <li>Keep terminals clean and tight.</li>
+    <li>Have the battery tested before summer once it's more than two years old — our <a href="/battery-testing-dubai/">battery test</a> is free.</li>
+    <li>When you replace it, fit the correct type — see <a href="/guides/agm-vs-efb-vs-conventional-battery/">AGM vs EFB vs conventional</a>.</li>
+  </ol>
+  <p>
+    More practical tips in <a href="/guides/car-battery-care-dubai-summer/">car battery care in a Dubai summer</a>.
+  </p>
+</GuideLayout>

@@ -1,0 +1,119 @@
+---
+import { AREAS, AREA_ZONES, areaPath, type Area } from "@/data/areas";
+import Icon from "@/components/ui/Icon.astro";
+
+interface Props {
+  variant?: "grouped" | "chips" | "cards";
+  exclude?: string[];
+  only?: string[];
+}
+const { variant = "chips", exclude = [], only } = Astro.props;
+const list: Area[] = (only ? only.map((s) => AREAS.find((a) => a.slug === s)!).filter(Boolean) : AREAS).filter(
+  (a) => !exclude.includes(a.slug)
+);
+---
+
+{
+  variant === "chips" && (
+    <ul class="chip-list area-chips">
+      {list.map((a) => (
+        <li>
+          <a class="chip" href={areaPath(a)}>
+            <Icon name="pin" />
+            {a.short ?? a.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  variant === "cards" && (
+    <ul class="grid grid-3">
+      {list.map((a) => (
+        <li>
+          <a class="card area-card" href={areaPath(a)}>
+            <h3>{a.name}</h3>
+            <p>{a.hook}</p>
+            <span class="card-foot">
+              <span>Battery help in {a.short ?? a.name}</span>
+              <span class="card-arrow">
+                <Icon name="arrow" />
+              </span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+{
+  variant === "grouped" && (
+    <div class="zones">
+      {AREA_ZONES.map((z) => {
+        const inZone = list.filter((a) => a.zone === z);
+        return (
+          inZone.length > 0 && (
+            <div class="zone">
+              <h3>{z}</h3>
+              <ul>
+                {inZone.map((a) => (
+                  <li>
+                    <a href={areaPath(a)}>{a.name}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        );
+      })}
+    </div>
+  )
+}
+
+<style>
+  .area-chips :global(svg) {
+    width: 0.95rem;
+    height: 0.95rem;
+    color: var(--volt-ink);
+  }
+  .area-chips .chip {
+    background: #fff;
+    border-color: var(--hairline-strong);
+    padding: 0.5rem 0.9rem;
+    font-size: 0.875rem;
+  }
+  .area-chips .chip:hover {
+    background: var(--volt-soft);
+  }
+  .area-card h3 {
+    font-size: 1.125rem;
+  }
+  .zones {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  }
+  .zone h3 {
+    font-size: var(--fs-label);
+    text-transform: uppercase;
+    letter-spacing: var(--tracking-label);
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+  .zone ul {
+    display: grid;
+    gap: 0.4rem;
+  }
+  .zone a {
+    font-weight: 650;
+    text-decoration: none;
+  }
+  .zone a:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--volt);
+    text-decoration-thickness: 3px;
+  }
+</style>

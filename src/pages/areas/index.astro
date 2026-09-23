@@ -1,0 +1,65 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import AreasGrid from "@/components/blocks/AreasGrid.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import { AREAS } from "@/data/areas";
+
+const faqs = [
+  {
+    q: "My area isn't listed — can you still come?",
+    a: "Very likely. The list covers the areas we get the most requests from, but the service runs across Dubai. Send a location pin on WhatsApp and you'll get a confirmation straight away.",
+  },
+  {
+    q: "Do you cover Sharjah or Abu Dhabi?",
+    a: "The service is focused on Dubai. For addresses just over the Sharjah border (for example Al Nahda or Al Taawun), message first so availability can be confirmed.",
+  },
+  {
+    q: "Is the response time the same everywhere?",
+    a: "Typical arrival is 20–25 minutes, but traffic and time of day matter. Evening peak around Downtown, Business Bay and the Marina is the slowest; late at night is usually fastest.",
+  },
+];
+---
+
+<BaseLayout
+  title="Areas We Cover in Dubai | Mobile Car Battery Service"
+  description={`24/7 mobile car battery replacement across ${AREAS.length}+ Dubai areas — Marina, Downtown, JLT, JVC, Deira, Mirdif and more. Find your area.`}
+  path="/areas/"
+>
+  <PageHero
+    crumbs={[{ name: "Home", path: "/" }, { name: "Areas", path: "/areas/" }]}
+    eyebrow="Coverage"
+    h1="Car Battery Service Across Dubai"
+    lead="From tower basements in the Marina to villa driveways in Arabian Ranches and warehouse yards in Al Quoz — a technician comes to wherever the car is parked, around the clock."
+    service="battery_service"
+  />
+  <div class="container" style="position:relative;margin-top:-2.5rem;z-index:2">
+    <TrustStrip variant="float" />
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">By area</p>
+        <h2>Find your area</h2>
+        <p>Each page has local parking and access notes, so the technician finds you faster.</p>
+      </div>
+      <AreasGrid variant="cards" />
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">By zone</p>
+        <h2>All areas at a glance</h2>
+      </div>
+      <AreasGrid variant="grouped" />
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} heading="Coverage questions" />
+  <CtaBand />
+</BaseLayout>

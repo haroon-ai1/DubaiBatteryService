@@ -1,0 +1,109 @@
+---
+/*
+  Generic content page: dark hero, prose body + sticky sidebar CTA,
+  optional FAQ, closing CTA band. Used by guides, brands, about, legal.
+*/
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import SidebarCta from "@/components/blocks/SidebarCta.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import type { FaqEntry } from "@/components/seo/FaqBlock.astro";
+import type { ServiceId } from "@/lib/services";
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  crumbs: { name: string; path: string }[];
+  eyebrow: string;
+  h1: string;
+  lead: string;
+  service?: ServiceId;
+  faqs?: FaqEntry[];
+  faqHeading?: string;
+  ogType?: "website" | "article";
+  /** Show hero CTA buttons (off for legal pages). */
+  heroCtas?: boolean;
+  sidebar?: boolean;
+  ctaBand?: boolean;
+  robots?: string;
+  bullets?: string[];
+}
+const {
+  title,
+  description,
+  path,
+  crumbs,
+  eyebrow,
+  h1,
+  lead,
+  service = "battery_service",
+  faqs = [],
+  faqHeading,
+  ogType = "website",
+  heroCtas = true,
+  sidebar = true,
+  ctaBand = true,
+  robots,
+  bullets,
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} path={path} ogType={ogType} robots={robots} stickyService={service}>
+  <slot name="head" slot="head" />
+  <PageHero
+    crumbs={crumbs}
+    eyebrow={eyebrow}
+    h1={h1}
+    lead={lead}
+    service={service}
+    ctas={heroCtas}
+    panel={false}
+    bullets={heroCtas ? bullets : []}
+  />
+  <slot name="before" />
+  <section class="section">
+    <div class:list={["container", "body-grid", !sidebar && "no-side"]}>
+      <article class="prose">
+        <slot />
+      </article>
+      {
+        sidebar && (
+          <aside class="side">
+            <SidebarCta service={service} />
+          </aside>
+        )
+      }
+    </div>
+  </section>
+  <slot name="after" />
+  {faqs.length > 0 && <FaqSection faqs={faqs} heading={faqHeading} soft />}
+  {ctaBand && <CtaBand service={service} />}
+</BaseLayout>
+
+<style>
+  .body-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .body-grid .prose {
+    max-width: 46rem;
+  }
+  @media (min-width: 64rem) {
+    .body-grid:not(.no-side) {
+      grid-template-columns: minmax(0, 46rem) 21rem;
+      justify-content: space-between;
+      align-items: start;
+    }
+    .side {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .side {
+      display: none;
+    }
+  }
+</style>

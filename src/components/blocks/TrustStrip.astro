@@ -1,0 +1,109 @@
+---
+/*
+  Four headline facts. Each item only renders if its claim is configured
+  in siteConfig.claims — never placeholder copy.
+*/
+import { siteConfig } from "@/config/site";
+import Icon from "@/components/ui/Icon.astro";
+import type { IconName } from "@/components/ui/Icon.astro";
+
+interface Props { variant?: "light" | "ink" | "float" }
+const { variant = "light" } = Astro.props;
+const c = siteConfig.claims;
+
+const items: { icon: IconName; title: string; text: string }[] = [];
+if (c.is24x7) items.push({ icon: "clock", title: "24/7, every day", text: "Nights, weekends and public holidays" });
+if (c.responseTime) items.push({ icon: "van", title: `${c.responseTime} arrival`, text: "Typical time to reach you in Dubai" });
+if (c.warranty) items.push({ icon: "shield", title: `${c.warranty} warranty`, text: "Varies by battery brand and size" });
+if (c.freeTesting) items.push({ icon: "gauge", title: "Free battery test", text: "Battery and alternator checked on site" });
+---
+
+{
+  items.length > 0 && (
+    <ul class:list={["trust", `trust--${variant}`]}>
+      {items.map((it) => (
+        <li>
+          <span class="ti">
+            <Icon name={it.icon} />
+          </span>
+          <span>
+            <strong>{it.title}</strong>
+            <span class="tt">{it.text}</span>
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .trust {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: 1rem 1.5rem;
+  }
+  .trust li {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+  }
+  .ti {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.8rem;
+    background: var(--volt-soft);
+    color: var(--ink);
+  }
+  .ti :global(svg) {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  strong {
+    display: block;
+    font-weight: 750;
+    line-height: 1.25;
+  }
+  .tt {
+    display: block;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .trust--ink strong {
+    color: #fff;
+  }
+  .trust--ink .tt {
+    color: var(--text-on-ink-3);
+  }
+  .trust--ink .ti {
+    background: rgba(255, 210, 63, 0.12);
+    color: var(--volt);
+  }
+  @media (max-width: 40rem) {
+    .trust {
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 0.75rem;
+    }
+    .trust li {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+    strong {
+      font-size: 0.9375rem;
+    }
+    .trust--float {
+      padding: 1rem;
+    }
+  }
+  .trust--float {
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lift);
+    padding: 1.25rem 1.5rem;
+  }
+</style>

@@ -1,0 +1,103 @@
+/*
+  Design tokens — v2 ("Night Shift").
+  Single source of truth for color, type, spacing, radius, shadow, motion.
+  Components reference these variables; nothing else hard-codes a hex value.
+
+  Direction: a dark, high-contrast "ink" surface for heroes and CTA bands
+  (reads as 24/7, night-time roadside help), a clean white/cool-grey body
+  for reading, and one electric "volt" yellow accent that only ever sits
+  behind dark text. WhatsApp green is reserved for WhatsApp.
+*/
+
+:root {
+  /* ---------- Color: surfaces ---------- */
+  --bg-main: #ffffff;
+  --bg-soft: #f4f6f9;
+  --bg-tint: #eef1f6;
+  --ink: #0b1017; /* dark surface */
+  --ink-2: #131a24; /* raised dark surface */
+  --ink-3: #1c2531; /* dark hairline / card */
+
+  /* ---------- Color: text ---------- */
+  --text-primary: #0b1017; /* 19.4:1 on white */
+  --text-secondary: #4a5361; /* 7.9:1 on white */
+  --text-muted: #5f6877; /* 5.6:1 on white, 5.1:1 on --bg-soft */
+  --text-on-ink: #f5f7fa;
+  --text-on-ink-2: #b7c0cd; /* 9.6:1 on --ink */
+  --text-on-ink-3: #8d97a6; /* 6.1:1 on --ink */
+
+  /* ---------- Color: accent ---------- */
+  --volt: #ffd23f; /* always paired with --ink text: 13.9:1 */
+  --volt-hover: #ffdd6b;
+  --volt-soft: #fff6d6;
+  --volt-ink: #6b5200; /* volt-family text on white: 7.2:1 */
+
+  --success: #0f7b45;
+  --danger: #c4231b;
+
+  --hairline: rgba(11, 16, 23, 0.09);
+  --hairline-strong: rgba(11, 16, 23, 0.18);
+  --hairline-ink: rgba(255, 255, 255, 0.1);
+
+  /* WhatsApp: filled button uses dark ink text (9.4:1), never white (1.98:1). */
+  --whatsapp-green: #25d366;
+  --whatsapp-hover: #1ebe5a;
+  --whatsapp-ink: #062410;
+  --whatsapp-deep: #0b7a3b; /* green text/icon on white: 4.6:1 */
+
+  --focus-ring: #2f6bff;
+
+  /* ---------- Type ---------- */
+  --font-body: "Manrope Variable", "Manrope", system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --fs-display: clamp(2.35rem, 1.5rem + 3.6vw, 4.5rem); /* 38 -> 72 */
+  --fs-h1-page: clamp(2.1rem, 1.5rem + 2.6vw, 3.6rem); /* 34 -> 58 */
+  --fs-h2: clamp(1.75rem, 1.35rem + 1.7vw, 2.75rem); /* 28 -> 44 */
+  --fs-h3: clamp(1.15rem, 1.07rem + 0.35vw, 1.375rem); /* 18 -> 22 */
+  --fs-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
+  --fs-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
+  --fs-small: 0.9063rem;
+  --fs-label: 0.75rem;
+
+  --lh-display: 1.04;
+  --lh-heading: 1.15;
+  --lh-body: 1.65;
+
+  --tracking-display: -0.035em;
+  --tracking-heading: -0.022em;
+  --tracking-label: 0.12em;
+
+  /* ---------- Layout ---------- */
+  --container-max: 76rem;
+  --measure: 42rem;
+  --pad-inline: clamp(1rem, 0.5rem + 2.4vw, 2.5rem);
+  --section-space: clamp(3.5rem, 2.6rem + 4vw, 6.5rem);
+  --gap: clamp(1rem, 0.8rem + 0.8vw, 1.5rem);
+
+  /* ---------- Radius ---------- */
+  --radius-sm: 0.5rem;
+  --radius: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+
+  /* ---------- Shadow ---------- */
+  --shadow-sm: 0 1px 2px rgba(11, 16, 23, 0.06), 0 1px 1px rgba(11, 16, 23, 0.04);
+  --shadow-card: 0 1px 2px rgba(11, 16, 23, 0.05), 0 8px 24px -8px rgba(11, 16, 23, 0.12);
+  --shadow-lift: 0 2px 4px rgba(11, 16, 23, 0.06), 0 18px 40px -12px rgba(11, 16, 23, 0.22);
+
+  /* ---------- Motion ---------- */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --dur-fast: 180ms;
+  --dur: 320ms;
+
+  /* ---------- Z-index ---------- */
+  --z-sticky-cta: 30;
+  --z-header: 40;
+  --z-mobile-nav: 50;
+
+  --header-h: 4.25rem;
+
+  color-scheme: light;
+}

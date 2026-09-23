@@ -1,0 +1,27 @@
+---
+/* Visible breadcrumb + matching BreadcrumbList JSON-LD from one array. */
+import JsonLdBreadcrumbList from "@/components/seo/JsonLdBreadcrumbList.astro";
+interface Crumb { name: string; path: string }
+interface Props { items: Crumb[] }
+const { items } = Astro.props;
+---
+
+<nav class="breadcrumbs" aria-label="Breadcrumb">
+  <ol>
+    {
+      items.map((c, i) => (
+        <li>
+          {i < items.length - 1 ? (
+            <>
+              <a href={c.path}>{c.name}</a>
+              <span aria-hidden="true">›</span>
+            </>
+          ) : (
+            <span aria-current="page">{c.name}</span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+<JsonLdBreadcrumbList items={items} />

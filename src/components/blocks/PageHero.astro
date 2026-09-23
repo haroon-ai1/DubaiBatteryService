@@ -1,0 +1,295 @@
+---
+/*
+  Dark hero used by every inner page. Carries id="hero" so the sticky
+  mobile bar hides while these CTAs are on screen.
+  Optional image renders on the right on desktop (LCP — eager, high
+  priority); pages without one get a facts panel instead.
+*/
+import { Picture } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import Breadcrumbs from "@/components/blocks/Breadcrumbs.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@/config/site";
+import type { ServiceId } from "@/lib/services";
+
+interface Props {
+  crumbs: { name: string; path: string }[];
+  eyebrow: string;
+  h1: string;
+  lead: string;
+  service: ServiceId;
+  area?: string | null;
+  areaName?: string | null;
+  makeName?: string | null;
+  image?: { src: ImageMetadata; alt: string } | null;
+  waLabel?: string;
+  /** Hide the CTA pair (e.g. guides use a softer hero). */
+  ctas?: boolean;
+  /** Extra bullets under the lead. Defaults to the core claims. */
+  bullets?: string[];
+  /** When there's no image, show the "what to send" quote panel. */
+  panel?: boolean;
+}
+
+const {
+  crumbs,
+  eyebrow,
+  h1,
+  lead,
+  service,
+  area = null,
+  areaName = null,
+  makeName = null,
+  image = null,
+  waLabel = "WhatsApp for a quote",
+  ctas = true,
+  bullets,
+  panel = true,
+} = Astro.props;
+const showPanel = !image && panel && ctas;
+
+const c = siteConfig.claims;
+const defaultBullets = [
+  c.is24x7 ? "Open 24/7" : null,
+  c.responseTime ? `Arrives in ~${c.responseTime.replace(" minutes", " min")}` : null,
+  c.startingPriceAed ? `Batteries from AED ${c.startingPriceAed}` : null,
+  c.warranty ? `${c.warranty} warranty` : null,
+].filter(Boolean) as string[];
+const list = bullets ?? defaultBullets;
+---
+
+<section class="page-hero on-ink" id="hero">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="container">
+    <Breadcrumbs items={crumbs} />
+    <div class:list={["ph-grid", (image || panel) && "has-img"]}>
+      <div class="ph-copy">
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{h1}</h1>
+        <p class="ph-lead">{lead}</p>
+        {
+          list.length > 0 && (
+            <ul class="ph-bullets">
+              {list.map((b) => (
+                <li>
+                  <Icon name="check" />
+                  {b}
+                </li>
+              ))}
+            </ul>
+          )
+        }
+        {
+          ctas && (
+            <>
+              <div class="cta-row">
+                <WhatsAppButton
+                  service={service}
+                  ctaLocation="service_hero_whatsapp"
+                  area={area}
+                  areaName={areaName}
+                  makeName={makeName}
+                  size="lg"
+                  label={waLabel}
+                />
+                <CallButton ctaLocation="service_hero_call" area={area} variant="ghost-ink" size="lg" showNumber />
+              </div>
+              <PartnerDisclosure />
+            </>
+          )
+        }
+      </div>
+      {
+        showPanel && (
+          <aside class="ph-panel" aria-label="Get a quote">
+            <p class="pp-title">
+              <Icon name="chat" /> Quote in 2 minutes
+            </p>
+            <p class="pp-sub">Send these on WhatsApp and you'll get the right battery and a price:</p>
+            <ol class="pp-list">
+              <li>
+                <strong>Your car</strong> — make, model and year
+              </li>
+              <li>
+                <strong>Where it is</strong> — a location pin, plus basement level if underground
+              </li>
+              <li>
+                <strong>What it's doing</strong> — clicking, slow crank, no power, warning light
+              </li>
+              <li>
+                <strong>Optional</strong> — a photo of the battery label
+              </li>
+            </ol>
+            <WhatsAppButton
+              service={service}
+              ctaLocation="sidebar_whatsapp"
+              area={area}
+              areaName={areaName}
+              makeName={makeName}
+              block
+              label="Start on WhatsApp"
+            />
+          </aside>
+        )
+      }
+      {
+        image && (
+          <figure class="ph-media">
+            <Picture
+              src={image.src}
+              alt={image.alt}
+              formats={["avif", "webp"]}
+              widths={[560, 900, 1280]}
+              sizes="(min-width: 64rem) 46vw, 100vw"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </figure>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--text-on-ink);
+    padding-block: 1.5rem clamp(3rem, 2.4rem + 3vw, 5rem);
+  }
+  .glow {
+    position: absolute;
+    inset: -30% -10% auto auto;
+    width: 60rem;
+    height: 40rem;
+    background: radial-gradient(closest-side, rgba(255, 210, 63, 0.16), transparent 70%);
+    pointer-events: none;
+  }
+  .ph-grid {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    margin-top: clamp(1.5rem, 1rem + 2vw, 3rem);
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .ph-grid.has-img {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 3.5rem;
+    }
+  }
+  .ph-copy {
+    min-width: 0;
+    display: grid;
+    gap: 1.25rem;
+    max-width: 44rem;
+  }
+  h1 {
+    color: #fff;
+  }
+  .ph-lead {
+    font-size: var(--fs-lead);
+    color: var(--text-on-ink-2);
+    line-height: 1.6;
+  }
+  .ph-bullets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    font-weight: 650;
+    font-size: 0.9375rem;
+    color: var(--text-on-ink);
+  }
+  .ph-bullets li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .ph-bullets :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--volt);
+    stroke-width: 2.6;
+  }
+  .cta-row {
+    margin-top: 0.4rem;
+  }
+  .ph-panel {
+    display: grid;
+    gap: 0.9rem;
+    padding: clamp(1.25rem, 1rem + 1vw, 2rem);
+    border-radius: var(--radius-lg);
+    background: var(--ink-2);
+    border: 1px solid var(--hairline-ink);
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
+  }
+  .pp-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 800;
+    font-size: 1.25rem;
+    color: #fff;
+  }
+  .pp-title :global(svg) {
+    width: 1.4rem;
+    height: 1.4rem;
+    color: var(--volt);
+  }
+  .pp-sub {
+    color: var(--text-on-ink-2);
+    font-size: var(--fs-small);
+  }
+  .pp-list {
+    display: grid;
+    gap: 0.6rem;
+    counter-reset: pp;
+    margin-bottom: 0.4rem;
+  }
+  .pp-list li {
+    counter-increment: pp;
+    position: relative;
+    padding: 0.7rem 0.9rem 0.7rem 2.9rem;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--hairline-ink);
+    font-size: var(--fs-small);
+    color: var(--text-on-ink-2);
+  }
+  .pp-list li::before {
+    content: counter(pp);
+    position: absolute;
+    left: 0.8rem;
+    top: 0.72rem;
+    display: grid;
+    place-items: center;
+    width: 1.45rem;
+    height: 1.45rem;
+    border-radius: 50%;
+    background: var(--volt);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 0.75rem;
+  }
+  .pp-list strong {
+    color: #fff;
+  }
+  .ph-media {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
+    border: 1px solid var(--hairline-ink);
+    aspect-ratio: 4 / 3;
+  }
+  .ph-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

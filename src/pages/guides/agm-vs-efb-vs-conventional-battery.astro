@@ -1,0 +1,96 @@
+---
+import GuideLayout from "@/layouts/GuideLayout.astro";
+const faqs = [
+  {
+    q: "Can I put a normal battery in a car that has an AGM battery?",
+    a: "It will start the car, but it's a false saving. Cars specified for AGM put the battery through deep, repeated cycling that a conventional battery isn't built for, and it typically fails within months. The car's battery management system may also charge it incorrectly.",
+  },
+  {
+    q: "Can I upgrade from a conventional battery to AGM?",
+    a: "Usually yes, if the size and terminal layout match — AGM handles heat and heavy electrical loads better. It costs more, and on cars with battery management it should be registered. Going the other way (AGM to conventional) is the mistake to avoid.",
+  },
+  {
+    q: "How do I know if my car has stop-start?",
+    a: "Look for a button marked 'A' with a circular arrow around it, usually near the gear lever or on the dashboard. If the engine switches off at traffic lights and restarts when you lift off the brake, the car has stop-start and needs an EFB or AGM battery.",
+  },
+];
+---
+
+<GuideLayout
+  slug="agm-vs-efb-vs-conventional-battery"
+  service="battery_replacement"
+  lead="Three battery types cover almost every car on Dubai's roads. Your car was engineered around one of them — and fitting a cheaper type is the most common reason a new battery dies early."
+  faqs={faqs}
+>
+  <h2>The three types in one table</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col"></th>
+          <th scope="col">Conventional</th>
+          <th scope="col">EFB</th>
+          <th scope="col">AGM</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Built for</strong></td><td>Cars without stop-start</td><td>Entry-level stop-start</td><td>Premium / advanced stop-start</td></tr>
+        <tr><td><strong>Construction</strong></td><td>Liquid electrolyte</td><td>Liquid, reinforced plates</td><td>Electrolyte held in glass mat, sealed</td></tr>
+        <tr><td><strong>Cycling ability</strong></td><td>Low</td><td>Medium</td><td>High</td></tr>
+        <tr><td><strong>Heat tolerance</strong></td><td>Lowest</td><td>Better</td><td>Best</td></tr>
+        <tr><td><strong>Price</strong></td><td>Lowest</td><td>Mid</td><td>Highest</td></tr>
+        <tr><td><strong>Registration</strong></td><td>Rarely</td><td>Sometimes</td><td>Often</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Conventional (flooded) batteries</h2>
+  <p>
+    The traditional car battery: lead plates in a liquid acid electrolyte. Most are "maintenance-free" these days, meaning
+    you don't top them up. They're built to deliver a big burst of current to start the engine and then be recharged by
+    the alternator — not to be repeatedly drained. They're the right choice, and the most affordable, for cars without
+    stop-start: many Toyota, Nissan, Mitsubishi and older models.
+  </p>
+
+  <h2>EFB (Enhanced Flooded Battery)</h2>
+  <p>
+    An EFB is still a flooded battery, but with reinforced plates and additives that let it handle the repeated
+    stop-start cycles of a car that shuts its engine off at every traffic light. Manufacturers specify EFB for many
+    mainstream stop-start cars. It costs more than a conventional battery and less than AGM.
+  </p>
+
+  <h2>AGM (Absorbent Glass Mat)</h2>
+  <p>
+    In an AGM battery, the electrolyte is soaked into fibreglass mats packed tightly between the plates, and the battery
+    is sealed. That makes it resistant to vibration and spills, able to handle deep, frequent cycling, and more tolerant of
+    heat — which is why it's standard on most BMW, Mercedes-Benz, Range Rover and other premium and stop-start-heavy cars.
+    It's the most expensive of the three.
+  </p>
+
+  <h2>How to tell which your car needs</h2>
+  <ol>
+    <li><strong>Check the current battery's label.</strong> It usually says AGM, EFB, or neither (conventional).</li>
+    <li><strong>Check for stop-start.</strong> If the car has it, it needs EFB or AGM — never conventional.</li>
+    <li><strong>Check the owner's manual</strong> or ask with your make, model and year.</li>
+  </ol>
+  <p>
+    Easiest of all: send your car details on WhatsApp and the correct type is confirmed before anything is fitted. You
+    can also browse <a href="/car-makes/">battery advice by car make</a>.
+  </p>
+
+  <h2>Why downgrading costs more</h2>
+  <p>
+    A conventional battery is cheaper, and it will start a stop-start car on day one. But the car will keep cycling it the
+    way it would cycle an AGM, and in Dubai's heat that typically finishes it within months. You end up buying twice —
+    and possibly paying for a roadside call-out in between. The price difference between types is covered on our{" "}
+    <a href="/car-battery-prices-dubai/">car battery prices</a> page.
+  </p>
+
+  <h2>What about registration?</h2>
+  <p>
+    Cars with a battery management system track the battery's age and type. After fitting a new one, it should be
+    registered so the car charges it correctly — skip it, and the car keeps charging the new battery as if it were the
+    old, worn one. It's done in minutes with a diagnostic tool as part of a{" "}
+    <a href="/mobile-battery-service-dubai/">mobile battery service</a>.
+  </p>
+</GuideLayout>

@@ -1,0 +1,33 @@
+---
+// Renders nothing unless entityVerified is explicitly true AND business
+// name + address are configured (see entityVerified in site.ts). Never
+// fabricates reviews, hours, or ratings — each field is only included if
+// configured.
+import { siteConfig, hasVerifiedEntity } from "@/config/site";
+
+const { business, claims } = siteConfig;
+const canRender = hasVerifiedEntity && Boolean(business.businessName && business.address);
+
+const json = canRender
+  ? {
+      "@context": "https://schema.org",
+      "@type": "AutomotiveBusiness",
+      name: business.businessName,
+      url: siteConfig.siteUrl,
+      telephone: business.phone ?? undefined,
+      email: business.email ?? undefined,
+      address: business.address ?? undefined,
+      openingHours: claims.openingHours ?? undefined,
+      aggregateRating:
+        claims.reviewRating && claims.reviewCount
+          ? {
+              "@type": "AggregateRating",
+              ratingValue: claims.reviewRating,
+              reviewCount: claims.reviewCount,
+            }
+          : undefined,
+    }
+  : null;
+---
+
+{canRender && <script is:inline type="application/ld+json" set:html={JSON.stringify(json)} />}

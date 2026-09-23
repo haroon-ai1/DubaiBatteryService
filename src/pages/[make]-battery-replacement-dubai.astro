@@ -1,0 +1,233 @@
+---
+/*
+  /{make}-battery-replacement-dubai/ — one page per make in src/data/makes.ts.
+*/
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import SidebarCta from "@/components/blocks/SidebarCta.astro";
+import MakesGrid from "@/components/blocks/MakesGrid.astro";
+import AreasGrid from "@/components/blocks/AreasGrid.astro";
+import PriceTable from "@/components/blocks/PriceTable.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import JsonLdService from "@/components/seo/JsonLdService.astro";
+import { MAKES, makePath, type Make } from "@/data/makes";
+import { siteConfig } from "@/config/site";
+
+export function getStaticPaths() {
+  return MAKES.map((m) => ({ params: { make: m.slug }, props: { m } }));
+}
+interface Props {
+  m: Make;
+}
+const { m } = Astro.props;
+const c = siteConfig.claims;
+const short = m.short ?? m.name;
+const path = makePath(m);
+
+let title = `${short} Battery Replacement in Dubai | 24/7 On-Site`;
+if (title.length > 60) title = `${short} Battery Replacement Dubai | 24/7`;
+
+let description = `${short} car battery replacement in Dubai at your location, 24/7. Correct battery for your model${m.registration === "usually" ? ", registered on site" : ""}. From AED ${c.startingPriceAed}.`;
+if (description.length > 155)
+  description = `${short} battery replacement in Dubai at your location, 24/7 — the correct battery for your model, fitted and tested on site.`;
+
+const regText = {
+  usually:
+    `On most recent ${short} models the new battery must be registered (coded) to the car's battery management system after fitting. Without it, the car keeps charging the new battery as if it were the old one — shortening its life. Registration is done on site with a diagnostic tool.`,
+  "some-models":
+    `Some ${short} models — typically newer ones with stop-start or a battery sensor on the negative terminal — benefit from a reset or registration after the battery change. The technician checks your specific model and does it on site if needed.`,
+  rarely:
+    `Most ${short} models don't need battery registration — a correctly-sized battery of the right type is fitted and the car is ready to go. The technician still checks the charging system after fitting.`,
+}[m.registration];
+
+const faqs = [
+  {
+    q: `How much is a ${short} battery in Dubai?`,
+    a: `It depends on the model and battery type. Small conventional batteries start from AED ${c.startingPriceAed} fitted; large SUV and AGM batteries cost more. Send your ${short} model and year on WhatsApp for an exact price, or see <a href="/car-battery-prices-dubai/">car battery prices in Dubai</a>.`,
+  },
+  {
+    q: `Does my ${short} need an AGM battery?`,
+    a: `If it has stop-start or was originally fitted with AGM, yes — downgrading to a conventional battery usually leads to early failure. ${m.models.some((x) => /AGM/.test(x.battery)) ? `AGM is common on ${short} models such as ${m.models.filter((x) => /AGM/.test(x.battery)).map((x) => x.name).slice(0, 2).join(" and ")}.` : ""} The technician confirms the correct type for your car.`,
+  },
+  {
+    q: `Does a new battery need registering on a ${short}?`,
+    a: regText,
+  },
+  {
+    q: `Can you replace my ${short} battery at home or in a car park?`,
+    a: `Yes. The battery is replaced wherever the car is parked in Dubai — driveway, basement, office car park or roadside — ${c.is24x7 ? "24/7" : "7 days a week"}.`,
+  },
+];
+---
+
+<BaseLayout title={title} description={description} path={path} stickyService="battery_replacement" makeName={short}>
+  <JsonLdService
+    slot="head"
+    service="battery_replacement"
+    path={path}
+    name={`${m.name} battery replacement in Dubai`}
+    description={description}
+  />
+
+  <PageHero
+    crumbs={[
+      { name: "Home", path: "/" },
+      { name: "Car makes", path: "/car-makes/" },
+      { name: m.name, path },
+    ]}
+    eyebrow={`${m.name} · Battery replacement`}
+    h1={`${m.name} Battery Replacement in Dubai`}
+    lead={`${m.hook.replace(/\.$/, "")}. The correct battery for your ${short}, brought to your car and fitted on the spot — any time, anywhere in Dubai.`}
+    service="battery_replacement"
+    makeName={short}
+    waLabel={`WhatsApp — my ${short} won't start`}
+  />
+
+  <div class="container trust-wrap">
+    <TrustStrip variant="float" />
+  </div>
+
+  <section class="section">
+    <div class="container body-grid">
+      <article class="prose">
+        <h2>{m.name} batteries in Dubai</h2>
+        <p>{m.intro}</p>
+
+        <h2>Typical batteries by {short} model</h2>
+        <div class="table-wrap wide">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Typical battery (GCC spec)</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                m.models.map((x) => (
+                  <tr>
+                    <td>
+                      <strong>{x.name}</strong>
+                    </td>
+                    <td>{x.battery}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+        <p class="small">
+          Typical ranges only — the exact battery depends on model year, engine and trim. It's always confirmed against
+          your car (or the label on the current battery) before fitting.
+        </p>
+
+        <h2>Does a {short} need battery registration?</h2>
+        <p>{regText}</p>
+
+        <div class="callout">
+          <p><strong>Worth knowing:</strong> {m.note}</p>
+        </div>
+
+        <h2>Signs your {short} battery is failing</h2>
+        <ul>
+          <li>Slow, laboured cranking — especially first thing in the morning or after the car has sat in the sun.</li>
+          <li>A clicking sound when you turn the key or press start, but the engine doesn't turn over.</li>
+          <li>Dashboard warnings, stop-start no longer working, or electronics resetting.</li>
+          <li>The battery is more than two to three years old — typical in Dubai's heat.</li>
+        </ul>
+        <p>
+          Not sure? A <a href="/battery-testing-dubai/">free on-site battery test</a> tells you whether it's the battery,
+          the alternator or something else. More in our guide to the{" "}
+          <a href="/guides/signs-car-battery-is-dying/">signs of a dying car battery</a>.
+        </p>
+
+        <p class="inline-cta">
+          <WhatsAppButton
+            service="battery_replacement"
+            ctaLocation="service_inline_whatsapp"
+            makeName={short}
+            label={`Get a ${short} battery quote`}
+          />
+        </p>
+      </article>
+      <aside class="side">
+        <SidebarCta service="battery_replacement" makeName={short} title={`${short} battery help`} />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Prices</p>
+        <h2>Car battery prices in Dubai</h2>
+        <p>Supplied and fitted, in AED — send your {short} model and year for an exact price.</p>
+      </div>
+      <PriceTable compact />
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} heading={`${short} battery FAQs`} />
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Other makes</p>
+        <h2>Batteries for other cars</h2>
+      </div>
+      <MakesGrid exclude={[m.slug]} />
+      <div class="areas">
+        <h3>Available across Dubai</h3>
+        <AreasGrid variant="chips" />
+      </div>
+    </div>
+  </section>
+
+  <CtaBand service="battery_replacement" makeName={short} heading={`${short} won't start?`} />
+</BaseLayout>
+
+<style>
+  .trust-wrap {
+    position: relative;
+    margin-top: -2.5rem;
+    z-index: 2;
+  }
+  .body-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .body-grid .prose {
+    max-width: 46rem;
+  }
+  @media (min-width: 64rem) {
+    .body-grid {
+      grid-template-columns: minmax(0, 46rem) 21rem;
+      justify-content: space-between;
+      align-items: start;
+    }
+    .side {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .side {
+      display: none;
+    }
+  }
+  .small {
+    font-size: 0.8125rem;
+  }
+  .inline-cta {
+    margin-top: 2.5rem !important;
+  }
+  .areas {
+    margin-top: 3rem;
+  }
+  .areas h3 {
+    margin-bottom: 1rem;
+  }
+</style>

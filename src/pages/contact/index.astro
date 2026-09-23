@@ -1,0 +1,53 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import { siteConfig } from "@/config/site";
+const c = siteConfig.claims;
+---
+
+<ContentLayout
+  title="Contact | Dubai Battery Service — 24/7 WhatsApp & Call"
+  description="Contact Dubai Battery Service 24/7 on WhatsApp or by phone for car battery replacement, jump starts and battery testing anywhere in Dubai."
+  path="/contact/"
+  crumbs={[
+    { name: "Home", path: "/" },
+    { name: "Contact", path: "/contact/" },
+  ]}
+  eyebrow="Contact"
+  h1="Contact Dubai Battery Service"
+  lead={`The fastest way to get help is WhatsApp — ${c.is24x7 ? "we're available 24/7" : "message any time"}. Calling works too.`}
+  sidebar={false}
+>
+  <h2>Get battery help now</h2>
+  <div class="contact-ctas not-prose">
+    <WhatsAppButton service="battery_service" ctaLocation="service_inline_whatsapp" size="lg" label="WhatsApp us" />
+    <CallButton ctaLocation="service_final_call" variant="ink" size="lg" showNumber />
+  </div>
+
+  <h2>What to send for the fastest help</h2>
+  <ol>
+    <li><strong>Your car</strong> — make, model and year (for example, "2019 Nissan Patrol").</li>
+    <li><strong>Your location</strong> — a live location pin; for basements add the building, level and bay number.</li>
+    <li><strong>What's happening</strong> — clicking, slow crank, no power at all, or a warning light.</li>
+    <li><strong>Optional</strong> — a photo of the label on your current battery.</li>
+  </ol>
+
+  <h2>Service area and hours</h2>
+  <p>
+    Mobile service across Dubai — see <a href="/areas/">areas we cover</a>. {c.is24x7 && "Available 24 hours a day, 7 days a week, including public holidays."}
+  </p>
+
+  <h2>Feedback about a job</h2>
+  <p>
+    Message us on WhatsApp with the date and area of the job and what happened. We read every message.
+  </p>
+</ContentLayout>
+
+<style>
+  .contact-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+</style>

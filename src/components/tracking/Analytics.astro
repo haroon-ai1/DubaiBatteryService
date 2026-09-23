@@ -1,0 +1,132 @@
+---
+/*
+  Single point of GA4 wiring.
+
+  - If `siteConfig.analytics.gaMeasurementId` is null, GA4 is not loaded at
+    all — no scripts, no cookies, no network request.
+  - CTA click tracking is delegated to a tiny event delegator that listens
+    for `[data-lead-event]` clicks and pushes GA4 events with a strict,
+    PII-free parameter allow-list. It runs regardless of GA presence so
+    dataLayer pushes stay queued if GA is added later.
+  - Analytics failure must NEVER block WhatsApp/call navigation — anchors
+    remain plain anchors, the click handler never calls preventDefault().
+*/
+import { siteConfig } from "@/config/site";
+
+const gaId = siteConfig.analytics.gaMeasurementId;
+const partnerName = siteConfig.partner.enabled ? siteConfig.partner.name : null;
+---
+
+{
+  gaId && (
+    <>
+      {/* DNS + TLS warmed early; the script itself is deferred below. */}
+      <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin />
+      <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      <script
+        is:inline
+        set:html={`
+        // gtag() is defined immediately so events fired before the GA
+        // script arrives are queued on dataLayer and replayed by GA on
+        // load — nothing is lost by deferring.
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', '${gaId}', { anonymize_ip: true, send_page_view: true });
+
+        // The GA script used to load in <head> with async. Async doesn't
+        // block parsing, but it still opens a third-party connection and
+        // spends bandwidth while the LCP hero image is in flight. Loading
+        // it after 'load' (or on the first interaction, whichever comes
+        // first) keeps measurement intact and gives the hero the network
+        // to itself on a cold mobile connection.
+        (function () {
+          var loaded = false;
+          function loadGa() {
+            if (loaded) return;
+            loaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=${gaId}';
+            document.head.appendChild(s);
+          }
+          // A tap on a CTA must never wait for analytics, so any early
+          // interaction pulls GA forward rather than dropping the event.
+          ['pointerdown', 'keydown', 'touchstart'].forEach(function (evt) {
+            addEventListener(evt, loadGa, { once: true, passive: true, capture: true });
+          });
+          if (document.readyState === 'complete') loadGa();
+          else addEventListener('load', loadGa, { once: true });
+        })();
+      `}
+      />
+    </>
+  )
+}
+
+<script is:inline define:vars={{ partnerName }}>
+  // Queue exists even without GA — a later measurement id will still see the
+  // history if we choose to flush.
+  window.dataLayer = window.dataLayer || [];
+
+  const ALLOWED_EVENTS = new Set(["click_whatsapp", "click_call"]);
+
+  function readCtx(el) {
+    const dataset = el.dataset || {};
+    const event = dataset.leadEvent;
+    if (!event || !ALLOWED_EVENTS.has(event)) return null;
+    return {
+      event,
+      params: {
+        page: location.pathname,
+        service: dataset.leadService || null,
+        area: dataset.leadArea || null,
+        cta_location: dataset.leadCta || null,
+        partner: partnerName,
+      },
+    };
+  }
+
+  function pushEvent(payload) {
+    try {
+      // GA4 shape: `event(eventName, params)`. Falling back to a raw
+      // dataLayer push keeps the record around when gtag isn't loaded.
+      if (typeof window.gtag === "function") {
+        // `transport_type: "beacon"` routes the hit through
+        // navigator.sendBeacon so it survives the tap that hands the tab
+        // off to WhatsApp or the dialer. Without this, mobile taps
+        // regularly cancel the outgoing request on unload.
+        window.gtag("event", payload.event, {
+          ...payload.params,
+          transport_type: "beacon",
+        });
+      } else {
+        window.dataLayer.push({ event: payload.event, ...payload.params });
+      }
+    } catch (_e) {
+      /* never rethrow — nav must proceed */
+    }
+  }
+
+  // Guard against double-registering when the same page is re-rendered by
+  // View Transitions or client-side re-hydration frameworks (not used
+  // today, but cheap insurance).
+  if (!window.__dbsLeadDelegator) {
+    window.__dbsLeadDelegator = true;
+    document.addEventListener(
+      "click",
+      (e) => {
+        const target = e.target;
+        if (!(target instanceof Element)) return;
+        const el = target.closest("[data-lead-event]");
+        if (!el) return;
+        const payload = readCtx(el);
+        if (!payload) return;
+        pushEvent(payload);
+      },
+      // Non-passive is unnecessary — we never preventDefault().
+      { capture: false, passive: true }
+    );
+  }
+</script>

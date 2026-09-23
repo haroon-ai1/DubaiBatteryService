@@ -1,0 +1,50 @@
+---
+import { MAKES, makePath } from "@/data/makes";
+import Icon from "@/components/ui/Icon.astro";
+interface Props { exclude?: string[] }
+const { exclude = [] } = Astro.props;
+const list = MAKES.filter((m) => !exclude.includes(m.slug));
+---
+
+<ul class="makes">
+  {
+    list.map((m) => (
+      <li>
+        <a href={makePath(m)}>
+          <Icon name="car" />
+          <span>{m.short ?? m.name}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .makes {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr));
+    gap: 0.6rem;
+  }
+  .makes a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border-radius: var(--radius);
+    background: #fff;
+    border: 1px solid var(--hairline);
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color var(--dur-fast), transform var(--dur-fast), box-shadow var(--dur-fast);
+  }
+  .makes a:hover {
+    border-color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+  .makes :global(svg) {
+    width: 1.25rem;
+    height: 1.25rem;
+    color: var(--text-muted);
+  }
+</style>

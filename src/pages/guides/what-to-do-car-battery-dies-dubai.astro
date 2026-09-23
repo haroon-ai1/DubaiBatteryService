@@ -1,0 +1,80 @@
+---
+import GuideLayout from "@/layouts/GuideLayout.astro";
+const faqs = [
+  {
+    q: "Is it safe to jump start my own car?",
+    a: "It can be, with proper cables, a known-good donor car and the correct connection order — but modern cars' electronics can be damaged by mistakes, and a swollen or leaking battery should never be jumped. If in doubt, let a technician do it.",
+  },
+  {
+    q: "Who do I call if my car breaks down on a Dubai highway?",
+    a: "If you're in a dangerous position or anyone is at risk, call 999 (police) first. For a dead battery once you're safe, a mobile battery service can come to you; for other breakdowns, use your insurer's roadside assistance or a recovery service.",
+  },
+  {
+    q: "How long will I wait for help?",
+    a: "Typical arrival for battery help is 20–25 minutes in Dubai, depending on traffic and your exact location. A precise location pin speeds it up.",
+  },
+];
+---
+
+<GuideLayout
+  slug="what-to-do-car-battery-dies-dubai"
+  service="emergency_battery_service"
+  lead="Your car won't start — in a basement, at the mall, or on the side of the road. Here's a calm, step-by-step plan to get moving again safely."
+  faqs={faqs}
+>
+  <h2>1. Make sure you're safe</h2>
+  <p>
+    If the car has stopped in a live lane or on a highway shoulder, turn on your hazard lights and, if it's safe, get
+    yourself and passengers out of the car and behind the barrier. In an emergency or if you're in a dangerous position,
+    call <strong>999</strong> first. In a car park or on a driveway, stay with the car and keep cool — shade and water
+    matter in Dubai's heat.
+  </p>
+
+  <h2>2. Check it's really the battery</h2>
+  <ul>
+    <li>Clicking, dim lights or a very slow crank → almost certainly the battery.</li>
+    <li>Bright lights but a single click → may be the starter motor.</li>
+    <li>Engine cranks normally but won't fire → probably not the battery.</li>
+  </ul>
+  <p>
+    Also check the obvious: is the car in Park (or neutral, for a manual)? Is your foot on the brake for push-start cars?
+    Is the key fob battery flat? (Hold the fob against the start button — many cars will still read it.) More in{" "}
+    <a href="/guides/car-wont-start-battery-or-alternator/">battery vs alternator vs starter</a>.
+  </p>
+
+  <h2>3. Don't make it worse</h2>
+  <ul>
+    <li>Don't keep cranking — it drains what's left and can overheat the starter.</li>
+    <li>Switch off headlights, AC fan and accessories.</li>
+    <li>Don't touch a battery that is swollen, cracked, leaking or smells of rotten eggs.</li>
+  </ul>
+
+  <h2>4. Get help to come to you</h2>
+  <p>
+    Message on WhatsApp or call with three things — it saves the most time:
+  </p>
+  <ol>
+    <li><strong>Your car:</strong> make, model and year.</li>
+    <li><strong>Your exact location:</strong> share a live pin. In a basement or mall car park, add the building, zone, level and bay or pillar number.</li>
+    <li><strong>What it's doing:</strong> clicking, slow crank or no power at all.</li>
+  </ol>
+  <p>
+    A technician comes to you with a booster pack and the right replacement battery. Typical arrival in Dubai is 20–25
+    minutes, 24/7. See <a href="/emergency-battery-service-dubai/">emergency battery service</a>.
+  </p>
+
+  <h2>5. Jump start or replace?</h2>
+  <p>
+    If the battery is relatively new and went flat for a clear reason — lights left on, car parked for weeks — a{" "}
+    <a href="/jump-start-dubai/">jump start</a> and a longer drive may be all you need. If it's more than two or three
+    years old, or keeps going flat, the technician will test it and, if needed,{" "}
+    <a href="/car-battery-replacement-dubai/">replace it on the spot</a>.
+  </p>
+
+  <h2>6. After you're moving again</h2>
+  <p>
+    Drive for at least 30 minutes to let the alternator recharge the battery, and avoid switching the engine off for a
+    short stop. If the car was jump-started, get the battery and alternator tested within a day or two — a battery that
+    has gone completely flat once is more likely to do it again.
+  </p>
+</GuideLayout>

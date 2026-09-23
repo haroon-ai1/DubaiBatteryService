@@ -1,0 +1,52 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { siteConfig } from "@/config/site";
+---
+
+<ContentLayout
+  title="Terms of Use | Dubai Battery Service"
+  description="Terms of use for dubaibatteryservice.com — how the information and service-request links on this website work."
+  path="/terms/"
+  crumbs={[
+    { name: "Home", path: "/" },
+    { name: "Terms of use", path: "/terms/" },
+  ]}
+  eyebrow="Legal"
+  h1="Terms of Use"
+  lead="The basics of how this website and its service-request links work."
+  heroCtas={false}
+  sidebar={false}
+  ctaBand={false}
+>
+  <p><em>Last updated: 24 September 2026</em></p>
+
+  <h2>About this website</h2>
+  <p>
+    {siteConfig.siteName} provides information about car batteries in Dubai and a way to request mobile battery help.
+    Service requests made through the WhatsApp and call buttons are fulfilled by an independent mobile battery team, which
+    supplies the batteries, carries out the work and provides the warranty. Your service agreement — including price,
+    warranty and payment — is with that team.
+  </p>
+
+  <h2>Prices and information</h2>
+  <p>
+    Prices shown on this site are indicative ranges, not quotes. Your actual price depends on your car and the battery you
+    choose, and is confirmed before any work begins. Technical information is general guidance — always follow your
+    vehicle manufacturer's specification.
+  </p>
+
+  <h2>Response times</h2>
+  <p>
+    Stated arrival times are typical, not guaranteed. Traffic, weather, access and demand can all affect how quickly a
+    technician reaches you.
+  </p>
+
+  <h2>Liability</h2>
+  <p>
+    We take care to keep the information on this site accurate, but it is provided "as is". To the extent permitted by UAE
+    law, we are not liable for decisions made on the basis of the website content alone.
+  </p>
+
+  <h2>Contact</h2>
+  <p>Questions about these terms? Use the <a href="/contact/">contact page</a>.</p>
+</ContentLayout>

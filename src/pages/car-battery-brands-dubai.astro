@@ -1,0 +1,154 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { siteConfig } from "@/config/site";
+
+const c = siteConfig.claims;
+
+const brands = [
+  {
+    name: "Amaron",
+    origin: "India (Amara Raja)",
+    types: "Conventional / maintenance-free, some EFB",
+    good: "Japanese and Korean cars, everyday SUVs and saloons",
+    note: "One of the most common replacement brands in the UAE, widely stocked in Japanese (JIS) sizes and popular for its value.",
+  },
+  {
+    name: "Varta",
+    origin: "Germany (Clarios)",
+    types: "Conventional, EFB and AGM",
+    good: "European cars, stop-start and AGM-specified vehicles",
+    note: "Supplies original equipment to many European manufacturers. Its AGM and EFB ranges suit cars with stop-start and battery management systems.",
+  },
+  {
+    name: "Bosch",
+    origin: "Germany",
+    types: "Conventional, EFB and AGM",
+    good: "European and Asian cars, stop-start",
+    note: "A broad range covering most car sizes, including AGM and EFB batteries for stop-start vehicles.",
+  },
+  {
+    name: "ACDelco",
+    origin: "USA (General Motors)",
+    types: "Conventional and AGM",
+    good: "Chevrolet, GMC, Cadillac and other American vehicles",
+    note: "GM's parts brand — a natural fit for American trucks and SUVs that use US group sizes such as H6/48 and H7/94R.",
+  },
+  {
+    name: "Exide",
+    origin: "Global brand",
+    types: "Conventional, EFB and AGM",
+    good: "Wide range of cars and light commercials",
+    note: "A long-established brand with a wide catalogue, including options for vans and light commercial vehicles.",
+  },
+  {
+    name: "Solite",
+    origin: "South Korea",
+    types: "Conventional / maintenance-free, some AGM",
+    good: "Korean and Japanese cars, budget-conscious replacements",
+    note: "A Korean brand commonly fitted to Hyundai, Kia and Japanese cars in the Gulf, typically at an accessible price.",
+  },
+];
+
+const faqs = [
+  {
+    q: "Which car battery brand is best for Dubai's heat?",
+    a: "There isn't one 'best' brand — heat tolerance comes more from the battery type and correct sizing than from the logo. A correctly-specified AGM or good-quality maintenance-free battery from any major brand will outlast a cheap battery of the wrong type. Choose the correct type for your car first, then compare brands on warranty and price.",
+  },
+  {
+    q: "Do I have to use the same brand my car came with?",
+    a: "No. What matters is matching the type (conventional, EFB or AGM), capacity (Ah), cold-cranking amps and physical size. A different brand with the same specification performs equivalently.",
+  },
+  {
+    q: "What warranty do the brands come with?",
+    a: `Warranty is ${c.warranty?.toLowerCase()} depending on the brand and battery size you choose. The exact term is confirmed with your quote — ask for it in writing on WhatsApp.`,
+  },
+  {
+    q: "Can I choose the brand?",
+    a: "Yes. Tell us your preference when you message. If your preferred brand isn't available in your car's size at that moment, you'll be offered the closest equivalent to choose from.",
+  },
+];
+---
+
+<ContentLayout
+  title="Car Battery Brands in Dubai | Amaron, Varta, Bosch & More"
+  description="Compare car battery brands available in Dubai — Amaron, Varta, Bosch, ACDelco, Exide and Solite. Which suits your car, and what really matters in the heat."
+  path="/car-battery-brands-dubai/"
+  crumbs={[
+    { name: "Home", path: "/" },
+    { name: "Battery brands", path: "/car-battery-brands-dubai/" },
+  ]}
+  eyebrow="Battery brands"
+  h1="Car Battery Brands in Dubai"
+  lead="All major battery brands are available and fitted at your location. Here's how the common brands compare — and why the battery type matters more than the logo."
+  service="battery_replacement"
+  faqs={faqs}
+  faqHeading="Battery brand FAQs"
+>
+  <h2>Brands at a glance</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">Brand</th>
+          <th scope="col">Types</th>
+          <th scope="col">Good fit for</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          brands.map((b) => (
+            <tr>
+              <td>
+                <strong>{b.name}</strong>
+                <br />
+                <small>{b.origin}</small>
+              </td>
+              <td>{b.types}</td>
+              <td>{b.good}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+  <p>
+    Availability of each brand in every size changes with stock — ask when you message and you'll be offered the options
+    that fit your car.
+  </p>
+
+  {
+    brands.map((b) => (
+      <>
+        <h3>{b.name}</h3>
+        <p>{b.note}</p>
+      </>
+    ))
+  }
+
+  <h2>What matters more than the brand</h2>
+  <ol>
+    <li>
+      <strong>The right type.</strong> If your car has stop-start or came with AGM, it needs EFB or AGM. A cheaper
+      conventional battery will start the car — and fail early. See{" "}
+      <a href="/guides/agm-vs-efb-vs-conventional-battery/">AGM vs EFB vs conventional</a>.
+    </li>
+    <li>
+      <strong>The right size and capacity.</strong> Amp-hours, cold-cranking amps, case size and terminal layout all have
+      to match what your car was built for.
+    </li>
+    <li>
+      <strong>Freshness.</strong> A battery that has sat on a hot shelf for a long time has already lost life. Ask for a
+      recent manufacturing date.
+    </li>
+    <li>
+      <strong>Warranty terms.</strong> Compare the length and whether it's a full replacement or pro-rata.
+    </li>
+    <li>
+      <strong>Proper fitting.</strong> Secure hold-down, clean terminals and — on cars that need it — battery registration.
+    </li>
+  </ol>
+  <p>
+    Prices by type are on our <a href="/car-battery-prices-dubai/">car battery prices</a> page, and make-specific advice
+    is under <a href="/car-makes/">batteries by car make</a>.
+  </p>
+</ContentLayout>

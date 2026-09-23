@@ -1,0 +1,60 @@
+---
+import ContentLayout from "@/layouts/ContentLayout.astro";
+import { siteConfig } from "@/config/site";
+const c = siteConfig.claims;
+---
+
+<ContentLayout
+  title="About Dubai Battery Service | How It Works"
+  description="Dubai Battery Service connects drivers with a vetted 24/7 mobile battery team across Dubai. Who does the work, how requests work, and our standards."
+  path="/about/"
+  crumbs={[
+    { name: "Home", path: "/" },
+    { name: "About", path: "/about/" },
+  ]}
+  eyebrow="About us"
+  h1="About Dubai Battery Service"
+  lead="A simple way for drivers in Dubai to get a dead car battery sorted — fast, at their location, with the right battery for their car."
+>
+  <h2>What we do</h2>
+  <p>
+    {siteConfig.siteName} is a Dubai car battery help service. When your car won't start, you message or call, and a
+    mobile technician comes to wherever the car is parked to jump start, test or replace the battery. Our guides and price
+    information are written to help drivers make a good decision — even if they never contact us.
+  </p>
+
+  <h2>Who carries out the work</h2>
+  <p>
+    Requests made through this website are handled by an independent, vetted Dubai mobile battery team. They carry out
+    the work, supply the batteries and provide the warranty. We work with them because they meet the standards below —
+    and we'd rather tell you that plainly than pretend otherwise.
+  </p>
+
+  <h2>The standards every job should meet</h2>
+  <ul>
+    {c.is24x7 && <li><strong>Available 24/7</strong> — nights, weekends and public holidays.</li>}
+    {c.responseTime && <li><strong>Fast arrival</strong> — typically {c.responseTime} in Dubai, traffic permitting.</li>}
+    {c.freeTesting && <li><strong>Test before replacing</strong> — the battery and alternator are checked for free, so you only pay for a battery you need.</li>}
+    <li><strong>The correct battery for your car</strong> — type, capacity and size matched to your make and model, with registration where required.</li>
+    {c.warranty && <li><strong>Real warranty</strong> — {c.warranty.toLowerCase()}, depending on brand and size.</li>}
+    <li><strong>Price agreed first</strong> — confirmed on WhatsApp before the technician sets off.</li>
+    <li><strong>Responsible disposal</strong> — old batteries are taken away for recycling.</li>
+  </ul>
+
+  <h2>How a request works</h2>
+  <ol>
+    <li>You message on WhatsApp or call, with your car's make, model, year and location.</li>
+    <li>The team confirms the right battery and the price.</li>
+    <li>A technician comes to you, tests the battery and charging system, and fixes the problem on the spot.</li>
+  </ol>
+  <p>
+    When you message through the site, the pre-filled WhatsApp text mentions that you found the service here. It never
+    includes personal data — you choose what to share.
+  </p>
+
+  <h2>Questions or feedback</h2>
+  <p>
+    If something about a job wasn't right, tell us through the <a href="/contact/">contact page</a>. Feedback helps keep
+    the standard high.
+  </p>
+</ContentLayout>

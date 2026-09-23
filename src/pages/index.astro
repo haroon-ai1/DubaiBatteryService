@@ -1,0 +1,566 @@
+---
+import { Picture } from "astro:assets";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import ServicesGrid from "@/components/blocks/ServicesGrid.astro";
+import HowItWorks from "@/components/blocks/HowItWorks.astro";
+import PriceTable from "@/components/blocks/PriceTable.astro";
+import AreasGrid from "@/components/blocks/AreasGrid.astro";
+import MakesGrid from "@/components/blocks/MakesGrid.astro";
+import GuidesGrid from "@/components/blocks/GuidesGrid.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import JsonLdService from "@/components/seo/JsonLdService.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { siteConfig } from "@/config/site";
+import basementImg from "@/assets/images/services/mobile-service-dubai-editorial.jpg";
+import {
+  HERO_ALT,
+  HERO_DESKTOP_MEDIA,
+  HERO_DESKTOP_SIZES,
+  HERO_MOBILE_SIZES,
+  heroDesktopSet,
+  heroMobileSet,
+} from "@/lib/heroImages";
+
+const c = siteConfig.claims;
+
+const preloadImages = [
+  { srcset: heroDesktopSet.avif, sizes: HERO_DESKTOP_SIZES, type: "image/avif", media: HERO_DESKTOP_MEDIA },
+  { srcset: heroMobileSet.avif, sizes: HERO_MOBILE_SIZES, type: "image/avif", media: "(max-width: 63.9375rem)" },
+];
+
+const faqs = [
+  {
+    q: "How quickly can you reach me in Dubai?",
+    a: `Typical arrival is ${c.responseTime ?? "fast"} from confirming your location, depending on traffic and where you are. Sharing a precise location pin — and the basement level if you're underground — is the single biggest thing that speeds it up.`,
+  },
+  {
+    q: "How much does a car battery replacement cost in Dubai?",
+    a: `Batteries start from AED ${c.startingPriceAed ?? 120} for small cars, supplied and fitted. Mid-size saloons, stop-start (EFB) and AGM batteries for SUVs and European cars cost more. See the full <a href="/car-battery-prices-dubai/">car battery price guide</a> for AED ranges by battery type.`,
+  },
+  {
+    q: "Are you really open 24/7?",
+    a: "Yes — including nights, weekends and public holidays. A battery doesn't choose a convenient time to fail, so the service runs around the clock across Dubai.",
+  },
+  {
+    q: "Do you test the battery before replacing it?",
+    a: `Yes. The battery, cranking and alternator output are tested on arrival${c.freeTesting ? ", free of charge" : ""}. A flat battery isn't always a dead battery, and fitting a new one to a car with a charging fault just means another breakdown. See <a href="/battery-testing-dubai/">battery testing</a>.`,
+  },
+  {
+    q: "What warranty comes with a new battery?",
+    a: `Warranty is ${c.warranty?.toLowerCase() ?? "provided"}, depending on the battery brand and size you choose. The exact term is confirmed with your quote.`,
+  },
+  {
+    q: "Which battery brands are available?",
+    a: 'All major brands are available — for example Amaron, Varta, Bosch, ACDelco, Exide and Solite — in conventional, EFB and AGM types. Compare them in our <a href="/car-battery-brands-dubai/">battery brands guide</a>.',
+  },
+  {
+    q: "Can you replace the battery in an underground car park?",
+    a: "Yes. Most jobs in Dubai Marina, Downtown, JLT and Business Bay are done in tower basements. The technician brings portable equipment to your bay — just tell us the building, level and bay number.",
+  },
+  {
+    q: "Does my car need battery registration after replacement?",
+    a: 'Many BMW, Mercedes-Benz, Audi, Range Rover and other recent cars with stop-start need the new battery registered to the car\'s battery management system. It\'s done on site with a diagnostic tool when your car needs it. See <a href="/car-makes/">battery advice by car make</a>.',
+  },
+  {
+    q: "How do I pay?",
+    a: `${c.paymentMethods ?? "All major payment methods"} are accepted.`,
+  },
+];
+
+const brands = ["Amaron", "Varta", "Bosch", "ACDelco", "Exide", "Solite"];
+---
+
+<BaseLayout
+  title="Car Battery Replacement Dubai | 24/7 Mobile Service"
+  description={`24/7 car battery replacement in Dubai at your location. Arrival in ~20–25 min, batteries from AED ${c.startingPriceAed}, free testing, up to 36-month warranty.`}
+  path="/"
+  preloadImages={preloadImages}
+>
+  <JsonLdService
+    slot="head"
+    service="battery_replacement"
+    path="/"
+    name="Car battery replacement in Dubai"
+    description="Mobile car battery replacement, jump starts and battery testing at the customer's location anywhere in Dubai, 24 hours a day."
+  />
+
+  <!-- ============ HERO ============ -->
+  <section class="hero on-ink" id="hero">
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="hero-badge">
+          <span class="live" aria-hidden="true"></span>
+          Open 24/7 · Mobile service across Dubai
+        </p>
+        <h1>
+          Car battery replacement in Dubai, <span class="hl">wherever you're parked.</span>
+        </h1>
+        <p class="hero-lead">
+          Flat battery at home, at the office or in a mall car park? A technician comes to you in about {
+            c.responseTime?.replace(" minutes", " minutes")
+          }, tests the battery free, and fits the right new one on the spot — any time, day or night.
+        </p>
+        <ul class="hero-points">
+          <li><Icon name="check" /> Batteries from <strong>AED {c.startingPriceAed}</strong></li>
+          <li><Icon name="check" /> <strong>{c.warranty}</strong> warranty</li>
+          <li><Icon name="check" /> All major brands, fitted on site</li>
+        </ul>
+        <div class="cta-row">
+          <WhatsAppButton service="battery_service" ctaLocation="hero_whatsapp" size="lg" label="WhatsApp for a quote" />
+          <CallButton ctaLocation="hero_call" variant="volt" size="lg" showNumber />
+        </div>
+        <PartnerDisclosure />
+      </div>
+
+      <figure class="hero-figure">
+        <picture>
+          <source media={HERO_DESKTOP_MEDIA} type="image/avif" srcset={heroDesktopSet.avif} sizes={HERO_DESKTOP_SIZES} />
+          <source media={HERO_DESKTOP_MEDIA} type="image/webp" srcset={heroDesktopSet.webp} sizes={HERO_DESKTOP_SIZES} />
+          <source media={HERO_DESKTOP_MEDIA} type="image/jpeg" srcset={heroDesktopSet.jpg} sizes={HERO_DESKTOP_SIZES} />
+          <source type="image/avif" srcset={heroMobileSet.avif} sizes={HERO_MOBILE_SIZES} />
+          <source type="image/webp" srcset={heroMobileSet.webp} sizes={HERO_MOBILE_SIZES} />
+          <img
+            src={heroMobileSet.fallback}
+            srcset={heroMobileSet.jpg}
+            sizes={HERO_MOBILE_SIZES}
+            width={heroMobileSet.width}
+            height={heroMobileSet.height}
+            alt={HERO_ALT}
+            loading="eager"
+            fetchpriority="high"
+            decoding="async"
+          />
+        </picture>
+        <div class="float-card fc-1">
+          <span class="fc-icon"><Icon name="van" /></span>
+          <span><strong>~{c.responseTime?.replace(" minutes", " min")}</strong><small>typical arrival</small></span>
+        </div>
+        <div class="float-card fc-2">
+          <span class="fc-icon"><Icon name="gauge" /></span>
+          <span><strong>Free test</strong><small>battery + alternator</small></span>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <div class="container trust-wrap">
+    <TrustStrip variant="float" />
+  </div>
+
+  <!-- ============ SERVICES ============ -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">What we do</p>
+          <h2>Every car battery problem, sorted at your location</h2>
+        </div>
+        <p>
+          From a quick jump start to a full replacement with battery registration — the technician arrives with the
+          tools and the right battery for your car, so most jobs are finished in a single visit.
+        </p>
+      </div>
+      <ServicesGrid />
+    </div>
+  </section>
+
+  <!-- ============ WHY ============ -->
+  <section class="section section--soft">
+    <div class="container why">
+      <figure class="why-media">
+        <Picture
+          src={basementImg}
+          alt="Technician replacing a car battery in an underground residential car park in Dubai."
+          formats={["avif", "webp"]}
+          widths={[480, 800, 1100]}
+          sizes="(min-width: 64rem) 40vw, 100vw"
+          loading="lazy"
+          decoding="async"
+        />
+        <figcaption>Basement, driveway or roadside — the job is done where the car is.</figcaption>
+      </figure>
+      <div class="why-copy">
+        <p class="eyebrow">Why drivers use us</p>
+        <h2>The right battery, fitted properly, the first time</h2>
+        <p class="lead">
+          A cheap battery in the wrong size or type is the most common reason a new battery dies within months in
+          Dubai's heat. Every job starts from your car's specification — not from whatever is on the van.
+        </p>
+        <ul class="check-list">
+          <li><strong>Tested before replaced</strong> — battery, starter draw and alternator output checked on arrival.</li>
+          <li><strong>Correct type for your car</strong> — conventional, EFB or AGM, matched to make, model and engine.</li>
+          <li><strong>Battery registration</strong> for BMW, Mercedes, Range Rover and other cars that need it.</li>
+          <li><strong>Old battery recycled</strong> — taken away, not left in your boot.</li>
+          <li><strong>Price agreed up front</strong> on WhatsApp — cash, card or transfer.</li>
+        </ul>
+        <div class="cta-row">
+          <WhatsAppButton service="battery_replacement" ctaLocation="service_whatsapp" label="Get a replacement quote" />
+          <a class="btn btn--ghost" href="/car-battery-replacement-dubai/">How replacement works</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ HOW IT WORKS ============ -->
+  <section class="section section--ink" id="how-it-works">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">How it works</p>
+        <h2>From "it won't start" to driving away</h2>
+        <p>Three steps, no workshop visit, no tow truck.</p>
+      </div>
+      <HowItWorks />
+    </div>
+  </section>
+
+  <!-- ============ PRICES ============ -->
+  <section class="section" id="prices">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Car battery prices in Dubai</p>
+          <h2>Clear AED price ranges, before anyone sets off</h2>
+        </div>
+        <p>
+          What you pay depends mainly on the battery type your car needs. Here are typical supplied-and-fitted ranges
+          — message us the car and you'll get an exact price.
+        </p>
+      </div>
+      <PriceTable compact />
+      <p class="more-link">
+        <a class="text-link" href="/car-battery-prices-dubai/">Full price guide: what changes a quote →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ BATTERY TYPES ============ -->
+  <section class="section section--soft" id="battery-technology">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Battery types</p>
+        <h2>Conventional, EFB or AGM — your car decides</h2>
+        <p>
+          Fitting the wrong type is the #1 cause of early battery failure. The technician confirms which one your car was
+          built for.
+        </p>
+      </div>
+      <div class="grid grid-3">
+        <div class="card">
+          <span class="chip">Conventional</span>
+          <h3>Flooded lead-acid</h3>
+          <p>For cars without stop-start: most Toyota, Nissan, Mitsubishi and older models. The most affordable option.</p>
+        </div>
+        <div class="card">
+          <span class="chip">EFB</span>
+          <h3>Enhanced flooded</h3>
+          <p>For many entry-level stop-start cars. Tougher plates for repeated restarts; costs more than conventional.</p>
+        </div>
+        <div class="card">
+          <span class="chip">AGM</span>
+          <h3>Absorbent glass mat</h3>
+          <p>For premium, European and advanced stop-start cars. Sealed, heat- and vibration-tolerant; usually needs registration.</p>
+        </div>
+      </div>
+      <p class="more-link">
+        <a class="text-link" href="/guides/agm-vs-efb-vs-conventional-battery/">AGM vs EFB vs conventional, explained →</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ AREAS + MAKES ============ -->
+  <section class="section" id="areas">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Areas we cover</p>
+          <h2>Across Dubai — from the Marina to Mirdif</h2>
+        </div>
+        <p>
+          Tower basements, villa driveways, mall car parks and the hard shoulder. Pick your area for local access tips, or
+          just send a location pin.
+        </p>
+      </div>
+      <AreasGrid variant="chips" />
+      <p class="more-link"><a class="text-link" href="/areas/">See all areas we cover →</a></p>
+
+      <div class="makes-block">
+        <h3>Battery replacement by car make</h3>
+        <MakesGrid />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ BRANDS ============ -->
+  <section class="section section--tight section--soft">
+    <div class="container brands">
+      <div>
+        <p class="eyebrow">Brands</p>
+        <h2 class="brands-h">All major battery brands</h2>
+        <p class="brands-p">Ask for current availability and the warranty for your car's size.</p>
+      </div>
+      <ul class="brand-list">
+        {brands.map((b) => <li>{b}</li>)}
+      </ul>
+      <a class="text-link" href="/car-battery-brands-dubai/">Compare battery brands →</a>
+    </div>
+  </section>
+
+  <!-- ============ GUIDES ============ -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head section-head--split">
+        <div>
+          <p class="eyebrow">Guides</p>
+          <h2>Know your battery before it lets you down</h2>
+        </div>
+        <p>Short, practical guides written for driving in Dubai's heat.</p>
+      </div>
+      <GuidesGrid limit={3} />
+      <p class="more-link"><a class="text-link" href="/guides/">All battery guides →</a></p>
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} heading="Car battery questions, answered" soft />
+
+  <CtaBand home />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--ink);
+    color: var(--text-on-ink);
+    padding-block: clamp(2rem, 1.5rem + 3vw, 4.5rem) clamp(5rem, 4rem + 4vw, 7.5rem);
+  }
+  .hero-glow {
+    position: absolute;
+    inset: -20% -20% auto auto;
+    width: 70rem;
+    height: 50rem;
+    background:
+      radial-gradient(closest-side, rgba(255, 210, 63, 0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative;
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .hero-grid {
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 3.5rem;
+    }
+  }
+  .hero-copy {
+    display: grid;
+    gap: 1.35rem;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    justify-self: start;
+    padding: 0.4rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--hairline-ink);
+    font-size: 0.8125rem;
+    font-weight: 650;
+    color: var(--text-on-ink);
+  }
+  .live {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--whatsapp-green);
+    box-shadow: 0 0 0 4px rgba(37, 211, 102, 0.2);
+  }
+  .hero h1 {
+    font-size: var(--fs-display);
+    color: #fff;
+  }
+  .hl {
+    color: var(--volt);
+  }
+  .hero-lead {
+    font-size: var(--fs-lead);
+    color: var(--text-on-ink-2);
+    max-width: 36rem;
+  }
+  .hero-points {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: var(--text-on-ink);
+    font-size: 0.9375rem;
+  }
+  .hero-points li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .hero-points :global(svg) {
+    width: 1.1rem;
+    height: 1.1rem;
+    color: var(--volt);
+    stroke-width: 2.6;
+  }
+  .hero-points strong {
+    color: #fff;
+  }
+  .hero-figure {
+    position: relative;
+  }
+  .hero-figure picture,
+  .hero-figure img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+  }
+  .hero-figure img {
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.8);
+    border: 1px solid var(--hairline-ink);
+  }
+  .float-card {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius);
+    background: #fff;
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lift);
+  }
+  .float-card strong {
+    display: block;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+  .float-card small {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .fc-icon {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 0.7rem;
+    background: var(--volt);
+  }
+  .fc-icon :global(svg) {
+    width: 1.3rem;
+    height: 1.3rem;
+  }
+  .fc-1 {
+    left: -0.75rem;
+    bottom: 1.25rem;
+  }
+  .fc-2 {
+    right: -0.75rem;
+    top: 1.25rem;
+  }
+  @media (max-width: 40rem) {
+    .fc-1 {
+      left: 0.6rem;
+      bottom: 0.6rem;
+      padding: 0.5rem 0.75rem;
+    }
+    .fc-2 {
+      display: none;
+    }
+  }
+
+  .trust-wrap {
+    position: relative;
+    margin-top: -3.25rem;
+    z-index: 2;
+  }
+
+  .why {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .why {
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 4rem;
+    }
+  }
+  .why-media img {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+  @media (max-width: 63.99rem) {
+    .why-media img {
+      aspect-ratio: 16 / 10;
+    }
+  }
+  .why-media figcaption {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+  .why-copy {
+    display: grid;
+    gap: 1.25rem;
+  }
+  .more-link {
+    margin-top: 1.75rem;
+  }
+  .makes-block {
+    margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  }
+  .makes-block h3 {
+    margin-bottom: 1rem;
+  }
+  .brands {
+    display: grid;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  @media (min-width: 64rem) {
+    .brands {
+      grid-template-columns: 1fr 1.6fr auto;
+      gap: 3rem;
+    }
+  }
+  .brands-h {
+    font-size: 1.5rem;
+    margin-top: 0.5rem;
+  }
+  .brands-p {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    margin-top: 0.25rem;
+  }
+  .brand-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .brand-list li {
+    padding: 0.55rem 1rem;
+    border-radius: var(--radius-sm);
+    background: #fff;
+    border: 1px solid var(--hairline);
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--text-secondary);
+  }
+</style>

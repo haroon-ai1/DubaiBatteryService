@@ -1,0 +1,107 @@
+---
+/*
+  Closing call-to-action band. id="get-help" is the canonical action zone
+  (the sticky mobile bar hides while it's on screen).
+*/
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import CallButton from "@/components/actions/CallButton.astro";
+import PartnerDisclosure from "@/components/actions/PartnerDisclosure.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import type { ServiceId } from "@/lib/services";
+import { siteConfig } from "@/config/site";
+
+interface Props {
+  heading?: string;
+  text?: string;
+  service?: ServiceId;
+  area?: string | null;
+  areaName?: string | null;
+  makeName?: string | null;
+  home?: boolean;
+}
+const c = siteConfig.claims;
+const {
+  heading = "Battery flat? Get moving again.",
+  text = `Send a WhatsApp or call — tell us the car and where it's parked, and a technician comes to you${c.is24x7 ? ", any hour of the day" : ""}.`,
+  service = "battery_service",
+  area = null,
+  areaName = null,
+  makeName = null,
+  home = false,
+} = Astro.props;
+---
+
+<section class="cta-band on-ink" id="get-help">
+  <div class="container">
+    <div class="band">
+      <div class="band-copy">
+        <p class="eyebrow">Get battery help now</p>
+        <h2>{heading}</h2>
+        <p class="band-text">{text}</p>
+        <div class="cta-row">
+          <WhatsAppButton
+            service={service}
+            ctaLocation={home ? "final_cta_whatsapp" : "service_final_whatsapp"}
+            area={area}
+            areaName={areaName}
+            makeName={makeName}
+            size="lg"
+            label="WhatsApp us now"
+          />
+          <CallButton
+            ctaLocation={home ? "final_cta_call" : "service_final_call"}
+            area={area}
+            variant="volt"
+            size="lg"
+            showNumber
+          />
+        </div>
+        <PartnerDisclosure />
+      </div>
+      <div class="band-trust">
+        <TrustStrip variant="ink" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band {
+    padding-block: var(--section-space);
+    background: var(--bg-main);
+  }
+  .band {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    gap: 2.5rem;
+    padding: clamp(1.75rem, 1rem + 3.5vw, 4rem);
+    border-radius: calc(var(--radius-lg) * 1.4);
+    background:
+      radial-gradient(60rem 30rem at 110% -20%, rgba(255, 210, 63, 0.22), transparent 60%),
+      var(--ink);
+    color: var(--text-on-ink);
+  }
+  @media (min-width: 64rem) {
+    .band {
+      grid-template-columns: 1.3fr 1fr;
+      align-items: center;
+      gap: 4rem;
+    }
+    .band-trust :global(.trust) {
+      grid-template-columns: 1fr;
+    }
+  }
+  .band-copy {
+    display: grid;
+    gap: 1.1rem;
+  }
+  h2 {
+    color: #fff;
+  }
+  .band-text {
+    color: var(--text-on-ink-2);
+    font-size: var(--fs-lead);
+    max-width: 34rem;
+  }
+</style>

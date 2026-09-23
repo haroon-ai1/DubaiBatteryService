@@ -1,0 +1,57 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import ServicesGrid from "@/components/blocks/ServicesGrid.astro";
+import HowItWorks from "@/components/blocks/HowItWorks.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+
+const faqs = [
+  {
+    q: "Which service do I need if my car won't start?",
+    a: 'Start with a message describing what happens when you turn the key. Clicking or a slow crank usually means a flat or failing battery — a <a href="/jump-start-dubai/">jump start</a> gets you moving and the <a href="/battery-testing-dubai/">free test</a> tells you whether you need a <a href="/car-battery-replacement-dubai/">replacement</a>. The technician can do all three in one visit.',
+  },
+  {
+    q: "Do I need to bring the car anywhere?",
+    a: "No. Every service here is done at the car — home, office, car park or roadside — anywhere in Dubai.",
+  },
+  {
+    q: "Is it more expensive at night?",
+    a: 'Emergency and late-night call-outs can be priced differently from a daytime visit. You\'ll get the price on WhatsApp before the technician sets off. See <a href="/car-battery-prices-dubai/">car battery prices</a>.',
+  },
+];
+---
+
+<BaseLayout
+  title="Car Battery Services Dubai | Replacement, Jump Start, Test"
+  description="All mobile car battery services in Dubai: replacement, jump start, free testing, delivery and 24/7 emergency help — done at your location."
+  path="/services/"
+>
+  <PageHero
+    crumbs={[{ name: "Home", path: "/" }, { name: "Services", path: "/services/" }]}
+    eyebrow="Services"
+    h1="Mobile Car Battery Services in Dubai"
+    lead="Everything to get a car with a battery problem back on the road — done at your location, 24/7, anywhere in Dubai."
+    service="battery_service"
+  />
+  <div class="container" style="position:relative;margin-top:-2.5rem;z-index:2">
+    <TrustStrip variant="float" />
+  </div>
+  <section class="section">
+    <div class="container">
+      <ServicesGrid />
+    </div>
+  </section>
+  <section class="section section--ink">
+    <div class="container">
+      <div class="section-head section-head--center">
+        <p class="eyebrow">How it works</p>
+        <h2>Three steps, no workshop visit</h2>
+      </div>
+      <HowItWorks />
+    </div>
+  </section>
+  <FaqSection faqs={faqs} heading="Choosing the right service" />
+  <CtaBand />
+</BaseLayout>

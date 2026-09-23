@@ -1,0 +1,65 @@
+---
+import { siteConfig } from "@/config/site";
+interface Props { compact?: boolean }
+const { compact = false } = Astro.props;
+const { pricing } = siteConfig;
+const fmt = (n: number) => n.toLocaleString("en-AE");
+const reviewed = new Date(pricing.lastReviewed).toLocaleDateString("en-GB", {
+  month: "long",
+  year: "numeric",
+});
+---
+
+{
+  pricing.showBands && (
+    <div class="price-table">
+      <div class="table-wrap">
+        <table class="data-table">
+          <caption class="visually-hidden">Indicative car battery prices in Dubai, supplied and fitted, in AED</caption>
+          <thead>
+            <tr>
+              <th scope="col">Battery type</th>
+              {!compact && <th scope="col">Typical size</th>}
+              <th scope="col">Typical cars</th>
+              <th scope="col">Price (AED)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pricing.bands.map((b) => (
+              <tr>
+                <td>
+                  <strong>{b.label}</strong>
+                </td>
+                {!compact && <td>{b.spec}</td>}
+                <td>{b.fits}</td>
+                <td class="num">
+                  {fmt(b.low)} – {fmt(b.high)}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note">
+        Indicative Dubai price ranges for a supplied and fitted battery, reviewed {reviewed}. Your exact price depends
+        on the battery your car needs and the brand you choose — confirm it on WhatsApp before the technician sets
+        off.
+      </p>
+    </div>
+  )
+}
+
+<style>
+  .price-table {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .note {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    max-width: 60rem;
+  }
+  td:last-child {
+    color: var(--text-primary);
+  }
+</style>

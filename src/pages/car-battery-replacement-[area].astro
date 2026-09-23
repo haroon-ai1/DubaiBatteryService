@@ -1,0 +1,248 @@
+---
+/*
+  /car-battery-replacement-{area}/ — one page per Dubai area in
+  src/data/areas.ts. The area-specific paragraphs come from the data file;
+  this template wraps them with shared service facts.
+*/
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import SidebarCta from "@/components/blocks/SidebarCta.astro";
+import AreasGrid from "@/components/blocks/AreasGrid.astro";
+import MakesGrid from "@/components/blocks/MakesGrid.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import JsonLdService from "@/components/seo/JsonLdService.astro";
+import { AREAS, AREA_BY_SLUG, areaId, areaPath, type Area } from "@/data/areas";
+import { siteConfig } from "@/config/site";
+
+export function getStaticPaths() {
+  return AREAS.map((a) => ({ params: { area: a.slug }, props: { a } }));
+}
+
+interface Props {
+  a: Area;
+}
+const { a } = Astro.props;
+const c = siteConfig.claims;
+const short = a.short ?? a.name;
+const path = areaPath(a);
+const id = areaId(a);
+
+let title = `Car Battery Replacement in ${short} | 24/7 Mobile Service`;
+if (title.length > 60) title = `Car Battery Replacement ${short} | 24/7 Service`;
+if (title.length > 60) title = `Car Battery Replacement ${short} | 24/7`;
+
+let description = `Dead battery in ${short}? 24/7 car battery replacement and jump start at your location — ~${c.responseTime?.replace(" minutes", " min")} arrival, from AED ${c.startingPriceAed}, free battery test.`;
+if (description.length > 155)
+  description = `Dead battery in ${short}? 24/7 on-site car battery replacement and jump start. From AED ${c.startingPriceAed}, free battery test.`;
+
+const nearby = a.nearby.map((s) => AREA_BY_SLUG.get(s)).filter(Boolean) as Area[];
+
+const parkingQ: Record<Area["kind"], { q: string; a: string }> = {
+  towers: {
+    q: `Can you replace a battery in a ${short} tower basement?`,
+    a: `Yes — most jobs in ${short} are done in basement car parks. The technician brings portable equipment to your bay. Share the building name, basement level and bay number, and let building security know a service vehicle is coming if they log visitors.`,
+  },
+  business: {
+    q: `Can you come to my office car park in ${short}?`,
+    a: `Yes. Office basements and podium car parks in ${short} are routine. Send the building name, parking level and bay number; if the building registers visitor vehicles at the ramp, mention it when you message.`,
+  },
+  villas: {
+    q: `Do you come to villas in ${short}?`,
+    a: `Yes — driveway and carport jobs are the quickest there are. For gated communities, share your villa number so security can let the technician in without delay.`,
+  },
+  mixed: {
+    q: `Where in ${short} can the battery be replaced?`,
+    a: `Anywhere the car is parked — building basements and podiums, open lots, street bays or a driveway. A live location pin is the fastest way for the technician to find you.`,
+  },
+  industrial: {
+    q: `Can you reach a warehouse or yard in ${short}?`,
+    a: `Yes. Share the plot or warehouse number and a pin, and tell us if the vehicle is inside a closed yard so someone can open the gate on arrival.`,
+  },
+};
+
+const faqs = [
+  {
+    q: `How fast can you reach me in ${short}?`,
+    a: `Typical arrival is ${c.responseTime} after your location is confirmed, depending on traffic and the time of day. ${a.local}`,
+  },
+  parkingQ[a.kind],
+  {
+    q: `How much is a car battery replacement in ${short}?`,
+    a: `The price depends mainly on the battery your car needs. Batteries start from AED ${c.startingPriceAed} supplied and fitted for small cars; SUVs, stop-start and AGM batteries cost more. See <a href="/car-battery-prices-dubai/">car battery prices in Dubai</a> for ranges by type.`,
+  },
+  {
+    q: `Are you available at night in ${short}?`,
+    a: `Yes. Battery help is available 24 hours a day, 7 days a week in ${short} and across Dubai, including weekends and public holidays.`,
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  path={path}
+  stickyService="battery_replacement"
+  area={id}
+  areaName={short}
+>
+  <JsonLdService
+    slot="head"
+    service="battery_replacement"
+    path={path}
+    name={`Car battery replacement in ${a.name}`}
+    description={description}
+    areaName={a.name}
+  />
+
+  <PageHero
+    crumbs={[
+      { name: "Home", path: "/" },
+      { name: "Areas", path: "/areas/" },
+      { name: a.name, path },
+    ]}
+    eyebrow={`${a.zone} · Mobile battery service`}
+    h1={`Car Battery Replacement in ${a.name}`}
+    lead={`${a.hook} A technician comes to your car in ${short}, tests the battery for free and fits the right replacement on the spot — 24/7.`}
+    service="battery_replacement"
+    area={id}
+    areaName={short}
+    waLabel={`WhatsApp — I'm in ${short}`}
+  />
+
+  <div class="container trust-wrap">
+    <TrustStrip variant="float" />
+  </div>
+
+  <section class="section">
+    <div class="container body-grid">
+      <article class="prose">
+        <h2>Car battery help in {a.name}, day and night</h2>
+        <p>{a.intro}</p>
+
+        <h2>Parking and access in {short}</h2>
+        <p>{a.access}</p>
+
+        <div class="callout">
+          <p><strong>Local tip:</strong> {a.local}</p>
+        </div>
+
+        <h2>Battery services available in {short}</h2>
+        <ul>
+          <li>
+            <a href="/car-battery-replacement-dubai/">Car battery replacement</a> — the correct conventional, EFB or AGM
+            battery for your car, fitted where it's parked, old battery recycled.
+          </li>
+          <li>
+            <a href="/jump-start-dubai/">Jump start</a> — if the battery just needs a boost, plus a check that it can hold
+            a charge.
+          </li>
+          <li>
+            <a href="/battery-testing-dubai/">Free battery test</a> — battery health, cranking and alternator output
+            checked before you pay for anything.
+          </li>
+          <li>
+            <a href="/emergency-battery-service-dubai/">Emergency help</a> — priority response if you're stuck somewhere
+            the car can't stay.
+          </li>
+        </ul>
+
+        <h2>What it costs</h2>
+        <p>
+          The price depends mainly on the battery your car needs. Car batteries start from <strong>AED {c.startingPriceAed}</strong> supplied
+          and fitted for small cars, with stop-start, AGM and large SUV batteries costing more. Warranty is{" "}
+          {c.warranty?.toLowerCase()} depending on brand and size. The full breakdown is on our{" "}
+          <a href="/car-battery-prices-dubai/">car battery prices</a> page.
+        </p>
+
+        <h2>Landmarks and nearby areas</h2>
+        <p>
+          We regularly cover {a.landmarks.slice(0, -1).join(", ")} and {a.landmarks[a.landmarks.length - 1]} — and the
+          neighbouring communities of{" "}
+          {
+            nearby.map((n, i) => (
+              <>
+                <a href={areaPath(n)}>{n.short ?? n.name}</a>
+                {i < nearby.length - 2 ? ", " : i === nearby.length - 2 ? " and " : ""}
+              </>
+            ))
+          }.
+        </p>
+
+        <p class="inline-cta">
+          <WhatsAppButton
+            service="battery_replacement"
+            ctaLocation="service_inline_whatsapp"
+            area={id}
+            areaName={short}
+            label={`Get battery help in ${short}`}
+          />
+        </p>
+      </article>
+      <aside class="side">
+        <SidebarCta service="battery_replacement" area={id} areaName={short} />
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Car makes</p>
+        <h2>Batteries for every car in {short}</h2>
+        <p>Make-specific advice — battery type, size and whether your car needs registration.</p>
+      </div>
+      <MakesGrid />
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} heading={`Battery help in ${short}: FAQs`} />
+
+  <section class="section section--soft">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Other areas</p>
+        <h2>We also cover</h2>
+      </div>
+      <AreasGrid variant="chips" exclude={[a.slug]} />
+    </div>
+  </section>
+
+  <CtaBand service="battery_replacement" area={id} areaName={short} heading={`Battery flat in ${short}?`} />
+</BaseLayout>
+
+<style>
+  .trust-wrap {
+    position: relative;
+    margin-top: -2.5rem;
+    z-index: 2;
+  }
+  .body-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  .body-grid .prose {
+    max-width: 46rem;
+  }
+  @media (min-width: 64rem) {
+    .body-grid {
+      grid-template-columns: minmax(0, 46rem) 21rem;
+      justify-content: space-between;
+      align-items: start;
+    }
+    .side {
+      position: sticky;
+      top: calc(var(--header-h) + 1.5rem);
+    }
+  }
+  @media (max-width: 63.99rem) {
+    .side {
+      display: none;
+    }
+  }
+  .inline-cta {
+    margin-top: 2.5rem !important;
+  }
+</style>

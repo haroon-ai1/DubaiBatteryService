@@ -1,0 +1,67 @@
+---
+import { siteConfig } from "@/config/site";
+const c = siteConfig.claims;
+const steps = [
+  {
+    t: "Message or call",
+    d: "Tell us the car (make, model, year), what it's doing, and drop a location pin. A photo of the battery label helps.",
+  },
+  {
+    t: "Confirm the battery & price",
+    d: "The correct battery for your car is confirmed and you can agree the price up front, before the technician sets off.",
+  },
+  {
+    t: c.responseTime ? `Technician arrives in ~${c.responseTime.replace(" minutes", " min")}` : "A technician comes to you",
+    d: `The battery and charging system are tested first${c.freeTesting ? " (free)" : ""}. If it needs replacing, it's fitted, registered where required, and the old one is taken for recycling.`,
+  },
+];
+---
+
+<ol class="steps">
+  {
+    steps.map((s, i) => (
+      <li>
+        <span class="n">{String(i + 1).padStart(2, "0")}</span>
+        <h3>{s.t}</h3>
+        <p>{s.d}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    gap: var(--gap);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    counter-reset: s;
+  }
+  .steps li {
+    position: relative;
+    padding: 1.75rem;
+    border-radius: var(--radius-lg);
+    background: var(--ink-2);
+    border: 1px solid var(--hairline-ink);
+  }
+  .n {
+    display: inline-grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--volt);
+    color: var(--ink);
+    font-weight: 800;
+    font-size: 0.9375rem;
+    margin-bottom: 1.1rem;
+  }
+  h3 {
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  p {
+    color: var(--text-on-ink-2);
+    font-size: var(--fs-small);
+    line-height: 1.6;
+  }
+</style>

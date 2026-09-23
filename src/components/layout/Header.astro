@@ -1,0 +1,417 @@
+---
+/*
+  Site header: an ink status strip (24/7 · arrival · warranty) above a
+  sticky white bar. Desktop has a Services dropdown that opens on hover
+  AND on keyboard focus (:focus-within), and the parent link is a real
+  page (/services/) so it still works with no pointer at all.
+  Mobile uses a native <dialog>.
+*/
+import { PRIMARY_NAV } from "@/config/navigation";
+import { siteConfig } from "@/config/site";
+import CallButton from "@/components/actions/CallButton.astro";
+import WhatsAppButton from "@/components/actions/WhatsAppButton.astro";
+import Logo from "@/components/ui/Logo.astro";
+import { getCallUrl, getLeadDataAttributes } from "@/lib/leads";
+
+const here = Astro.url.pathname.replace(/\/?$/, "/");
+const { claims } = siteConfig;
+const callHref = getCallUrl({ ctaLocation: "header_call" });
+const callAttrs = getLeadDataAttributes({ event: "click_call", ctaLocation: "header_call" });
+const isActive = (href: string) => (href === "/" ? here === "/" : here.startsWith(href));
+---
+
+<div class="topbar">
+  <div class="container topbar-inner">
+    <p class="topbar-status">
+      <span class="pulse" aria-hidden="true"></span>
+      {claims.is24x7 ? "Open 24/7 across Dubai" : "Mobile battery service across Dubai"}
+      {claims.responseTime && <span class="sep">· Typical arrival {claims.responseTime}</span>}
+      {claims.warranty && <span class="sep hide-sm">· Warranty {claims.warranty.toLowerCase()}</span>}
+    </p>
+    {
+      callHref && (
+        <a class="topbar-call" href={callHref} {...callAttrs}>
+          Call {callHref.replace(/^tel:\+971(\d{2})(\d{3})(\d{4})$/, "+971 $1 $2 $3")}
+        </a>
+      )
+    }
+  </div>
+</div>
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <Logo />
+
+    <nav class="desktop-nav" aria-label="Primary">
+      <ul>
+        {
+          PRIMARY_NAV.map((item) => (
+            <li class:list={[item.children && "has-menu"]}>
+              <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+                {item.label}
+                {item.children && (
+                  <svg class="caret" viewBox="0 0 12 12" aria-hidden="true">
+                    <path d="M3 4.5 6 7.5l3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                )}
+              </a>
+              {item.children && (
+                <div class="menu">
+                  <ul>
+                    {item.children.map((c) => (
+                      <li>
+                        <a href={c.href}>{c.label}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <CallButton ctaLocation="header_call" variant="ghost" size="sm" label="Call" class="hdr-call" />
+      <WhatsAppButton service="battery_service" ctaLocation="header_whatsapp" size="sm" label="WhatsApp" class="hdr-wa" />
+      <button
+        type="button"
+        id="menu-toggle"
+        class="menu-toggle"
+        aria-haspopup="dialog"
+        aria-controls="mobile-nav"
+        aria-expanded="false"
+      >
+        <span class="visually-hidden">Open menu</span>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<dialog id="mobile-nav" class="mobile-nav" aria-label="Menu">
+  <div class="mobile-nav-top">
+    <Logo />
+    <button type="button" id="menu-close" class="menu-close" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+  <nav aria-label="Mobile">
+    <ul class="mobile-list">
+      {
+        PRIMARY_NAV.map((item) => (
+          <li>
+            <a href={item.href} class="mobile-top">{item.label}</a>
+            {item.children && (
+              <ul class="mobile-sub">
+                {item.children.map((c) => (
+                  <li>
+                    <a href={c.href}>{c.label}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+      <li><a href="/about/" class="mobile-top">About</a></li>
+      <li><a href="/contact/" class="mobile-top">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="mobile-ctas">
+    <WhatsAppButton service="battery_service" ctaLocation="mobile_menu_whatsapp" block size="lg" label="WhatsApp us" />
+    <CallButton ctaLocation="mobile_menu_call" variant="ink" block size="lg" showNumber />
+  </div>
+</dialog>
+
+<script is:inline>
+  (function () {
+    var dlg = document.getElementById("mobile-nav");
+    var open = document.getElementById("menu-toggle");
+    var close = document.getElementById("menu-close");
+    if (!dlg || !open || typeof dlg.showModal !== "function") return;
+    open.addEventListener("click", function () {
+      dlg.showModal();
+      open.setAttribute("aria-expanded", "true");
+      document.documentElement.style.overflow = "hidden";
+    });
+    function shut() {
+      dlg.close();
+    }
+    close && close.addEventListener("click", shut);
+    dlg.addEventListener("close", function () {
+      open.setAttribute("aria-expanded", "false");
+      document.documentElement.style.overflow = "";
+    });
+    dlg.addEventListener("click", function (e) {
+      if (e.target === dlg) shut();
+      if (e.target instanceof Element && e.target.closest("a")) shut();
+    });
+    var hdr = document.getElementById("site-header");
+    if (hdr) {
+      var onScroll = function () {
+        hdr.classList.toggle("is-scrolled", window.scrollY > 8);
+      };
+      addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
+    }
+  })();
+</script>
+
+<style>
+  .topbar {
+    background: var(--ink);
+    color: var(--text-on-ink-2);
+    font-size: 0.8125rem;
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.25rem;
+  }
+  .topbar-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-on-ink);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .topbar-status .sep {
+    color: var(--text-on-ink-2);
+    font-weight: 500;
+  }
+  .pulse {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--whatsapp-green);
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.6);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    70% {
+      box-shadow: 0 0 0 7px rgba(37, 211, 102, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+    }
+  }
+  .topbar-call {
+    color: var(--volt);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .topbar-call:hover {
+    text-decoration: underline;
+  }
+  @media (max-width: 47.99rem) {
+    .hide-sm,
+    .topbar-call {
+      display: none;
+    }
+    .topbar-inner {
+      justify-content: center;
+    }
+  }
+
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: saturate(1.6) blur(14px);
+    -webkit-backdrop-filter: saturate(1.6) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .site-header.is-scrolled {
+    border-bottom-color: var(--hairline);
+    box-shadow: 0 6px 24px -14px rgba(11, 16, 23, 0.25);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    min-height: var(--header-h);
+  }
+
+  .desktop-nav {
+    display: none;
+    margin-left: auto;
+  }
+  .desktop-nav > ul {
+    display: flex;
+    gap: 0.25rem;
+  }
+  .desktop-nav li {
+    position: relative;
+  }
+  .desktop-nav > ul > li > a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.55rem 0.8rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--dur-fast), background-color var(--dur-fast);
+  }
+  .desktop-nav > ul > li > a:hover,
+  .desktop-nav > ul > li > a[aria-current="page"] {
+    color: var(--text-primary);
+    background: var(--bg-tint);
+  }
+  .caret {
+    width: 0.75rem;
+    height: 0.75rem;
+  }
+  .menu {
+    position: absolute;
+    top: 100%;
+    left: -0.5rem;
+    padding-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-4px);
+    transition: opacity var(--dur-fast), transform var(--dur-fast), visibility var(--dur-fast);
+  }
+  .menu ul {
+    min-width: 16rem;
+    padding: 0.5rem;
+    background: #fff;
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lift);
+  }
+  .menu a {
+    display: block;
+    padding: 0.6rem 0.8rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--text-primary);
+  }
+  .menu a:hover {
+    background: var(--volt-soft);
+  }
+  .has-menu:hover .menu,
+  .has-menu:focus-within .menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+  }
+  .menu-toggle,
+  .menu-close {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--hairline-strong);
+    background: #fff;
+    color: var(--text-primary);
+    cursor: pointer;
+  }
+  .menu-toggle svg,
+  .menu-close svg {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  @media (max-width: 36rem) {
+    :global(.hdr-wa) {
+      display: none !important;
+    }
+  }
+  @media (max-width: 26rem) {
+    :global(.hdr-call) {
+      display: none !important;
+    }
+  }
+  .header-inner {
+    min-width: 0;
+  }
+  @media (min-width: 64rem) {
+    .desktop-nav {
+      display: block;
+    }
+    .header-actions {
+      margin-left: 0.5rem;
+    }
+    .menu-toggle {
+      display: none;
+    }
+  }
+
+  .mobile-nav {
+    width: 100%;
+    max-width: 26rem;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0 0 0 auto;
+    padding: 1rem 1.25rem 1.5rem;
+    border: 0;
+    background: #fff;
+    color: var(--text-primary);
+    overflow-y: auto;
+    z-index: var(--z-mobile-nav);
+  }
+  .mobile-nav::backdrop {
+    background: rgba(11, 16, 23, 0.55);
+    backdrop-filter: blur(3px);
+  }
+  .mobile-nav-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .mobile-list > li {
+    border-bottom: 1px solid var(--hairline);
+  }
+  .mobile-top {
+    display: block;
+    padding: 0.95rem 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .mobile-sub {
+    padding: 0 0 0.8rem 0.25rem;
+    display: grid;
+    gap: 0.1rem;
+  }
+  .mobile-sub a {
+    display: block;
+    padding: 0.45rem 0;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .mobile-ctas {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+  }
+</style>

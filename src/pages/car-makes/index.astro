@@ -1,0 +1,72 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import TrustStrip from "@/components/blocks/TrustStrip.astro";
+import FaqSection from "@/components/blocks/FaqSection.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+import Icon from "@/components/ui/Icon.astro";
+import { MAKES, makePath } from "@/data/makes";
+
+const faqs = [
+  {
+    q: "How do I know which battery my car needs?",
+    a: 'The quickest way is to send the make, model and year — or a photo of the label on the current battery. The technician confirms the type (conventional, EFB or AGM), capacity and size against your car before fitting. <a href="/guides/agm-vs-efb-vs-conventional-battery/">How the battery types differ</a>.',
+  },
+  {
+    q: "Which cars need battery registration?",
+    a: "Most recent BMW, Mercedes-Benz, Audi, Volkswagen, Porsche, Land Rover and Range Rover models, plus some Ford, GM, Honda, Hyundai and Kia models with battery sensors or stop-start. Registration is done on site with a diagnostic tool when your car needs it.",
+  },
+  {
+    q: "My make isn't listed — can you still help?",
+    a: "Yes. The pages here cover the most common makes on Dubai roads, but batteries for virtually every car, SUV and light commercial are available. Send the make, model and year on WhatsApp.",
+  },
+];
+const regLabel = { usually: "Registration usually needed", "some-models": "Registration on some models", rarely: "Registration rarely needed" };
+---
+
+<BaseLayout
+  title="Car Battery Replacement by Make | Dubai Mobile Service"
+  description="Battery advice and on-site replacement in Dubai for Toyota, Nissan, Lexus, Mercedes, BMW, Range Rover and more — right type, size and registration."
+  path="/car-makes/"
+>
+  <PageHero
+    crumbs={[{ name: "Home", path: "/" }, { name: "Car makes", path: "/car-makes/" }]}
+    eyebrow="By car make"
+    h1="Car Battery Replacement by Make"
+    lead="Every car is built around a specific battery type and size. Pick your make for typical batteries by model, common issues, and whether the new battery needs registering."
+    service="battery_replacement"
+  />
+  <div class="container" style="position:relative;margin-top:-2.5rem;z-index:2">
+    <TrustStrip variant="float" />
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <ul class="grid grid-3">
+        {
+          MAKES.map((m) => (
+            <li style="display:flex">
+              <a class="card" href={makePath(m)} style="width:100%">
+                <span class="card-icon">
+                  <Icon name="car" />
+                </span>
+                <h3>{m.name}</h3>
+                <p>{m.hook}</p>
+                <span class="chip">{regLabel[m.registration]}</span>
+                <span class="card-foot">
+                  <span>{m.short ?? m.name} batteries</span>
+                  <span class="card-arrow">
+                    <Icon name="arrow" />
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <FaqSection faqs={faqs} heading="Choosing the right battery for your car" soft />
+  <CtaBand service="battery_replacement" />
+</BaseLayout>

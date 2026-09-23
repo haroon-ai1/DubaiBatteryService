@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PageHero from "@/components/blocks/PageHero.astro";
+import GuidesGrid from "@/components/blocks/GuidesGrid.astro";
+import CtaBand from "@/components/blocks/CtaBand.astro";
+---
+
+<BaseLayout
+  title="Car Battery Guides for Dubai Drivers | Tips & Advice"
+  description="Practical car battery guides for Dubai: warning signs, battery life in UAE heat, AGM vs EFB, what to do when your battery dies, and summer care."
+  path="/guides/"
+>
+  <PageHero
+    crumbs={[{ name: "Home", path: "/" }, { name: "Guides", path: "/guides/" }]}
+    eyebrow="Guides"
+    h1="Car Battery Guides for Dubai Drivers"
+    lead="Plain-English advice on keeping your car battery healthy in the heat, spotting trouble early, and choosing the right replacement."
+    service="battery_service"
+    panel={false}
+    bullets={[]}
+  />
+  <section class="section">
+    <div class="container">
+      <GuidesGrid />
+    </div>
+  </section>
+  <CtaBand />
+</BaseLayout>

@@ -1,0 +1,83 @@
+---
+import GuideLayout from "@/layouts/GuideLayout.astro";
+const faqs = [
+  {
+    q: "If a jump start works, is it definitely the battery?",
+    a: "Not definitely. It proves the car will run with outside help, but a car that starts on a jump and then dies again within a day may have a failing alternator or a parasitic drain rather than (or as well as) a bad battery. A test after the jump tells you which.",
+  },
+  {
+    q: "Can a bad alternator ruin a new battery?",
+    a: "Yes. An alternator that undercharges leaves the battery permanently low, and one that overcharges cooks it. That's why the charging system should be checked whenever a battery is replaced.",
+  },
+  {
+    q: "What if nothing happens at all — no lights, no sound?",
+    a: "Complete silence usually means a completely flat battery or a loose/corroded terminal connection. Check the terminals are tight, then call for a jump start or test.",
+  },
+];
+---
+
+<GuideLayout
+  slug="car-wont-start-battery-or-alternator"
+  service="jump_start"
+  lead="A no-start can be the battery, the alternator, the starter motor or something simpler. What the car does when you turn the key tells you a lot — here's how to read it."
+  faqs={faqs}
+>
+  <h2>Quick diagnosis: what do you see and hear?</h2>
+  <div class="table-wrap">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th scope="col">Symptom</th>
+          <th scope="col">Most likely cause</th>
+          <th scope="col">What to do</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Rapid clicking, dim lights</strong></td><td>Flat or weak battery</td><td>Jump start, then test the battery</td></tr>
+        <tr><td><strong>Slow, laboured crank</strong></td><td>Weak battery (often heat-damaged)</td><td>Test — replacement likely soon</td></tr>
+        <tr><td><strong>Nothing at all, no lights</strong></td><td>Completely flat battery or loose terminal</td><td>Check terminals, then jump/test</td></tr>
+        <tr><td><strong>One loud click, lights stay bright</strong></td><td>Starter motor or solenoid</td><td>Test; workshop repair if starter</td></tr>
+        <tr><td><strong>Starts on a jump, dies again soon</strong></td><td>Alternator or parasitic drain</td><td>Charging-system test</td></tr>
+        <tr><td><strong>Cranks normally but won't fire</strong></td><td>Fuel, ignition or immobiliser — not the battery</td><td>Mechanic / dealer diagnosis</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Signs it's the battery</h2>
+  <p>
+    A battery problem usually shows up as a <strong>weak</strong> start: slow cranking, clicking, dim lights, and
+    electronics that flicker when you try to start. It often happens after the car has been parked for a while, and it's
+    more likely if the battery is more than two or three years old — which, in Dubai's heat, is most batteries. A{" "}
+    <a href="/jump-start-dubai/">jump start</a> normally gets the car running.
+  </p>
+
+  <h2>Signs it's the alternator</h2>
+  <p>
+    The alternator recharges the battery while the engine runs. When it fails, the car may start fine but then show a
+    battery warning light while driving, lights may dim or pulse, and eventually the car dies on the move or won't
+    restart after a short stop. A car that starts after a jump but is flat again the next morning — even with a new
+    battery — points strongly to the alternator.
+  </p>
+
+  <h2>Signs it's the starter motor</h2>
+  <p>
+    If the dashboard lights are bright and stay bright, but you get a single heavy click (or nothing) when you turn the
+    key, the battery may be fine and the starter motor or its solenoid may be the problem. A jump start won't help. A
+    battery test will confirm the battery is healthy so you're not sold one you don't need.
+  </p>
+
+  <h2>Parasitic drain: the hidden culprit</h2>
+  <p>
+    Something drawing power while the car is off — a dash cam on parking mode, a boot light that stays on, a faulty
+    module — can flatten a good battery over a few days. If your battery keeps dying and tests healthy, ask for a
+    parasitic-drain check.
+  </p>
+
+  <h2>The fastest way to know for sure</h2>
+  <p>
+    A proper test measures the battery's condition, the voltage drop while cranking, and the alternator's charging output.
+    It takes minutes and settles the question. Our <a href="/battery-testing-dubai/">battery and alternator test</a> is
+    free and done at your car, anywhere in Dubai — and if the battery does need replacing, it can be{" "}
+    <a href="/car-battery-replacement-dubai/">replaced on the spot</a>.
+  </p>
+</GuideLayout>

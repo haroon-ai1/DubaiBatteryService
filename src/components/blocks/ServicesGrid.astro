@@ -1,0 +1,48 @@
+---
+import Icon from "@/components/ui/Icon.astro";
+import { LINKED_SERVICES, SERVICE_CARDS, type ServiceId } from "@/lib/services";
+
+interface Props {
+  /** Service ids to leave out (e.g. the current page). */
+  exclude?: ServiceId[];
+  limit?: number;
+}
+const { exclude = [], limit } = Astro.props;
+type CardId = Exclude<ServiceId, "battery_service">;
+const list = LINKED_SERVICES.filter((s) => !exclude.includes(s.id))
+  .slice(0, limit)
+  .map((s) => ({ s, c: SERVICE_CARDS[s.id as CardId] }));
+---
+
+<ul class="grid grid-3 services-grid">
+  {
+    list.map(({ s, c }) => {
+      return (
+        <li>
+          <a class="card" href={s.path as string}>
+            <span class="card-icon">
+              <Icon name={c.icon} />
+            </span>
+            <h3>{c.title}</h3>
+            <p>{c.text}</p>
+            <span class="card-foot">
+              <span>{s.id === "battery_prices" ? "See prices" : "Learn more"}</span>
+              <span class="card-arrow">
+                <Icon name="arrow" />
+              </span>
+            </span>
+          </a>
+        </li>
+      );
+    })
+  }
+</ul>
+
+<style>
+  .services-grid > li {
+    display: flex;
+  }
+  .services-grid .card {
+    width: 100%;
+  }
+</style>

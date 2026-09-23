@@ -1,0 +1,82 @@
+---
+/*
+  `Service` schema for a service / area / make page.
+
+  Describes the service the page is about, where it is available, when,
+  and from what price — every one of those values comes from siteConfig
+  and is only emitted when configured. `provider` (which asserts a
+  business entity) is only attached when `hasVerifiedEntity` is true AND
+  a business name exists — same gate as JsonLdOrganization.
+*/
+import { siteConfig, hasVerifiedEntity } from "@/config/site";
+import { SERVICES, type ServiceId } from "@/lib/services";
+import { AREAS } from "@/data/areas";
+
+interface Props {
+  service: ServiceId;
+  path: string;
+  name: string;
+  description: string;
+  /** Restrict areaServed to one named area (area pages). */
+  areaName?: string | null;
+}
+
+const { service, path, name, description, areaName = null } = Astro.props;
+
+const url = new URL(path, siteConfig.siteUrl).toString();
+const { business, claims } = siteConfig;
+
+const provider =
+  hasVerifiedEntity && business.businessName
+    ? {
+        "@type": "AutomotiveBusiness",
+        name: business.businessName,
+        url: siteConfig.siteUrl,
+        telephone: business.phone ?? undefined,
+        address: business.address ?? undefined,
+      }
+    : undefined;
+
+const dubai = { "@type": "City", name: "Dubai", containedInPlace: { "@type": "Country", name: "United Arab Emirates" } };
+const areaServed = areaName
+  ? [{ "@type": "Place", name: `${areaName}, Dubai`, containedInPlace: dubai }]
+  : [dubai, ...AREAS.map((a) => ({ "@type": "Place", name: `${a.name}, Dubai` }))];
+
+const json = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  "@id": `${url}#service`,
+  name,
+  description,
+  serviceType: SERVICES[service].label,
+  category: "Automotive battery service",
+  url,
+  areaServed,
+  availableChannel: {
+    "@type": "ServiceChannel",
+    serviceUrl: url,
+    availableLanguage: ["en"],
+  },
+  hoursAvailable: claims.is24x7
+    ? {
+        "@type": "OpeningHoursSpecification",
+        dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        opens: "00:00",
+        closes: "23:59",
+      }
+    : undefined,
+  offers:
+    claims.startingPriceAed && siteConfig.pricing.showBands
+      ? {
+          "@type": "AggregateOffer",
+          priceCurrency: siteConfig.currency,
+          lowPrice: claims.startingPriceAed,
+          highPrice: Math.max(...siteConfig.pricing.bands.map((b) => b.high)),
+          url: new URL("/car-battery-prices-dubai/", siteConfig.siteUrl).toString(),
+        }
+      : undefined,
+  provider,
+};
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(json)} />

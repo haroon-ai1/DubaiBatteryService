@@ -1,0 +1,48 @@
+---
+import { GUIDES, guidePath } from "@/data/guides";
+import Icon from "@/components/ui/Icon.astro";
+interface Props { exclude?: string[]; limit?: number }
+const { exclude = [], limit } = Astro.props;
+const list = GUIDES.filter((g) => !exclude.includes(g.slug)).slice(0, limit);
+---
+
+<ul class="grid grid-3">
+  {
+    list.map((g) => (
+      <li>
+        <a class="card guide-card" href={guidePath(g)}>
+          <span class="meta">
+            {g.category} · {g.readMinutes} min read
+          </span>
+          <h3>{g.title}</h3>
+          <p>{g.description}</p>
+          <span class="card-foot">
+            <span>Read guide</span>
+            <span class="card-arrow">
+              <Icon name="arrow" />
+            </span>
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  li {
+    display: flex;
+  }
+  .guide-card {
+    width: 100%;
+  }
+  .meta {
+    font-size: var(--fs-label);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--volt-ink);
+  }
+  h3 {
+    font-size: 1.125rem;
+  }
+</style>
